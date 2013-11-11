@@ -1,5 +1,6 @@
 package com.golfrclient.test;
 
+import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;
 import golfCourseObjects.Hole;
 import golfCourseObjects.User;
@@ -90,6 +91,27 @@ public class TestGolfCourseObjects extends ActivityInstrumentationTestCase2<Main
     	this.holes.clear();
     	this.holes = null;
         course1 = null;
+    }
+    
+    @Test
+    public void testUserValidityCheckGeneric()
+    {
+    	assertTrue(user1.validityCheckGeneric());
+    }
+    
+    @Test
+    public void testUserValidtyCheckInGame()
+    {
+    	assertFalse(user1.validityCheckInGame());
+    	Game g = new Game(user1,course1,0,0);
+    	user1.setCurrentGame(g);
+    	assertTrue(user1.validityCheckInGame());
+    }
+    
+    @Test
+    public void testCourseValidityCheck()
+    {
+    	assertTrue(course1.validityCheck());
     }
 
 	@Test

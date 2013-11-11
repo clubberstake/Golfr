@@ -169,9 +169,6 @@ public class GolfCourse
 			//hole validity check
 			for (int i = 0; i <this.holes.size();i++)
 			{
-				//check that hole number is set correctly
-				if (this.holes.get(i).getHoleNumber() != (i+1))
-					return false;
 				if (this.holes.get(i).validityCheck() == true)
 					result = true;
 			}			
