@@ -26,6 +26,26 @@
             android:name="com.golfrclient.CouseInfoEntryScreen"
             android:label="@string/title_activity_couse_info_entry_screen" >
         </activity>
+        <activity
+            android:name="com.golfrclient.HoleInfoEntryScreen"
+            android:label="@string/title_activity_hole_info_entry_screen" >
+        </activity>
+        <activity
+            android:name="com.golfrclient.NowPlayingCourseScreen"
+            android:label="@string/title_activity_now_playing_course_screen" >
+        </activity>
+        <activity
+            android:name="com.golfrclient.HoleSelectionScreen"
+            android:label="@string/title_activity_hole_selection_screen" >
+        </activity>
+        <activity
+            android:name="com.golfrclient.UserHistoryScreen"
+            android:label="@string/title_activity_user_history_screen" >
+        </activity>
+        <activity
+            android:name="com.golfrclient.CourseListScreen"
+            android:label="@string/title_activity_course_list_screen" >
+        </activity>
     </application>
 
 </manifest>
