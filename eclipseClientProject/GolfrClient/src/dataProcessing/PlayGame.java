@@ -67,6 +67,7 @@ public class PlayGame
 					"Constructor must contain a valid User and GolfCourse"));
 		}
 	}
+	
 	/**
 	 * @return the game
 	 */

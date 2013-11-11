@@ -8,17 +8,20 @@ package golfCourseObjects;
 public class Hole
 {
 
-	private Integer holeNumber;
+	
 	private Integer holeID;
-	private Integer par;
-	private Integer redTeeYardage;
+	private Integer courseID;
+	private Integer holeNumber;
 	private Integer whiteTeeYargage;
+	private Integer redTeeYardage;
 	private Integer blueTeeYardage;
+	private Integer handicap;
+	private Integer par;	
 	/**
 	 * The player's score for the hole, if played.
 	 */
 	private Integer score;
-	private Integer handicap;
+	
 
 	/**
 	 * Default Constructor.
@@ -35,29 +38,36 @@ public class Hole
 		this.holeNumber = 0;
 	}
 
+
+
 	/**
-	 * Full constructor to populate all class variables.
-	 * @param parIn
-	 * @param redTeeYardageIn
-	 * @param whiteTeeYardageIn
-	 * @param blueTeeYardageIn
-	 * @param scoreIn
+	 * Typical constructor for all fields.
+	 * @param holeID
+	 * @param courseID
+	 * @param holeNumber
+	 * @param whiteTeeYargage
+	 * @param redTeeYardage
+	 * @param blueTeeYardage
 	 * @param handicap
+	 * @param par
+	 * @param score
 	 */
-	public Hole(Integer parIn, Integer redTeeYardageIn,
-			Integer whiteTeeYardageIn, Integer blueTeeYardageIn,
-			Integer scoreIn, Integer handicap, Integer holeNumber, 
-			Integer holeID) 
-	{
-		this.par = parIn;
-		this.redTeeYardage = redTeeYardageIn;
-		this.whiteTeeYargage = whiteTeeYardageIn;
-		this.blueTeeYardage = blueTeeYardageIn;
-		this.score = scoreIn;
-		this.handicap = handicap;
+	public Hole(Integer holeID, Integer courseID, Integer holeNumber,
+			Integer whiteTeeYargage, Integer redTeeYardage,
+			Integer blueTeeYardage, Integer handicap, Integer par, Integer score) {
+		super();
 		this.holeID = holeID;
+		this.courseID = courseID;
 		this.holeNumber = holeNumber;
+		this.whiteTeeYargage = whiteTeeYargage;
+		this.redTeeYardage = redTeeYardage;
+		this.blueTeeYardage = blueTeeYardage;
+		this.handicap = handicap;
+		this.par = par;
+		this.score = score;
 	}
+
+
 
 	/**
 	 * @return the par
@@ -180,7 +190,6 @@ public class Hole
 		if (this.holeID > 0 &&
 				this.par >= 3 &&
 				this.par <= 5 &&
-				this.handicap >= par &&
 				this.redTeeYardage <= this.whiteTeeYargage &&
 				this.whiteTeeYargage <= this.blueTeeYardage)
 			return true;

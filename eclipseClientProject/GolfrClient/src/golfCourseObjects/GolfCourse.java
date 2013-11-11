@@ -18,6 +18,7 @@ public class GolfCourse
 	private String email;
 	private ArrayList<Hole> holes;
 	private Integer golfCourseID;
+	private Integer totalPar;
 
 	/**
 	 * Default constructor 
