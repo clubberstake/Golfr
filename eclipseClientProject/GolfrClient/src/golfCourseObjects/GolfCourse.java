@@ -17,6 +17,7 @@ public class GolfCourse
 	private String phoneNumber;
 	private String email;
 	private ArrayList<Hole> holes;
+	private Integer golfCourseID;
 
 	/**
 	 * Default constructor 
@@ -38,7 +39,7 @@ public class GolfCourse
 	 */
 	public GolfCourse(String streetNameIn, String streetNumberIn,
 			String postalCodeIn, String phoneNumberIn, String emailIn,
-			ArrayList<Hole> holesIn) 
+			ArrayList<Hole> holesIn, Integer golfCourseID) 
 	{
 		super();
 		this.streetName = streetNameIn;
@@ -46,6 +47,7 @@ public class GolfCourse
 		this.postalCode = postalCodeIn;
 		this.phoneNumber = phoneNumberIn;
 		this.email = emailIn;
+		this.golfCourseID = golfCourseID;
 
 		if (holesIn != null && holesIn.size() == 18)
 			this.holes = holesIn;
@@ -135,5 +137,44 @@ public class GolfCourse
 	 */
 	public void setHoles(ArrayList<Hole> holes) {
 		this.holes = holes;
+	}
+
+	/**
+	 * @return the golfCourseID
+	 */
+	public Integer getGolfCourseID() {
+		return this.golfCourseID;
+	}
+
+	/**
+	 * @param golfCourseID the golfCourseID to set
+	 */
+	public void setGolfCourseID(Integer golfCourseID) {
+		this.golfCourseID = golfCourseID;
+	}
+
+	/**
+	 * Checks the validity of GolfCourse variables.
+	 * @return true if data is valid, false otherwise.
+	 */
+	public boolean validityCheck() 
+	{
+		boolean result = false;
+		
+		//ID check and holes array length check
+		if (this.golfCourseID > 0 && this.holes != null && 
+				this.holes.size() == 18)
+		{
+			//hole validity check
+			for (int i = 0; i <this.holes.size();i++)
+			{
+				//check that hole number is set correctly
+				if (this.holes.get(i).getHoleNumber() != (i+1))
+					return false;
+				if (this.holes.get(i).validityCheck() == true)
+					result = true;
+			}			
+		}
+		return result;
 	}
 }

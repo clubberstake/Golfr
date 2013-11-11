@@ -10,7 +10,7 @@ public class User
 	private String username;
 	private Integer userID;
 	private Game currentGame;
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -70,6 +70,35 @@ public class User
 	 */
 	public void setCurrentGame(Game currentGame) {
 		this.currentGame = currentGame;
+	}
+
+	/**
+	 * Checks the validity of User variable data.  For use when a user
+	 * is not currently playing a game.
+	 * @return true if the data is valid, false otherwise.
+	 */
+	public boolean validityCheckGeneric() 
+	{
+		if (this.userID > 0 &&
+				this.username.length() >=1)
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Checks the validity of User variable data.  For use when a user
+	 * is currently playing a game.
+	 * @return true if the data is valid, false otherwise.
+	 */
+	public boolean validityCheckInGame() 
+	{
+		if (this.userID > 0 &&
+				this.username.length() >=1 &&
+				this.currentGame != null)
+			return true;
+		else
+			return false;
 	}
 
 }
