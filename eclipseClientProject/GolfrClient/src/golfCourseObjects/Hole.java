@@ -188,6 +188,9 @@ public class Hole
 	public boolean validityCheck() 
 	{
 		if (this.holeID > 0 &&
+				this.courseID > 0 &&
+				this.holeNumber >= 1 &&
+				this.holeNumber <=18 &&
 				this.par >= 3 &&
 				this.par <= 5 &&
 				this.redTeeYardage <= this.whiteTeeYargage &&
