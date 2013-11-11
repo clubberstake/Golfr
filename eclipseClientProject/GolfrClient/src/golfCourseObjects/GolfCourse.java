@@ -2,6 +2,12 @@ package golfCourseObjects;
 
 import java.util.ArrayList;
 
+/**
+ * The GolfCourse class represnts a golf course.  It contains the necessairy
+ * golf course parameters and an ArrayList<Holes> size() == 18.
+ * @author matt
+ *
+ */
 public class GolfCourse 
 {
 
@@ -18,18 +24,33 @@ public class GolfCourse
 	public GolfCourse() 
 	{
 		super();
-		// TODO Auto-generated constructor stub
+		this.holes = new ArrayList<Hole>(18);
 	}
 
+	/**
+	 * Full constructor.
+	 * @param streetNameIn
+	 * @param streetNumberIn
+	 * @param postalCodeIn
+	 * @param phoneNumberIn
+	 * @param emailIn
+	 * @param holesIn
+	 */
 	public GolfCourse(String streetNameIn, String streetNumberIn,
 			String postalCodeIn, String phoneNumberIn, String emailIn,
-			ArrayList<Hole> holesIn) {
+			ArrayList<Hole> holesIn) 
+	{
+		super();
 		this.streetName = streetNameIn;
 		this.streetNumber = streetNumberIn;
 		this.postalCode = postalCodeIn;
 		this.phoneNumber = phoneNumberIn;
 		this.email = emailIn;
-		this.holes = holesIn;
+
+		if (holesIn != null && holesIn.size() == 18)
+			this.holes = holesIn;
+		else
+			this.holes = new ArrayList<Hole>(18);
 	}
 
 	/**

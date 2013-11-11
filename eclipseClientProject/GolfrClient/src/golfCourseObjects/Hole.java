@@ -5,7 +5,8 @@ package golfCourseObjects;
  * @author Matt Gisoni
  *
  */
-public class Hole {
+public class Hole
+{
 
 	private Integer par;
 	private Integer redTeeYardage;
