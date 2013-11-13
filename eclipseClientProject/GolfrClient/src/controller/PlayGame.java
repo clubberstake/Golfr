@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dataProcessing;
+package controller;
 
 import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;

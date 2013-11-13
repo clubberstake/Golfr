@@ -1,4 +1,4 @@
-package dataProcessing;
+package controller;
 
 public class SQLQueries {
 

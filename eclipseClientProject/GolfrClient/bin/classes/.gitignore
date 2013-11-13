@@ -1,5 +1,3 @@
 /com
 /.gitignore
-/dataProcessing
-/golfCourseObjects
-/validation
+/controller
