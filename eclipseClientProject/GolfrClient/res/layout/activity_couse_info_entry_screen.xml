@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/CourseInfo_PhoneEntry"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -52,9 +52,45 @@
         android:inputType="textCapWords" />
 
     <ExpandableListView
-        android:id="@+id/expandableListView1"
+        android:id="@+id/CourseInfo_StateExpandable"
         android:layout_width="128dp"
         android:layout_height="58dp" >
     </ExpandableListView>
+
+    <EditText
+        android:id="@+id/CourseInfo_PostalCodeEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="PostalCode"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact" />
+
+    <EditText
+        android:id="@+id/CourseInfo_PhoneEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Phone Number"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/CourseInfo_WebsiteEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Website"
+        android:inputType="textEmailAddress" />
+
+    <Button
+        android:id="@+id/CourseInfo_NextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next" />
 
 </LinearLayout>
