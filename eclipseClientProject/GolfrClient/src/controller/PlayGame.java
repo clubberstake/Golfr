@@ -8,7 +8,7 @@ import golfCourseObjects.GolfCourse;
 import golfCourseObjects.User;
 
 /**
- * The PlayGame class represents the local controller for a game of golf.
+ * The PlayGame class serves as the controller for use case 5, playing a game and scoring a hole.
  * It also contains the local data model for a game of golf.
  *  
  * @author Matt Gisoni
@@ -55,7 +55,7 @@ public class PlayGame
 				user.validityCheckGeneric() == true && 
 				course.validityCheck() == true)
 		{
-		
+
 			this.user = user;
 			this.course = course;
 			this.game = new Game(this.user,this.course,0,0);
@@ -67,7 +67,45 @@ public class PlayGame
 					"Constructor must contain a valid User and GolfCourse"));
 		}
 	}
+
+	/**
+	 * Sets the total score for a game to the score passed in.
+	 * @param score - the updated score for the game
+	 */
+	public void setTotalScore(Integer score)
+	{
+		if (score != null && score >= 0)
+			this.game.setTotalScore(score);
+		else
+			throw new IllegalArgumentException("score must be >= 0");
+	}
+
+	/**
+	 * Sets the score for the given hole number
+	 * @param holeNumber - the hole to be scored (must be 1-18)
+	 * @param score - the updated score for the hole
+	 */
+	public void scoreHole(Integer holeNumber, Integer score)
+	{
+		if (holeNumber != null && score != null && holeNumber < 0 && holeNumber <= 18 && score >= 0)
+			this.game.getCourse().getHoles().get(holeNumber-1).setScore(score);
+		else
+			throw new IllegalArgumentException("holeNumber must be 1-18 and score must be >= 0");
+	}
 	
+	/**
+	 * Gets the score for the given hole number
+	 * @param holeNumber - the hole whose score is desired
+	 * @return - the score for the given holeNumber
+	 */
+	public Integer getHoleScore(Integer holeNumber)
+	{
+		if (holeNumber != null && holeNumber > 0 && holeNumber <= 18)
+			return this.game.getCourse().getHoles().get(holeNumber-1).getScore();
+		else
+			throw new IllegalArgumentException("holeNumber must be 1-18");
+	}
+
 	/**
 	 * @return the game
 	 */
