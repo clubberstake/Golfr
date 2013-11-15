@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.golfrclient.CouseInfoEntryScreen"
+            android:name="com.golfrclient.CourseInfoEntryScreen"
             android:label="@string/title_activity_couse_info_entry_screen" >
         </activity>
         <activity
@@ -45,6 +45,10 @@
         <activity
             android:name="com.golfrclient.CourseListScreen"
             android:label="@string/title_activity_course_list_screen" >
+        </activity>
+        <activity
+            android:name="com.golfrclient.MainMenuScreen"
+            android:label="@string/title_activity_main_menu_screen" >
         </activity>
     </application>
 

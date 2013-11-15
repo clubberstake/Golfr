@@ -10,5 +10,6 @@
     <string name="title_activity_hole_selection_screen">HoleSelectionScreen</string>
     <string name="title_activity_user_history_screen">UserHistoryScreen</string>
     <string name="title_activity_course_list_screen">CourseListScreen</string>
+    <string name="title_activity_main_menu_screen">MainMenuScreen</string>
 
 </resources>
