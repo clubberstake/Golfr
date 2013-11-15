@@ -3,6 +3,8 @@ package controller;
 import golfCourseObjects.GolfCourse;
 import golfCourseObjects.User;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -33,16 +35,24 @@ public class SelectACourse
 	{
 		this.courseList = new ArrayList<GolfCourse>();
 		this.user = user;
-		this.populateCourseListFromDB();
+		this.populateCourseListFromDB(user.getConnection(),user.getDbName());
 	}
 
 	/**
 	 * Populates the course list based on the corresponding table in the DB
 	 * 
 	 */
-	public void populateCourseListFromDB()
+	public void populateCourseListFromDB(Connection connection, String DB_Name)
 	{
-		this.courseList = SQLQueries.getCourseListFromDB();
+		try 
+		{
+			this.courseList = SQLQueries.getCourseListFromDB(connection, DB_Name);
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			throw new IllegalStateException("Unable to populate course list from DB");
+		}
 	}
 
 	

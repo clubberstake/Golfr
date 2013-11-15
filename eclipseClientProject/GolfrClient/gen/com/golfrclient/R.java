@@ -24,6 +24,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int CourseInfo_AddressL1Entry=0x7f080006;
         public static final int CourseInfo_AddressL2Entry=0x7f080007;
         public static final int CourseInfo_CityEntry=0x7f080008;
@@ -42,6 +43,20 @@ public final class R {
         public static final int action_settings=0x7f080011;
         public static final int textView1=0x7f080005;
         public static final int textView2=0x7f08000b;
+=======
+        public static final int CourseInfo_AddressL1Entry=0x7f080003;
+        public static final int CourseInfo_AddressL2Entry=0x7f080004;
+        public static final int CourseInfo_CityEntry=0x7f080005;
+        public static final int CourseInfo_NameEntry=0x7f080001;
+        public static final int CourseInfo_NextButton=0x7f08000a;
+        public static final int CourseInfo_PhoneEntry=0x7f080000;
+        public static final int CourseInfo_PostalCodeEntry=0x7f080007;
+        public static final int CourseInfo_StateExpandable=0x7f080006;
+        public static final int CourseInfo_WebsiteEntry=0x7f080009;
+        public static final int action_settings=0x7f08000b;
+        public static final int textView1=0x7f080002;
+        public static final int textView2=0x7f080008;
+>>>>>>> ef96fb8c114d762473d04f98f08bf4c30a0eab1d
     }
     public static final class layout {
         public static final int activity_course_list_screen=0x7f030000;
