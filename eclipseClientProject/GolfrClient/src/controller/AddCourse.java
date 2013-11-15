@@ -35,13 +35,11 @@ public class AddCourse
 	 * @param holesIn
 	 * @param golfCourseID
 	 */
-	public AddCourse(String streetNameIn, String streetNumberIn,
-			String postalCodeIn, String phoneNumberIn, String emailIn,
+	public AddCourse(String courseName, String streetNameIn, String streetNumberIn,
+			Integer postalCodeIn, String phoneNumberIn, String webAddressIn,
 			ArrayList<Hole> holesIn, Integer golfCourseID)
 	{
-		this.toAdd = new GolfCourse(streetNameIn, streetNumberIn,
-				postalCodeIn, phoneNumberIn, emailIn,
-				holesIn, golfCourseID);
+		this.toAdd = new GolfCourse(courseName,streetNameIn,streetNumberIn,postalCodeIn,phoneNumberIn,webAddressIn,holesIn,golfCourseID);
 	}
 
 	/**
