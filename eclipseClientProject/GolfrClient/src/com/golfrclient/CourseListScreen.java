@@ -45,7 +45,7 @@ public class CourseListScreen extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(CourseListScreen.this, HoleInfoEntryScreen.class);
+				Intent i = new Intent(CourseListScreen.this, CourseInfoEntryScreen.class);
 				startActivity(i);
 				
 			}
