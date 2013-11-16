@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class GolfCourse 
 {
-
+	private String courseName;
 	private String streetName;
 	private String streetNumber;
 	private String postalCode;
@@ -31,6 +31,7 @@ public class GolfCourse
 
 	/**
 	 * Full constructor.
+	 * @param courseNameIn
 	 * @param streetNameIn
 	 * @param streetNumberIn
 	 * @param postalCodeIn
@@ -38,11 +39,12 @@ public class GolfCourse
 	 * @param emailIn
 	 * @param holesIn
 	 */
-	public GolfCourse(String streetNameIn, String streetNumberIn,
+	public GolfCourse(String courseNameIn, String streetNameIn, String streetNumberIn,
 			String postalCodeIn, String phoneNumberIn, String emailIn,
 			ArrayList<Hole> holesIn, Integer golfCourseID) 
 	{
 		super();
+		this.courseName = courseNameIn;
 		this.streetName = streetNameIn;
 		this.streetNumber = streetNumberIn;
 		this.postalCode = postalCodeIn;
@@ -54,6 +56,16 @@ public class GolfCourse
 			this.holes = holesIn;
 		else
 			this.holes = new ArrayList<Hole>(18);
+	}
+	/**
+	 * @return the courseName
+	 */
+	public String getCourseName(){
+		return this.courseName;
+	}
+	
+	public void setCourseName(String courseName){
+		this.courseName = courseName;
 	}
 
 	/**

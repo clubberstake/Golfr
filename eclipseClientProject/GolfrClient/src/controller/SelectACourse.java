@@ -35,7 +35,7 @@ public class SelectACourse
 	{
 		this.courseList = new ArrayList<GolfCourse>();
 		this.user = user;
-		this.populateCourseListFromDB(user.getConnection(),user.getDbName());
+		//this.populateCourseListFromDB(user.getConnection(),user.getDbName());
 	}
 
 	/**

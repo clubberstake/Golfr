@@ -25,13 +25,14 @@ public class CourseListScreen extends Activity {
 
 		courseListView = (ListView) findViewById(R.id.CourseListScreen_CourseList);
 		addCourseButton = (Button) findViewById(R.id.CourseListScreen_AddCourseButton);
-
+/*
 		ArrayList<String> courseNameList = new ArrayList<String>();
 		courseNameList.add("Oakmont");
 		courseNameList.add("Nevilewood");
 		ArrayAdapter<String> courseNamesArrayAdapter = new ArrayAdapter<String>(CourseListScreen.this,
 				R.layout.activity_course_list_screen, courseNameList);
 		courseListView.setAdapter(courseNamesArrayAdapter);
+		*/
 	}
 
 	@Override
