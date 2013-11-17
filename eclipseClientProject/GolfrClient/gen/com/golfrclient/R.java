@@ -34,14 +34,22 @@ public final class R {
         public static final int CourseInfo_StreetName=0x7f080007;
         public static final int CourseInfo_StreetNum=0x7f080006;
         public static final int CourseInfo_WebsiteEntry=0x7f08000d;
-        public static final int CourseListButton=0x7f080010;
+        public static final int CourseListButton=0x7f080018;
         public static final int CourseListScreen_AddCourseButton=0x7f080002;
         public static final int CourseListScreen_CourseList=0x7f080001;
-        public static final int HistoryButton=0x7f080011;
+        public static final int HistoryButton=0x7f080019;
+        public static final int HoleInfoScreen_BlueTeeEntry=0x7f080013;
+        public static final int HoleInfoScreen_HoleCounterView=0x7f080005;
+        public static final int HoleInfoScreen_NextButton=0x7f080016;
+        public static final int HoleInfoScreen_ParEntry=0x7f080015;
+        public static final int HoleInfoScreen_ParTextView=0x7f080014;
+        public static final int HoleInfoScreen_RedTeeEntry=0x7f080012;
+        public static final int HoleInfoScreen_TeeYardageView=0x7f080010;
+        public static final int HoleInfoScreen_WhiteTeeEntry=0x7f080011;
         public static final int LinearLayout1=0x7f080000;
-        public static final int Main_GoToCourseList=0x7f08000f;
-        public static final int action_settings=0x7f080012;
-        public static final int textView1=0x7f080005;
+        public static final int Main_GoToCourseList=0x7f080017;
+        public static final int ScrollView1=0x7f08000f;
+        public static final int action_settings=0x7f08001a;
         public static final int textView2=0x7f08000b;
     }
     public static final class layout {

@@ -1,5 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -8,4 +9,70 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".HoleInfoEntryScreen" >
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/HoleInfoScreen_HoleCounterView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/HoleInfoScreen_TeeYardageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tee Yardage" />
+
+        <EditText
+            android:id="@+id/HoleInfoScreen_WhiteTeeEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="White Tee"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/HoleInfoScreen_RedTeeEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Red Tee"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/HoleInfoScreen_BlueTeeEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Blue Tee"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/HoleInfoScreen_ParTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Par" />
+
+        <EditText
+            android:id="@+id/HoleInfoScreen_ParEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Par"
+            android:inputType="numberSigned" />
+
+        <Button
+            android:id="@+id/HoleInfoScreen_NextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next" />
+
+    </LinearLayout>
+
+</ScrollView>
