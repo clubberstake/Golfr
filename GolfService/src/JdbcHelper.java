@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,8 +9,8 @@ public class JdbcHelper implements JdbcConfig {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            Class.forName(DRIVER);// �������ݿ�����
-            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);// ������ݿ�����
+            Class.forName(DRIVER);// load the driver of database
+            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             return conn;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -31,7 +30,7 @@ public class JdbcHelper implements JdbcConfig {
             resultstr = ResultSetToJson.ResultSetToJsonString(rs);             
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {// �ͷ���Դ
+        } finally {// set free all the sources
             if (rs != null) {
                 try {
                     rs.close();
@@ -65,7 +64,7 @@ public class JdbcHelper implements JdbcConfig {
             rs = stat.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {// �ͷ���Դ
+        } finally {// set free all the sources
             if (stat != null) {
                 try {
                     stat.close();
