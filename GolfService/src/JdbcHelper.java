@@ -1,5 +1,4 @@
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,12 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class JdbcHelper implements JdbcConfig {
-    // »ñµÃÊý¾Ý¿âµÄÁ¬½Ó
+    // get connection from database
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            Class.forName(DRIVER);// ¼ÓÔØÊý¾Ý¿âÇý¶¯
-            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);// »ñµÃÊý¾Ý¿âÁ¬½Ó
+            Class.forName(DRIVER);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½
+            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½
             return conn;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -32,7 +31,7 @@ public class JdbcHelper implements JdbcConfig {
             resultstr = ResultSetToJson.ResultSetToJsonString(rs);             
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {// ÊÍ·Å×ÊÔ´
+        } finally {// ï¿½Í·ï¿½ï¿½ï¿½Ô´
             if (rs != null) {
                 try {
                     rs.close();
@@ -66,7 +65,7 @@ public class JdbcHelper implements JdbcConfig {
             rs = stat.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {// ÊÍ·Å×ÊÔ´
+        } finally {// ï¿½Í·ï¿½ï¿½ï¿½Ô´
             if (stat != null) {
                 try {
                     stat.close();
