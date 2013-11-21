@@ -45,6 +45,8 @@ public class CourseListScreen extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				
+				//<<< INVOKE CONTROLLER HERE>>>
 				Intent i = new Intent(CourseListScreen.this, CourseInfoEntryScreen.class);
 				startActivity(i);
 				
