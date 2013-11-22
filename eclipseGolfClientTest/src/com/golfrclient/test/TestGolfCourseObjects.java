@@ -19,8 +19,7 @@ public class TestGolfCourseObjects extends ActivityInstrumentationTestCase2<Main
 
 	public TestGolfCourseObjects()
 	{
-		super(com.golfrclient.MainActivity.class);
-		
+		super(com.golfrclient.MainActivity.class);		
 	}
 
 	private User user1;
@@ -77,7 +76,7 @@ public class TestGolfCourseObjects extends ActivityInstrumentationTestCase2<Main
     	holes.add(16, h17);
     	holes.add(17, h18);
     	    	
-    	this.course1 = new GolfCourse("West Street", "400","15237","412-555-5555","contact@course1.com", holes, 1);
+    	this.course1 = new GolfCourse("Test Course","West Street", "400",15237,"412-555-5555","www.testcourse.com", holes, 1);
     }
 
     /**
