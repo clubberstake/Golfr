@@ -65,7 +65,7 @@ public class AddCourse
 	{
 		if(this.toAdd.validityCheck())
 		{
-			SQLQueries.sendCourseToDB(this.toAdd);
+	//		SQLQueries.sendCourseToDB(this.toAdd);
 		}
 		else
 			throw new IllegalStateException("The new golf course is not configured correctly.  Not sent to DB");

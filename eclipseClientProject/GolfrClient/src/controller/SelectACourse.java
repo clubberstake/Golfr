@@ -44,7 +44,7 @@ public class SelectACourse
 	 */
 	public void populateCourseListFromDB(Connection connection, String DB_Name)
 	{
-		try 
+		/*try 
 		{
 			this.courseList = SQLQueries.getCourseListFromDB(connection, DB_Name);
 		}
@@ -52,7 +52,7 @@ public class SelectACourse
 		{
 			e.printStackTrace();
 			throw new IllegalStateException("Unable to populate course list from DB");
-		}
+		}*/
 	}
 
 	
