@@ -13,7 +13,7 @@ public class GolfCourse
 	private String courseName;
 	private String streetName;
 	private String streetNumber;
-	private String postalCode;
+	private Integer postalCode;
 	private String phoneNumber;
 	private String email;
 	private ArrayList<Hole> holes;
@@ -40,7 +40,7 @@ public class GolfCourse
 	 * @param holesIn
 	 */
 	public GolfCourse(String courseNameIn, String streetNameIn, String streetNumberIn,
-			String postalCodeIn, String phoneNumberIn, String emailIn,
+			Integer postalCodeIn, String phoneNumberIn, String emailIn,
 			ArrayList<Hole> holesIn, Integer golfCourseID) 
 	{
 		super();
@@ -99,14 +99,14 @@ public class GolfCourse
 	/**
 	 * @return the postalCode
 	 */
-	public String getPostalCode() {
+	public Integer getPostalCode() {
 		return this.postalCode;
 	}
 
 	/**
 	 * @param postalCode the postalCode to set
 	 */
-	public void setPostalCode(String postalCode) {
+	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
 	}
 
