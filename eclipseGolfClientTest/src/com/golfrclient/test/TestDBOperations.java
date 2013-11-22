@@ -77,7 +77,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 	{
 		try 
 		{
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver").getClass();
 			assertTrue(true);
 		} catch (ClassNotFoundException e) 
 		{
