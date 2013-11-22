@@ -61,14 +61,14 @@ public class SelectACourse
 	 * @param selected - the course desired by the player
 	 * @return - a new PlayGame which the user will play
 	 */
-	public PlayGame selectCourse(GolfCourse selected)
+/*	public PlayGame selectCourse(GolfCourse selected)
 	{
 		if (selected != null && selected.validityCheck())
 			return new PlayGame(user,selected);
 		else
 			throw new IllegalArgumentException("The selected golf course is invalid");
 	}
-
+*/
 	/**
 	 * @return the courseList
 	 */
