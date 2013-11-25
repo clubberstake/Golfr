@@ -225,7 +225,7 @@ public class SQLQueries extends Thread
 				String name = rs.getString("courseName");
 				String streetName = rs.getString("streetName");
 				String streetNumber = rs.getString("streetNumber");
-				Integer postalCode = rs.getInt("postalCode");
+				String postalCode = rs.getString("postalCode");
 				String phone = rs.getString("phone");
 				String webaddress = rs.getString("webAddress");
 				GolfCourse toAdd = new GolfCourse(name,streetName,streetNumber,postalCode,phone,webaddress,null,ID);
