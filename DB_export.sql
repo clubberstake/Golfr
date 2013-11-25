@@ -26,8 +26,10 @@ DROP TABLE IF EXISTS `t_golfcoursedetails`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_golfcoursedetails` (
   `courseID_pk` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `address` varchar(45) DEFAULT NULL,
+  `courseName` varchar(45) DEFAULT NULL,
+  `streetName` varchar(45) DEFAULT NULL,
+  `streetNumber` varchar(45) DEFAULT NULL,
+  `postalCode` int(11) DEFAULT NULL,
   `phone` varchar(45) DEFAULT NULL,
   `webAddress` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`courseID_pk`),
@@ -41,7 +43,7 @@ CREATE TABLE `t_golfcoursedetails` (
 
 LOCK TABLES `t_golfcoursedetails` WRITE;
 /*!40000 ALTER TABLE `t_golfcoursedetails` DISABLE KEYS */;
-INSERT INTO `t_golfcoursedetails` VALUES (1,'Course1','100 Test Ave','555-555-1234','www.course1.com');
+INSERT INTO `t_golfcoursedetails` VALUES (1,'Course1',NULL,NULL,NULL,'555-555-1234','www.course1.com');
 /*!40000 ALTER TABLE `t_golfcoursedetails` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,10 +219,6 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping routines for database 'golfr'
---
-
---
 -- Final view structure for view `v_userscorecard`
 --
 
@@ -248,4 +246,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-11-04 16:25:20
+-- Dump completed on 2013-11-21 20:33:18
