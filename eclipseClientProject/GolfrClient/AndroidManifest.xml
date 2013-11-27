@@ -7,7 +7,9 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
-	<uses-permission android:name="android.permission.INTERNET" /> 
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -49,6 +51,10 @@
         <activity
             android:name="com.golfrclient.MainMenuScreen"
             android:label="@string/title_activity_main_menu_screen" >
+        </activity>
+        <activity
+            android:name="com.golfrclient.ScoreEntryScreen"
+            android:label="@string/title_activity_score_entry_screen" >
         </activity>
     </application>
 

@@ -11,5 +11,13 @@
     <string name="title_activity_user_history_screen">UserHistoryScreen</string>
     <string name="title_activity_course_list_screen">CourseListScreen</string>
     <string name="title_activity_main_menu_screen">MainMenuScreen</string>
+    <string name="title_activity_score_entry_screen">ScoreEntryScreen</string>
+    <string name="ScoreEntryScreen_HoleString">Hole#</string>
+    <string name="ScoreEntryScreen_ParString">Par</string>
+    <string name="ScoreEntryScreen_RedYardString">Red Yardage</string>
+    <string name="ScoreEntryString_WhiteYard">White Yardage</string>
+    <string name="ScoreEntryScreen_BlueYardString">Blue Yardage</string>
+    <string name="ScoreEntryScreen_MensHanicapString">Men\'s Handicap</string>
+    <string name="ScoreEntryScreen_WomensHandicapString">Women\'s Handicap</string>
 
 </resources>

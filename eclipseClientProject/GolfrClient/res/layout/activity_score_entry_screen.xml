@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="1"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ScoreEntryScreen" >
+
+    <TextView
+        android:id="@+id/ScoreEntryScreen_HoleNumView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="21dp"
+        android:text="@string/ScoreEntryScreen_HoleString" />
+
+    <TextView
+        android:id="@+id/ScoreEntryScreen_ParView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ScoreEntryScreen_HoleNumView"
+        android:layout_alignBottom="@+id/ScoreEntryScreen_HoleNumView"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="55dp"
+        android:text="@string/ScoreEntryScreen_ParString" />
+
+    <TextView
+        android:id="@+id/ScoreEntryScreen_MensHandicapView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ScoreEntryScreen_RedYardView"
+        android:layout_below="@+id/ScoreEntryScreen_RedYardView"
+        android:layout_marginTop="26dp"
+        android:text="@string/ScoreEntryScreen_MensHanicapString" />
+
+    <EditText
+        android:id="@+id/ScoreEntryScreen_ScoreEntryField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ScoreEntryScreen_WomensHandicapView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:hint="Enter Score"
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/ScoreEntryScreen_RedYardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/ScoreEntryScreen_HoleNumView"
+        android:layout_below="@+id/ScoreEntryScreen_HoleNumView"
+        android:layout_marginTop="23dp"
+        android:text="@string/ScoreEntryScreen_RedYardString" />
+
+    <TextView
+        android:id="@+id/ScoreEntryScreen_WomensHandicapView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ScoreEntryScreen_MensHandicapView"
+        android:layout_alignBottom="@+id/ScoreEntryScreen_MensHandicapView"
+        android:layout_alignParentRight="true"
+        android:text="@string/ScoreEntryScreen_WomensHandicapString" />
+
+    <TextView
+        android:id="@+id/ScoreEntryScreen_WhiteYardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ScoreEntryScreen_RedYardView"
+        android:layout_alignBottom="@+id/ScoreEntryScreen_RedYardView"
+        android:layout_centerHorizontal="true"
+        android:text="@string/ScoreEntryString_WhiteYard" />
+
+    <TextView
+        android:id="@+id/ScoreEntryScreen_BlueYardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ScoreEntryScreen_MensHandicapView"
+        android:layout_alignLeft="@+id/ScoreEntryScreen_ParView"
+        android:text="@string/ScoreEntryScreen_BlueYardString" />
+
+    <Button
+        android:id="@+id/ScoreEntryScreen_NextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ScoreEntryScreen_ScoreEntryField"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:text="Next" />
+
+</RelativeLayout>
