@@ -89,6 +89,11 @@ public class SQLQueries extends Thread
 
 	}
 
+	/**
+	 * Returns an ArrayList of Holes which contains the 18 holes of the provided GolfCourse
+	 * @param course
+	 * @return
+	 */
 	public ArrayList<Hole> getHoleListNoScore(GolfCourse course)
 	{
 		ArrayList<Hole> toReturn = new ArrayList<Hole>(18);
@@ -200,6 +205,151 @@ public class SQLQueries extends Thread
 		}
 
 		return toReturn;
+	}
+	
+	/**
+	 * Returns the primary key from the t_golfcoursedetails table if the provided course parameters are an exact match.
+	 * @param course
+	 * @return if found, the primary key.  Null otherwise.
+	 * @throws SQLException 
+	 */
+	public Integer getCoursePrimaryKey(GolfCourse course) throws SQLException
+	{
+		Integer key = null;
+		Statement statement = null;
+		String query = "SELECT courseID_PK FROM t_golfcoursedetails WHERE courseName = " + course.getCourseName() + " AND " +
+		"phone = " + course.getPhoneNumber() + " AND " +
+				"webAddress = " + course.getWebaddress();
+		
+		
+		try 
+		{
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(query);
+
+			while (rs.next()) 
+			{
+				Integer ID = rs.getInt("courseID_PK");							
+				key = ID;
+			}
+		} 
+		catch (SQLException e ) 
+		{
+			e.printStackTrace();
+			throw new IllegalStateException("Failed to populate course list from DB");
+		}
+		finally
+		{
+			if (statement != null)
+			{ 
+				statement.close(); 
+			}
+		}
+		return key;
+	}
+
+	/**
+	 * Deletes the golf course with the provided primary key.  This is meant to be used primarily for junit testing purposes.
+	 * @param primaryKey - the t_golfcoursedetails.courseID_PK of the course to be removed
+	 * @throws SQLException
+	 */
+	public void deleteCourseFromDB(Integer primaryKey) throws SQLException
+	{
+				
+		Statement statement1 = null;
+		Statement statement2 = null;
+		Statement statement3 = null;
+		String deleteCourseQuery = "DELETE FROM t_golfCourseDetails WHERE courseID_PK = " + primaryKey;		
+		String selectHolesQuery = "SELECT * " +
+				"FROM t_holes " +
+				"WHERE golfCourseID = " + primaryKey +
+				" AND holeNumber IS NOT NULL";		
+		String deleteHoleQuery;
+
+		try
+		{
+			//first, find all the holes for the course, and delete them one by one
+			statement1 = connection.createStatement();
+			ResultSet rs = statement1.executeQuery(selectHolesQuery);
+
+			while (rs.next()) 
+			{
+
+				Integer holeID = rs.getInt("holeID");
+				Integer courseID = rs.getInt("golfCourseID");
+				Integer whiteTee = rs.getInt("whiteTee");
+				Integer redTee = rs.getInt("redTee");
+				Integer blueTee = rs.getInt("blueTee");
+				Integer handicap = rs.getInt("handicap");
+				Integer par = rs.getInt("par");
+				Integer holeNumber = rs.getInt("holeNumber");							
+				
+				//delete the holes
+				deleteHoleQuery = "DELETE FROM t_holes WHERE holeID = " + holeID.toString();
+				statement3 = connection.createStatement();
+				statement3.executeUpdate(deleteHoleQuery);
+				if (statement3 != null)
+					statement3.close();
+
+			}	
+			
+			//then delete the coursedetails
+			statement2 = connection.createStatement();
+			statement2.executeUpdate(deleteCourseQuery);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new IllegalStateException("Could not get holes for the provided course.");
+
+		}		
+		finally
+		{
+			if (statement1 != null || statement2 != null)
+			{ 
+				try {
+					statement1.close();
+					statement2.close();					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}
+		}
+	}
+
+	/**
+	 * Adds a course to the DB table t_golfcoursedetails.  It is meant for use case 3.  Note, it does not add the 18 holes of the new course to the DB, that is done by another method. 
+	 * @param newCourse
+	 * @throws SQLException 
+	 */
+	public void sendCourseDetailsToDB(GolfCourse newCourse) throws SQLException
+	{
+		String query = "INSERT INTO t_golfcoursedetails (courseName, streeName, streetNumber, postalCode, phone, webAddress) VALUES (" + 
+				newCourse.getCourseName() + ", " +
+				newCourse.getStreetName() + ", " +
+				newCourse.getStreetNumber() + ", " +
+				newCourse.getPostalCode() + ", " +
+				newCourse.getPhoneNumber() + ", " +
+				newCourse.getWebaddress() + ");";
+		
+		Statement statement = null;
+		
+		try
+		{
+			statement = this.connection.createStatement();
+			statement.executeUpdate(query);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if (statement != null)
+				statement.close();
+		}
+		
 	}
 
 	/**

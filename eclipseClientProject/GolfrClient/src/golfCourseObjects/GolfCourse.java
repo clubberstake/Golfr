@@ -15,7 +15,7 @@ public class GolfCourse
 	private String streetNumber;
 	private String postalCode;
 	private String phoneNumber;
-	private String email;
+	private String webAddress;
 	private ArrayList<Hole> holes;
 	private Integer golfCourseID;
 	private Integer totalPar;
@@ -49,7 +49,7 @@ public class GolfCourse
 		this.streetNumber = streetNumberIn;
 		this.postalCode = postalCodeIn;
 		this.phoneNumber = phoneNumberIn;
-		this.email = emailIn;
+		this.webAddress = emailIn;
 		this.golfCourseID = golfCourseID;
 
 		if (holesIn != null && holesIn.size() == 18)
@@ -127,15 +127,15 @@ public class GolfCourse
 	/**
 	 * @return the email
 	 */
-	public String getEmail() {
-		return this.email;
+	public String getWebaddress() {
+		return this.webAddress;
 	}
 
 	/**
 	 * @param email the email to set
 	 */
-	public void setEmail(String email) {
-		this.email = email;
+	public void setWebaddress(String webaddress) {
+		this.webAddress = webaddress;
 	}
 
 	/**
