@@ -30,6 +30,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 	public TestDBOperations() 
 	{
 		super(com.golfrclient.MainActivity.class);
+
 	}
 
 	/**
@@ -39,20 +40,19 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 	@Before
 	public void setUp() 
 	{
-		try
+		if (DBConnection == null || DBConnection.getConnection() == null)
 		{
-			this.DBConnection = new SQLQueries();
-			this.DBConnection.run();			
-			if (this.DBConnection.getConnection() == null)
-				throw new IllegalStateException();
-			this.connection = this.DBConnection.getConnection();
-		} 
-		catch (Exception e) 
-		{
-			System.out.println("Failed to connect to DB. TestDBOperations.java");
-			e.printStackTrace();
-		}		
-
+			try
+			{
+				this.DBConnection = new SQLQueries();
+				this.DBConnection.start();			
+			} 
+			catch (Exception e) 
+			{			
+				e.printStackTrace();
+				fail();
+			}	
+		}
 	}
 
 	/**
@@ -65,13 +65,47 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 		try 
 		{
 			this.DBConnection.close();
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	@Test
+	public void testGetCourseListFromDB()
+	{
+
+
+		try
+		{
+
+			ArrayList<GolfCourse> courses = DBConnection.getCourseListFromDB();
+			assertTrue(courses.size() >0 && courses.get(0).getCourseName().equalsIgnoreCase("course1"));
+			ArrayList<Hole> holes = DBConnection.getHoleListNoScore(courses.get(0));
+			assertTrue(holes.size() == 18);
+
+			for (int i=0;i<18;i++)
+			{
+				assertTrue(holes.get(i).getHoleNumber() == i+1);
+			}
+
+			GolfCourse newCourse = new GolfCourse("Course2", "West Street", "155", "26606", "555-965-5555", "www.course2.com", null,null);
+			DBConnection.sendCourseDetailsToDB(newCourse);			
+			assertNotNull(DBConnection.getCoursePrimaryKey(newCourse));
+			System.out.println(DBConnection.getCoursePrimaryKey(newCourse));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			fail();
+		}
+		finally
+		{
+				DBConnection.close();
+		}
+	}
+
 	@Test
 	public void testDBDriver()
 	{
@@ -85,43 +119,52 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 			throw new RuntimeException("Cannot find the driver in the classpath!", e);
 		}
 	}
-	
+
 	@Test
 	public void testConnectToDB()
 	{
+
+
 		try 
 		{
-			assertNotNull(this.DBConnection);
+			assertNotNull(DBConnection);
 		} 
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			fail();
 		}
+		finally
+		{
+			DBConnection.close();
+		}
+
 	}
-	
-	
+
+
+
+
 	@Test
-	public void testGetCourseListFromDB()
+	public void testAddandDeleteCourseFromDB()
 	{
+
 		try
 		{
-			ArrayList<GolfCourse> courses = this.DBConnection.getCourseListFromDB();
-			assertTrue(courses.size() >0 && courses.get(0).getCourseName().equalsIgnoreCase("course1"));
-			ArrayList<Hole> holes = this.DBConnection.getHoleListNoScore(courses.get(0));
-			assertTrue(holes.size() == 18);
-			
-			for (int i=0;i<18;i++)
-			{
-				assertTrue(holes.get(i).getHoleNumber() == i+1);
-			}
+			fail();
+
+
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			fail();
+		}
+		finally
+		{
+			//	DBConnection.close();
+
 		}
 	}
-	
-	
-	
+
+
 }

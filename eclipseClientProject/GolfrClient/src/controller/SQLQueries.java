@@ -23,7 +23,7 @@ public class SQLQueries extends Thread
 
 	public SQLQueries()
 	{
-		super();
+		super();		
 	}
 
 
@@ -47,6 +47,9 @@ public class SQLQueries extends Thread
 
 		try
 		{
+			if (connection == null || connection.isClosed())
+				this.connect();
+
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 
@@ -65,6 +68,7 @@ public class SQLQueries extends Thread
 				toReturn.add(toAdd);
 
 			}	
+			rs.close();
 		}
 		catch (SQLException e)
 		{
@@ -74,6 +78,7 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
+			
 			if (statement != null)
 			{ 
 				try {
@@ -83,6 +88,7 @@ public class SQLQueries extends Thread
 					e.printStackTrace();
 				} 
 			}
+			 
 		}
 
 		return toReturn;
@@ -105,6 +111,9 @@ public class SQLQueries extends Thread
 
 		try
 		{
+			if (connection == null || connection.isClosed())
+				this.connect();
+
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 
@@ -123,6 +132,7 @@ public class SQLQueries extends Thread
 				toReturn.add(toAdd);
 
 			}	
+			rs.close();
 		}
 		catch (SQLException e)
 		{
@@ -132,6 +142,7 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
+			
 			if (statement != null)
 			{ 
 				try {
@@ -141,6 +152,7 @@ public class SQLQueries extends Thread
 					e.printStackTrace();
 				} 
 			}
+			 
 		}
 
 		return toReturn;
@@ -170,6 +182,8 @@ public class SQLQueries extends Thread
 
 		try
 		{
+			if (connection == null || connection.isClosed())
+				this.connect();
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 			int count = 0;
@@ -184,6 +198,7 @@ public class SQLQueries extends Thread
 				toReturn.add(toAdd);
 				count++;
 			}	
+			rs.close();
 		}
 		catch (SQLException e)
 		{
@@ -193,6 +208,7 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
+			
 			if (statement != null)
 			{ 
 				try {
@@ -202,11 +218,12 @@ public class SQLQueries extends Thread
 					e.printStackTrace();
 				} 
 			}
+			 
 		}
 
 		return toReturn;
 	}
-	
+
 	/**
 	 * Returns the primary key from the t_golfcoursedetails table if the provided course parameters are an exact match.
 	 * @param course
@@ -217,14 +234,16 @@ public class SQLQueries extends Thread
 	{
 		Integer key = null;
 		Statement statement = null;
-		String query = "SELECT courseID_PK FROM t_golfcoursedetails WHERE courseName = " + course.getCourseName() + " AND " +
-		"phone = " + course.getPhoneNumber() + " AND " +
-				"webAddress = " + course.getWebaddress();
-		
-		
+		String query = "SELECT courseID_PK FROM t_golfcoursedetails WHERE courseName = '" + course.getCourseName() + "' AND " +
+				"phone = '" + course.getPhoneNumber() + "' AND " +
+				"webAddress = '" + course.getWebaddress() + "'";
+
+
 		try 
 		{
-			statement = connection.createStatement();
+			if (connection == null || connection.isClosed())
+				this.connect();
+			statement = connection.createStatement();			
 			ResultSet rs = statement.executeQuery(query);
 
 			while (rs.next()) 
@@ -232,6 +251,7 @@ public class SQLQueries extends Thread
 				Integer ID = rs.getInt("courseID_PK");							
 				key = ID;
 			}
+			rs.close();
 		} 
 		catch (SQLException e ) 
 		{
@@ -240,10 +260,12 @@ public class SQLQueries extends Thread
 		}
 		finally
 		{
+		
 			if (statement != null)
 			{ 
 				statement.close(); 
 			}
+			 
 		}
 		return key;
 	}
@@ -255,7 +277,7 @@ public class SQLQueries extends Thread
 	 */
 	public void deleteCourseFromDB(Integer primaryKey) throws SQLException
 	{
-				
+
 		Statement statement1 = null;
 		Statement statement2 = null;
 		Statement statement3 = null;
@@ -268,6 +290,8 @@ public class SQLQueries extends Thread
 
 		try
 		{
+			if (connection == null || connection.isClosed())
+				this.connect();
 			//first, find all the holes for the course, and delete them one by one
 			statement1 = connection.createStatement();
 			ResultSet rs = statement1.executeQuery(selectHolesQuery);
@@ -276,14 +300,8 @@ public class SQLQueries extends Thread
 			{
 
 				Integer holeID = rs.getInt("holeID");
-				Integer courseID = rs.getInt("golfCourseID");
-				Integer whiteTee = rs.getInt("whiteTee");
-				Integer redTee = rs.getInt("redTee");
-				Integer blueTee = rs.getInt("blueTee");
-				Integer handicap = rs.getInt("handicap");
-				Integer par = rs.getInt("par");
-				Integer holeNumber = rs.getInt("holeNumber");							
-				
+							
+
 				//delete the holes
 				deleteHoleQuery = "DELETE FROM t_holes WHERE holeID = " + holeID.toString();
 				statement3 = connection.createStatement();
@@ -292,10 +310,14 @@ public class SQLQueries extends Thread
 					statement3.close();
 
 			}	
-			
+
 			//then delete the coursedetails
 			statement2 = connection.createStatement();
-			statement2.executeUpdate(deleteCourseQuery);
+			Integer success = statement2.executeUpdate(deleteCourseQuery);
+			System.out.println(deleteCourseQuery);
+			if (success != 1)
+				throw new IllegalStateException("Failed to delete the course to be deleted!");
+			rs.close();
 		}
 		catch (SQLException e)
 		{
@@ -305,6 +327,7 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
+			
 			if (statement1 != null || statement2 != null)
 			{ 
 				try {
@@ -315,6 +338,7 @@ public class SQLQueries extends Thread
 					e.printStackTrace();
 				} 
 			}
+			 
 		}
 	}
 
@@ -325,20 +349,24 @@ public class SQLQueries extends Thread
 	 */
 	public void sendCourseDetailsToDB(GolfCourse newCourse) throws SQLException
 	{
-		String query = "INSERT INTO t_golfcoursedetails (courseName, streeName, streetNumber, postalCode, phone, webAddress) VALUES (" + 
-				newCourse.getCourseName() + ", " +
-				newCourse.getStreetName() + ", " +
-				newCourse.getStreetNumber() + ", " +
-				newCourse.getPostalCode() + ", " +
-				newCourse.getPhoneNumber() + ", " +
-				newCourse.getWebaddress() + ");";
-		
+		String query = "INSERT INTO t_golfcoursedetails (courseName, streetName, streetNumber, postalCode, phone, webAddress) VALUES ('" + 
+				newCourse.getCourseName() + "', '" +
+				newCourse.getStreetName() + "', '" +
+				newCourse.getStreetNumber() + "', '" +
+				newCourse.getPostalCode() + "', '" +
+				newCourse.getPhoneNumber() + "', '" +
+				newCourse.getWebaddress() + "');";
+
 		Statement statement = null;
-		
+
 		try
-		{
+		{			
+			if (connection == null || connection.isClosed())
+				this.connect();
 			statement = this.connection.createStatement();
-			statement.executeUpdate(query);
+			int success = statement.executeUpdate(query);
+			if (success != 1)
+				throw new IllegalStateException();
 		}
 		catch (SQLException e)
 		{
@@ -346,10 +374,12 @@ public class SQLQueries extends Thread
 		}
 		finally
 		{
+			
 			if (statement != null)
 				statement.close();
+			 
 		}
-		
+
 	}
 
 	/**
@@ -366,6 +396,8 @@ public class SQLQueries extends Thread
 
 		try 
 		{
+			if (connection == null || connection.isClosed())
+				this.connect();
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
 
@@ -381,6 +413,7 @@ public class SQLQueries extends Thread
 				GolfCourse toAdd = new GolfCourse(name,streetName,streetNumber,postalCode,phone,webaddress,null,ID);
 				toReturn.add(toAdd);
 			}
+			rs.close();
 		} 
 		catch (SQLException e ) 
 		{
@@ -389,10 +422,12 @@ public class SQLQueries extends Thread
 		}
 		finally
 		{
+			
 			if (statement != null)
 			{ 
 				statement.close(); 
 			}
+			 
 		}
 
 		return toReturn;
@@ -414,33 +449,48 @@ public class SQLQueries extends Thread
 		this.connection = connection;
 	}
 
+	
+	/**
+	 * Runs the SQLQueries.Thread.  Establishes a connection to the Golfr DB and waits
+	 */
 	@Override
-	public void run()
+	public synchronized void run()
 	{
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String url = "jdbc:mysql://127.0.0.1:3306/golfr";
-		String userName = "client";
-		String password = "12345";
+
 		try 
 		{
-			this.connection = DriverManager.getConnection(url,userName,password);			
+			this.connect();
+			this.wait();
 		} 
-		catch (SQLException e) 
+		catch (InterruptedException e) 
+		{		
+			if (this.connection != null)
+			{
+				try
+				{
+					this.connection.close();
+				} 
+				catch (SQLException e1) 
+				{				
+					e1.printStackTrace();
+				}
+
+			}
+
+			this.interrupt();
+		} 
+
+		//if This.notify() is called
+		if (this.connection != null)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}	
+			
+		}
 	}
 
 	/**
@@ -448,10 +498,13 @@ public class SQLQueries extends Thread
 	 */
 	public void close() 
 	{
-		try {
-			this.connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		try 
+		{
+			if (this.connection != null)
+				this.connection.close();
+		} 
+		catch (SQLException e) 
+		{		
 			e.printStackTrace();
 		} 
 		finally
@@ -462,6 +515,48 @@ public class SQLQueries extends Thread
 	}
 
 
+	/**
+	 * Private helper method to establish or re-establish a connection to the DB.
+	 */
+	private void connect()
+	{
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} 
+		catch (InstantiationException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (IllegalAccessException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (ClassNotFoundException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String url = "jdbc:mysql://127.0.0.1:3306/golfr";
+		String userName = "client";
+		String password = "12345";
+
+		try 
+		{
+			//if the connection is closed try to open it
+			if (this.connection == null || this.connection.isClosed())
+				this.connection = DriverManager.getConnection(url,userName,password);
+			//if the connection is still closed, throw an exception
+			if (this.connection == null || this.connection.isClosed())
+				throw new IllegalStateException("DB Connection failure!");
+		} 
+		catch (SQLException e) 
+		{			 
+			e.printStackTrace();
+		} 		
+	}
 
 
 }
