@@ -1,5 +1,7 @@
 package com.golfrclient;
 
+import golfCourseObjects.GolfCourse;
+
 import java.util.ArrayList;
 
 import controller.SelectACourse;
@@ -17,6 +19,7 @@ public class CourseListScreen extends Activity {
 	private SelectACourse controller;
 	private ListView courseListView;
 	private Button addCourseButton;
+	private ArrayList<GolfCourse> golfCourseList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class CourseListScreen extends Activity {
 		courseNameList.add("Oakmont");
 		courseNameList.add("Nevilewood");
 		ArrayAdapter<String> courseNamesArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, courseNameList);
+		//golfCourseList = controller.getCourseList(); <-- THROWS ERRORS!!
+		//ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(this,android.R.layout.simple_list_item_1, golfCourseList);
 		courseListView.setAdapter(courseNamesArrayAdapter);
 		
 		/*

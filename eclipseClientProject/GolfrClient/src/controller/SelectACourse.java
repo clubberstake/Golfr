@@ -16,6 +16,8 @@ public class SelectACourse
 {
 	private ArrayList<GolfCourse> courseList;
 	private User user;
+	private SQLQueries query;
+	
 
 	/**
 	 * Default constructor.  Instantiates and empty course list
@@ -24,7 +26,7 @@ public class SelectACourse
 	{
 		this.courseList = new ArrayList<GolfCourse>();
 		this.user = null;
-	
+		query = new SQLQueries();
 	}
 
 	/**
@@ -42,17 +44,18 @@ public class SelectACourse
 	 * Populates the course list based on the corresponding table in the DB
 	 * 
 	 */
-	public void populateCourseListFromDB(Connection connection, String DB_Name)
+	public void populateCourseListFromDB() // removed these args: Connection connection, String DB_Name
 	{
-		/*try 
+		try 
 		{
-			this.courseList = SQLQueries.getCourseListFromDB(connection, DB_Name);
+			query.start();
+			this.courseList = query.getCourseListFromDB();
 		}
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 			throw new IllegalStateException("Unable to populate course list from DB");
-		}*/
+		}
 	}
 
 	
@@ -61,7 +64,8 @@ public class SelectACourse
 	 * @param selected - the course desired by the player
 	 * @return - a new PlayGame which the user will play
 	 */
-/*	public PlayGame selectCourse(GolfCourse selected)
+	/*
+	public PlayGame selectCourse(GolfCourse selected)
 	{
 		if (selected != null && selected.validityCheck())
 			return new PlayGame(user,selected);
@@ -73,6 +77,7 @@ public class SelectACourse
 	 * @return the courseList
 	 */
 	public ArrayList<GolfCourse> getCourseList() {
+		populateCourseListFromDB();
 		return courseList;
 	}
 
