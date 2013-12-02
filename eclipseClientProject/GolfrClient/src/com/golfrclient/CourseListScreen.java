@@ -39,7 +39,7 @@ public class CourseListScreen extends Activity {
 		courseNameList.add("Oakmont");
 		courseNameList.add("Nevilewood");
 		ArrayAdapter<String> courseNamesArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, courseNameList);
-		//golfCourseList = controller.getCourseList(); <-- THROWS ERRORS!!
+		golfCourseList = controller.getCourseList();
 		//ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(this,android.R.layout.simple_list_item_1, golfCourseList);
 		courseListView.setAdapter(courseNamesArrayAdapter);
 		
