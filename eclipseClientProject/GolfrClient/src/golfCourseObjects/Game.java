@@ -6,6 +6,7 @@ public class Game
 	private GolfCourse course;
 	private Integer totalScore;
 	private Integer currentOverUnder;
+	private Integer scoreHistoryPK;
 
 	/**
 	 *Default constructor. 
@@ -89,6 +90,20 @@ public class Game
 	 */
 	public void setCurrentOverUnder(Integer currentOverUnder) {
 		this.currentOverUnder = currentOverUnder;
+	}
+
+	/**
+	 * @return the scoreHistoryPK
+	 */
+	public Integer getScoreHistoryPK() {
+		return scoreHistoryPK;
+	}
+
+	/**
+	 * @param scoreHistoryPK the scoreHistoryPK to set
+	 */
+	public void setScoreHistoryPK(Integer scoreHistoryPK) {
+		this.scoreHistoryPK = scoreHistoryPK;
 	}
 
 

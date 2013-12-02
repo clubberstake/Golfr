@@ -82,7 +82,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 
 			ArrayList<GolfCourse> courses = DBConnection.getCourseListFromDB();
 			assertTrue(courses.size() >0 && courses.get(0).getCourseName().equalsIgnoreCase("course1"));
-			ArrayList<Hole> holes = DBConnection.getHoleListNoScore(courses.get(0));
+			ArrayList<Hole> holes = DBConnection.getHoleMetadata(courses.get(0));
 			assertTrue(holes.size() == 18);
 
 			for (int i=0;i<18;i++)

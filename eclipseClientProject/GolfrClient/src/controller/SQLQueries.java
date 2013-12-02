@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import android.os.AsyncTask;
 
+import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;
 import golfCourseObjects.Hole;
 import golfCourseObjects.Score;
@@ -28,23 +29,324 @@ public class SQLQueries extends Thread
 
 
 	/**
-	 * Sends a new golf course to the MySQL DB via JDBC UPDATE query	
-	 * @param toAdd - the course to be added
+	 * Creates the records required for a new game in the database.
+	 * @param user - the user who is playing the game
+	 * @param course - the course to be played--must have a valid course.getGolfCourseID()
+	 * @param game - the game being played
+	 * @return Game object representing the new game
+	 * @throws SQLException 
 	 */
-	public void sendCourseToDB(GolfCourse toAdd)
+	public Game newGame(User user, GolfCourse course) throws SQLException
 	{
-		//TODO: implement this method
+		Integer scoreHistoryPK = null;
+		Statement statement = null;
+
+		//determine if the user exists in t_user table
+		String query = "SELECT * " +
+				"FROM t_user " +
+				"WHERE faceBookID = '" + user.getUsername()+ "'";
+
+		try
+		{
+			if (connection == null || connection.isClosed())
+				this.connect();
+
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(query);
+
+			Integer userID_pk = null;
+			while (rs.next()) 
+			{
+				userID_pk = rs.getInt("userID_pk");
+			}
+			rs.close();
+
+			//determine if the user exists in t_user table
+			if (userID_pk == null)
+			{
+				//close 1st statement and connection
+				statement.close();
+				connection.close();
+				//reconnect
+				this.connect();
+
+				//Insert the new user into t_user
+				query = "INSERT INTO t_user (faceBookID) VALUES ('" + user.getUsername() + "');";
+				Statement statement2 = connection.createStatement();				
+				if (statement2.executeUpdate(query) != 1)
+					throw new IllegalStateException("Tried to create a new user in the DB, but failed!");
+				//close 2nd statement and connection
+				statement2.close();
+				connection.close();
+
+				//get new user's primary key
+				query = "SELECT * " +
+						"FROM t_user " +
+						"WHERE faceBookID = '" + user.getUsername()+ "'";
+
+				this.connect();
+				Statement statement2point5 = connection.createStatement();
+				ResultSet rs2point5 = statement2point5.executeQuery(query);
+				while (rs2point5.next()) 
+				{
+					userID_pk = rs.getInt("userID_pk");
+				}
+				rs2point5.close();
+				statement2point5.close();
+				connection.close();
+			}
+			else
+			{
+				//close 1st statement and connection
+				statement.close();
+				connection.close();
+			}
+
+			/*create t_scorehistory record to represent a new game*/
+
+			//reconnect
+			this.connect();
+			query = "INSERT INTO t_scorehistory (userID, totalScore, courseID) VALUES ('" + userID_pk + "','0', '" + course.getGolfCourseID() + "');";
+			Statement statement3 = connection.createStatement();
+
+			if (statement3.executeUpdate(query) != 1)
+				throw new IllegalStateException("Tried to create a new user in the DB, but failed!");
+			//close 3rd statement and connection
+			statement3.close();
+			connection.close();
+
+			/*create t_golfcoursehistory record to represent a new game*/
+
+			//first, get the primaryKey of the t_scorehistory record
+			//reconnect
+			this.connect();
+			query = "SELECT scoreHistory_pk FROM t_scorehistory WHERE userID = '" + userID_pk + "' AND totalScore = '0' AND courseID = '" + course.getGolfCourseID() + "' ORDER BY `timestamp`;";
+			System.out.println(query);
+			Statement statement4 = connection.createStatement();
+			ResultSet rs4 = statement4.executeQuery(query);
+
+			while (rs4.next())
+			{
+				scoreHistoryPK = rs4.getInt("scoreHistory_pk");
+			}
+			if (scoreHistoryPK == null)
+				throw new IllegalStateException("Could not get t_scorehistory.scoreHistory_pk for new game!");
+
+			//close 4th statement and connection
+			rs4.close();
+			statement4.close();
+			connection.close();
+
+			//second, INSERT new t_golfcoursehistory record
+			//reconnect
+			this.connect();
+			query = "INSERT INTO t_golfcoursehistory (courseID, scoreHistory) VALUES ('" + course.getGolfCourseID() + "', '" + scoreHistoryPK +"');";
+			Statement statement5 = connection.createStatement();
+			if (statement5.executeUpdate(query) != 1)
+				throw new IllegalStateException("Could not create a new t_golfcoursehistory record for a new game!");
+			//close 5th statement and connection
+			statement5.close();
+			connection.close();
+
+			/*create 18 new t_scorecard records to store the game's scorecard*/
+
+			//first get the 18 holes of the course to duplicate
+			ArrayList<Hole> holeList = this.getHoleMetadata(course);
+			if (holeList == null)
+				throw new IllegalStateException("Could not get the course's hole list, and therefore could not create scorecard for the new game!");
+
+			//create 18 new scorecard records
+			for (Hole h : holeList)
+			{
+				query = "INSERT INTO t_scorecard (holeID, scoreHistory_fk) VALUES ('" + h.getHoleID() + "', '" + scoreHistoryPK +"');";
+				//reconnect
+				this.connect();
+				Statement statement6 = connection.createStatement();
+				if (statement6.executeUpdate(query) != 1)
+					throw new IllegalStateException("Could not create new t_scorecard records for the new game!");
+				//close 6th statement and connection
+				statement6.close();
+				connection.close();
+			}
+
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new IllegalStateException("Could not create records needed for the new game!");
+
+		}	
+		finally
+		{
+			if (connection != null)
+				connection.close();
+		}
+		Game toReturn = new Game(user,course,0,0);
+		toReturn.setScoreHistoryPK(scoreHistoryPK);
+		return toReturn;
+
 	}
 
-	public ArrayList<Hole> getHoleListWithScore(User user, GolfCourse course)
+
+	/**
+	 * Deletes all of the records in the DB created by the newGame() method.  Meant for testing purposes.
+	 * @param scorecardID - the t_scorecard.scorecardID primary key of the game to be deleted
+	 */
+	/*public void deleteGameFromDB(Integer scorecardID)
+	{
+		Statement statement1 = null;
+		Statement statement2 = null;
+		Statement statement3 = null;
+		String deleteScorecardQuery = "DELETE FROM t_scorecard WHERE scorecardID = " + scorecardID;		
+		String selectHolesQuery = "SELECT * " +
+				"FROM t_holes " +
+				"WHERE golfCourseID = " + primaryKey +
+				" AND holeNumber IS NOT NULL";		
+		String deleteHoleQuery;
+
+		try
+		{
+			if (connection == null || connection.isClosed())
+				this.connect();
+			//first, find all the holes for the course, and delete them one by one
+			statement1 = connection.createStatement();
+			ResultSet rs = statement1.executeQuery(selectHolesQuery);
+
+			while (rs.next()) 
+			{
+
+				Integer holeID = rs.getInt("holeID");
+
+
+				//delete the holes
+				deleteHoleQuery = "DELETE FROM t_holes WHERE holeID = " + holeID.toString();
+				statement3 = connection.createStatement();
+				statement3.executeUpdate(deleteHoleQuery);
+				if (statement3 != null)
+					statement3.close();
+
+			}	
+
+			//then delete the coursedetails
+			statement2 = connection.createStatement();
+			Integer success = statement2.executeUpdate(deleteCourseQuery);
+			System.out.println(deleteCourseQuery);
+			if (success != 1)
+				throw new IllegalStateException("Failed to delete the course to be deleted!");
+			rs.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new IllegalStateException("Could not get holes for the provided course.");
+
+		}		
+		finally
+		{
+
+			if (statement1 != null || statement2 != null)
+			{ 
+				try {
+					statement1.close();
+					statement2.close();					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}
+
+		}
+	}*/
+
+	/*
+	
+	addTotalScore(user, GolfCourse, Game) 
+	getUserHistory(user)
+	 */
+
+	/**
+	 * Scores a hole for the given game.  Note that the game and hole paramaters must be correctly configured for their corresponding primary keys in the DB.
+	 * @param game
+	 * @param hole
+	 * @param score
+	 * @throws SQLException
+	 */
+	public void addScoreForHole(Game game, Hole hole, Integer score) throws SQLException
+	{
+		Statement statement1 = null;
+		Statement statement2 = null;
+		String query = "SELECT DISTINCT t_scorecard.scorecardID FROM t_holes, t_scorecard, t_scorehistory " +
+				"WHERE t_scorehistory.scoreHistory_pk = '" + game.getScoreHistoryPK() + "' AND " +
+				"t_scorecard.scoreHistory_fk = '" + game.getScoreHistoryPK() + "' AND " +
+				"t_holes.golfCourseID = '" + game.getCourse().getGolfCourseID() + "' AND " +
+				"t_holes.holeNumber = '" + hole.getHoleNumber() + "' AND " +
+				"t_scorecard.holeID = '" + hole.getHoleID()	+ "';";
+		Integer scorecardID = null;
+
+		try
+		{
+
+			/*first, get scorecardID of the record to update*/
+			if (connection == null || connection.isClosed())
+				this.connect();
+
+			statement1 = connection.createStatement();
+			ResultSet rs = statement1.executeQuery(query);
+
+			while (rs.next()) 
+			{
+				scorecardID = rs.getInt("strokes");				
+			}	
+
+			if (scorecardID == null)
+				throw new IllegalStateException("Could not get scorecardID which is needed to update the score for a hole!");
+			rs.close();
+			statement1.close();
+			connection.close();
+
+			/*second, update the appropriate scorecard record*/
+			this.connect();
+
+			query = "UPDATE t_scorecard SET strokes = '" + score + "' WHERE scorecardID = '" + scorecardID + "';";
+			statement2 = connection.createStatement();
+			if (statement2.executeUpdate(query) != 1)
+				throw new IllegalStateException("Could not update score for the hole!");
+			statement2.close();
+			connection.close();
+
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new IllegalStateException("Could not get holes for the provided course.");
+
+		}		
+		finally
+		{
+
+			if (connection != null)			
+				connection.close();
+
+		}
+
+	}
+
+
+	/**
+	 * Returns an ArrayList<Hole> which represents the scorecard for a game.  The scores are included in the Hole objects.
+	 * 
+	 * @param game - the game to retrieve the scorecard for.  Game.user and Game.course must be valid and complete (i.e. their key/ID fields must not be null)
+	 * @return
+	 */	
+	public ArrayList<Hole> getScorecard(Game game)  throws SQLException
 	{
 		ArrayList<Hole> toReturn = new ArrayList<Hole>(18);
 		Statement statement = null;
-		String query = "SELECT * " +
-				"FROM t_holes " +
-				"WHERE golfCourseID = " + course.getGolfCourseID() +
-				" AND holeNumber IS NOT NULL";
-
+		String query = "SELECT DISTINCT t_holes.holeID, t_holes.golfCourseID, t_holes.holeNumber, t_holes.whiteTee, t_holes.redTee, t_holes.blueTee, t_holes.handicap," +
+				"t_holes.par, t_scoreHistory.scoreHistory_pk, t_scorecard.strokes FROM t_holes, t_scorecard, t_scorehistory " +
+				"WHERE t_scorehistory.scoreHistory_pk = '" + game.getScoreHistoryPK() + "' AND " +
+				"t_scorecard.scoreHistory_fk = '" + game.getScoreHistoryPK() + "' AND " +
+				"t_holes.golfCourseID = '" + game.getCourse().getGolfCourseID() + "';";
 		try
 		{
 			if (connection == null || connection.isClosed())
@@ -63,8 +365,9 @@ public class SQLQueries extends Thread
 				Integer blueTee = rs.getInt("blueTee");
 				Integer handicap = rs.getInt("handicap");
 				Integer par = rs.getInt("par");
-				Integer holeNumber = rs.getInt("holeNumber");							
-				Hole toAdd = new Hole(holeID, courseID,holeNumber,whiteTee,redTee,blueTee,handicap,par,0);				
+				Integer holeNumber = rs.getInt("holeNumber");
+				Integer strokes = rs.getInt("strokes");
+				Hole toAdd = new Hole(holeID, courseID,holeNumber,whiteTee,redTee,blueTee,handicap,par,strokes);				
 				toReturn.add(toAdd);
 
 			}	
@@ -78,17 +381,10 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
-			
-			if (statement != null)
-			{ 
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-			}
-			 
+
+			if (connection != null)			
+				connection.close();
+
 		}
 
 		return toReturn;
@@ -96,11 +392,11 @@ public class SQLQueries extends Thread
 	}
 
 	/**
-	 * Returns an ArrayList of Holes which contains the 18 holes of the provided GolfCourse
+	 * Returns an ArrayList of Holes which contains the 18 holes of the provided GolfCourse.  This list contains the "metadata" for each hole (number, par, yardage, etc.).
 	 * @param course
-	 * @return
+	 * @return - array list of Holes for the provided course
 	 */
-	public ArrayList<Hole> getHoleListNoScore(GolfCourse course)
+	public ArrayList<Hole> getHoleMetadata(GolfCourse course)  throws SQLException
 	{
 		ArrayList<Hole> toReturn = new ArrayList<Hole>(18);
 		Statement statement = null;
@@ -142,24 +438,16 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
-			
-			if (statement != null)
-			{ 
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-			}
-			 
+
+			if (connection != null)			
+				connection.close();
 		}
 
 		return toReturn;
 
 	}
 
-	public ArrayList<Score> getTenMostRecentScores(GolfCourse course)
+	public ArrayList<Score> getTenMostRecentScores(GolfCourse course)  throws SQLException
 	{
 		ArrayList<Score> toReturn = new ArrayList<Score>(10);
 
@@ -208,17 +496,10 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
-			
-			if (statement != null)
-			{ 
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-			}
-			 
+
+			if (connection != null)			
+				connection.close();
+
 		}
 
 		return toReturn;
@@ -260,12 +541,12 @@ public class SQLQueries extends Thread
 		}
 		finally
 		{
-		
-			if (statement != null)
+
+			if (connection != null)
 			{ 
-				statement.close(); 
+				connection.close(); 
 			}
-			 
+
 		}
 		return key;
 	}
@@ -300,7 +581,7 @@ public class SQLQueries extends Thread
 			{
 
 				Integer holeID = rs.getInt("holeID");
-							
+
 
 				//delete the holes
 				deleteHoleQuery = "DELETE FROM t_holes WHERE holeID = " + holeID.toString();
@@ -327,18 +608,16 @@ public class SQLQueries extends Thread
 		}		
 		finally
 		{
-			
-			if (statement1 != null || statement2 != null)
+
+			if (statement1 != null || statement2 != null || connection != null)
 			{ 
-				try {
-					statement1.close();
-					statement2.close();					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+
+				statement1.close();
+				statement2.close();
+				connection.close();
+
 			}
-			 
+
 		}
 	}
 
@@ -374,14 +653,16 @@ public class SQLQueries extends Thread
 		}
 		finally
 		{
-			
+
 			if (statement != null)
 				statement.close();
-			 
+			if (connection != null)
+				connection.close();
+
 		}
 
 	}
-	
+
 	/**
 	 * Adds a Hole object to the associated course in the DB.
 	 * @param courseKey - the primary key of the course which is to have a hole added to it.  Use SQLQueries.getCoursePrimaryKey() to get the correct key if not known.
@@ -415,12 +696,16 @@ public class SQLQueries extends Thread
 		}
 		finally
 		{
-			
+
 			if (statement != null)
 				statement.close();
-			 
+			if (connection != null)
+				connection.close();
+
 		}
 	}
+
+
 
 	/**
 	 * Gets the list of courses from the MySQL DB via JDBC SELECT query
@@ -462,12 +747,12 @@ public class SQLQueries extends Thread
 		}
 		finally
 		{
-			
+
 			if (statement != null)
-			{ 
 				statement.close(); 
-			}
-			 
+			if (connection != null)
+				connection.close();
+
 		}
 
 		return toReturn;
@@ -489,7 +774,7 @@ public class SQLQueries extends Thread
 		this.connection = connection;
 	}
 
-	
+
 	/**
 	 * Runs the SQLQueries.Thread.  Establishes a connection to the Golfr DB and waits
 	 */
@@ -526,10 +811,10 @@ public class SQLQueries extends Thread
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				
+
 				e.printStackTrace();
 			}	
-			
+
 		}
 	}
 
