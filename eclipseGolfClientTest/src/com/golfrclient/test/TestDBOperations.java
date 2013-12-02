@@ -90,10 +90,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 				assertTrue(holes.get(i).getHoleNumber() == i+1);
 			}
 
-			GolfCourse newCourse = new GolfCourse("Course2", "West Street", "155", "26606", "555-965-5555", "www.course2.com", null,null);
-			DBConnection.sendCourseDetailsToDB(newCourse);			
-			assertNotNull(DBConnection.getCoursePrimaryKey(newCourse));
-			System.out.println(DBConnection.getCoursePrimaryKey(newCourse));
+		
 		}
 		catch (Exception e)
 		{
@@ -150,8 +147,12 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 
 		try
 		{
-			fail();
-
+			GolfCourse newCourse = new GolfCourse("Course2", "West Street", "155", "26606", "555-965-5555", "www.course2.com", null,null);
+			DBConnection.sendCourseDetailsToDB(newCourse);			
+			Integer primaryKey = DBConnection.getCoursePrimaryKey(newCourse);
+			assertNotNull(primaryKey);
+			DBConnection.deleteCourseFromDB(primaryKey);
+			
 
 		}
 		catch (Exception e)
