@@ -381,6 +381,46 @@ public class SQLQueries extends Thread
 		}
 
 	}
+	
+	/**
+	 * Adds a Hole object to the associated course in the DB.
+	 * @param courseKey - the primary key of the course which is to have a hole added to it.  Use SQLQueries.getCoursePrimaryKey() to get the correct key if not known.
+	 * @param toAdd - the hole to add to the DB
+	 */
+	public void addHoleToCourseInDB(Integer courseKey, Hole toAdd) throws SQLException
+	{
+		String query = "INSERT INTO t_holes (golfCourseID, holeNumber, whiteTee, redTee, blueTee, handicap, par) VALUES ('" + 
+				courseKey + "', '" +
+				toAdd.getHoleNumber() + "', '" +
+				toAdd.getWhiteTeeYargage() + "', '" +
+				toAdd.getRedTeeYardage() + "', '" +
+				toAdd.getBlueTeeYardage() + "', '" +
+				toAdd.getHandicap() + "', '" +
+				toAdd.getPar() + "');";
+
+		Statement statement = null;
+
+		try
+		{			
+			if (connection == null || connection.isClosed())
+				this.connect();
+			statement = this.connection.createStatement();
+			int success = statement.executeUpdate(query);
+			if (success != 1)
+				throw new IllegalStateException();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			
+			if (statement != null)
+				statement.close();
+			 
+		}
+	}
 
 	/**
 	 * Gets the list of courses from the MySQL DB via JDBC SELECT query

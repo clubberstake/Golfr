@@ -199,5 +199,14 @@ public class Hole
 		else
 			return false;
 	}
+	
+	/**
+	 * Override of Object.toString() to provided formatted string representation of a Hole.
+	 */
+	@Override
+	public String toString()
+	{
+		return ("Hole "+ this.holeNumber + ", Par " + this.par + ", White Tee " + this.whiteTeeYargage + " yds.");
+	}
 
 }
