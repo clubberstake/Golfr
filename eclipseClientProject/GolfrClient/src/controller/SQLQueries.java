@@ -32,7 +32,6 @@ public class SQLQueries extends Thread
 	 * Creates the records required for a new game in the database.
 	 * @param user - the user who is playing the game
 	 * @param course - the course to be played--must have a valid course.getGolfCourseID()
-	 * @param game - the game being played
 	 * @return Game object representing the new game
 	 * @throws SQLException 
 	 */
@@ -61,7 +60,7 @@ public class SQLQueries extends Thread
 			}
 			rs.close();
 
-			//determine if the user exists in t_user table
+			//if user does not exist in t_user table, add him to the table and get the user's primary key
 			if (userID_pk == null)
 			{
 				//close 1st statement and connection
@@ -97,7 +96,7 @@ public class SQLQueries extends Thread
 			}
 			else
 			{
-				//close 1st statement and connection
+				//close 1st statement and connection, if the user was already in t_user table
 				statement.close();
 				connection.close();
 			}
