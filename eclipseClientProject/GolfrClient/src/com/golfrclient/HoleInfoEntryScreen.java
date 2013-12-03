@@ -25,6 +25,27 @@ public class HoleInfoEntryScreen extends Activity {
 		parEntry = (EditText) findViewById(R.id.HoleInfoScreen_ParEntry);
 		nextButton = (Button) findViewById(R.id.HoleInfoScreen_NextButton);
 
+		/*
+		 * MAG: once you get all of the paramaters from the user, you need to run the following code to add the hole to the DB
+		 * 
+		 * 
+		 Hole toAdd = new Hole(paramaters from the user);
+		 AddHoleToCourse holeAdder = new AddHoleToCourse(coursePrimaryKeyThatYouSavedInTheCourseInfoEntryScreen, toAdd);
+		 Thread t = new Thread(holeAdder);
+		t.start();
+				
+		synchronized(t)
+		{
+			
+			try {
+				t.wait(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		 */
+		
 	}
 
 	@Override

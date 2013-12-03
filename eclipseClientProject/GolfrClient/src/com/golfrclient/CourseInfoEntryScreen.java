@@ -3,6 +3,7 @@ package com.golfrclient;
 import java.util.ArrayList;
 
 import controller.AddCourse;
+import controller.CourseList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -75,6 +76,57 @@ public class CourseInfoEntryScreen extends Activity {
 		 * FININISH THIS IMPLEMENTATION
 		 */
 		
+		/*
+		 * MAG: once the data has been put in by the user, you need to do the following:
+		 * 
+		 * 
+		 * First add the course details to t_coursedetails with the following code:
+		 * 
+		GolfCourse toAdd = new GolfCourse(fill in the paramaters, put in null for the ArrayList<Holes>)
+		SendCourseDetailsToDB toSend= new SendCourseDetailsToDB(toAdd);
+		Thread t = new Thread(toSend);
+		t.start();
+				
+		synchronized(t)
+		{
+			
+			try {
+				t.wait(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		*
+		*now you need to get the primary key of the course you just added.  Use the following code:
+		*
+		
+		GetCoursePrimaryKey courseKeyGetter = new GetCoursePrimaryKey(toAdd);
+		Thread t2 = new Thread(courseKeyGetter);
+		t2.start();
+				
+		synchronized(t2)
+		{
+			
+			try {
+				t2.wait(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//the courseKeyGetter object should now have the key in it
+		Integer courseKey = courseKeyGetter.getCourseKey();
+		
+		
+		*
+		*You now need to save the courseKey somewhere (see the previous line of code), because it is needed for each hole that you create in the following screens.
+		*
+		 
+		 */
 		
 		
 	}

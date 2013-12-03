@@ -38,7 +38,7 @@ public class CourseListScreen extends Activity {
 		{
 			
 			try {
-				t.wait(1000);
+				t.wait(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -47,10 +47,7 @@ public class CourseListScreen extends Activity {
 		courseListView = (ListView) findViewById(R.id.CourseListScreen_CourseList);
 		addCourseButton = (Button) findViewById(R.id.CourseListScreen_AddCourseButton);
 
-		/*
-		 * Populate the list of courses
-		 *  <<< THIS JUST USES DUMMY INFO RIGHT NOW, WIRE UP TO CONTROLLER >>>
-		 */
+		
 		ArrayList<String> courseNameList = new ArrayList<String>();
 
 		if (courseList.getCourseList() == null)
