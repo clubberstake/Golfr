@@ -31,7 +31,7 @@ public class HoleFetcher  extends SQLQueries{
 		}
 	}
 	
-	public ArrayList getHoleList() throws SQLException
+	public ArrayList<Hole> getHoleList() throws SQLException
 	{
 		getCourseListFromDB();
 		return holeList;
