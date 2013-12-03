@@ -16,7 +16,7 @@ public class SelectACourse
 {
 	private ArrayList<GolfCourse> courseList;
 	private User user;
-	private SQLQueries query;
+	private CourseList query;
 	
 
 	/**
@@ -26,7 +26,7 @@ public class SelectACourse
 	{
 		this.courseList = new ArrayList<GolfCourse>();
 		this.user = null;
-		query = new SQLQueries();
+		query = new CourseList();
 	}
 
 	/**
@@ -48,10 +48,12 @@ public class SelectACourse
 	{
 		try 
 		{
-			query.start();
-			this.courseList = query.getCourseListFromDB();
+			
+			Thread t = new Thread(query);
+			t.start();
+			this.courseList = query.getCourseList();
 		}
-		catch (SQLException e) 
+		catch (Exception e) 
 		{
 			e.printStackTrace();
 			throw new IllegalStateException("Unable to populate course list from DB");

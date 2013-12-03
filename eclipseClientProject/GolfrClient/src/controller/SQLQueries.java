@@ -17,7 +17,7 @@ import golfCourseObjects.Hole;
 import golfCourseObjects.Score;
 import golfCourseObjects.User;
 
-public class SQLQueries extends Thread
+public abstract class SQLQueries 
 {
 
 	private Connection connection;
@@ -773,10 +773,10 @@ public class SQLQueries extends Thread
 		this.connection = connection;
 	}
 
-
+/*
 	/**
 	 * Runs the SQLQueries.Thread.  Establishes a connection to the Golfr DB and waits
-	 */
+	 *
 	@Override
 	public synchronized void run()
 	{
@@ -816,7 +816,7 @@ public class SQLQueries extends Thread
 
 		}
 	}
-
+*/
 	/**
 	 * Closes the DB connection and the this.Thread
 	 */
@@ -831,10 +831,7 @@ public class SQLQueries extends Thread
 		{		
 			e.printStackTrace();
 		} 
-		finally
-		{
-			this.interrupt();
-		}
+	
 
 	}
 
@@ -842,7 +839,7 @@ public class SQLQueries extends Thread
 	/**
 	 * Private helper method to establish or re-establish a connection to the DB.
 	 */
-	private void connect()
+	protected void connect()
 	{
 		try 
 		{
@@ -863,7 +860,7 @@ public class SQLQueries extends Thread
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://127.0.0.1:3306/golfr";
+		String url = "jdbc:mysql://192.168.1.12:3306/golfr";
 		String userName = "client";
 		String password = "12345";
 
