@@ -737,7 +737,8 @@ public abstract class SQLQueries
 				GolfCourse toAdd = new GolfCourse(name,streetName,streetNumber,postalCode,phone,webaddress,null,ID);
 				toReturn.add(toAdd);
 			}
-			rs.close();
+			if (rs != null)
+				rs.close();
 		} 
 		catch (SQLException e ) 
 		{

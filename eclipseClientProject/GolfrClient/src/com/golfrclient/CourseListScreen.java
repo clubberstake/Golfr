@@ -36,8 +36,13 @@ public class CourseListScreen extends Activity {
 		 *  <<< THIS JUST USES DUMMY INFO RIGHT NOW, WIRE UP TO CONTROLLER >>>
 		 */
 		ArrayList<String> courseNameList = new ArrayList<String>();
-		courseNameList.add("Oakmont");
-		courseNameList.add("Nevilewood");
+		ArrayList<GolfCourse> courseList = controller.getCourseList();
+		
+		for (GolfCourse g : courseList)
+		{
+			courseNameList.add(g.getCourseName());
+		}
+		
 		ArrayAdapter<String> courseNamesArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, courseNameList);
 		golfCourseList = controller.getCourseList();
 		//ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(this,android.R.layout.simple_list_item_1, golfCourseList);

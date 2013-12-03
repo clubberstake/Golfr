@@ -44,20 +44,14 @@ public class SelectACourse
 	 * Populates the course list based on the corresponding table in the DB
 	 * 
 	 */
-	public void populateCourseListFromDB() // removed these args: Connection connection, String DB_Name
+	private void populateCourseListFromDB() // removed these args: Connection connection, String DB_Name
 	{
-		try 
-		{
+	
 			
 			Thread t = new Thread(query);
 			t.start();
 			this.courseList = query.getCourseList();
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-			throw new IllegalStateException("Unable to populate course list from DB");
-		}
+
 	}
 
 	
