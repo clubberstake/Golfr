@@ -17,15 +17,19 @@ public class CourseList extends SQLQueries implements Runnable
 	@Override
 	public void run()
 	{
-		super.connect();
-		try {
-			this.courseList = super.getCourseListFromDB();
-		} catch (SQLException e) {
-			e.printStackTrace();			
-		}
-		finally
+		synchronized(this)
 		{
-			this.close();
+			super.connect();
+			try {
+				this.courseList = super.getCourseListFromDB();
+			} catch (SQLException e) {
+				e.printStackTrace();			
+			}
+			finally
+			{
+				this.close();
+				notifyAll();
+			}
 		}
 	}
 
