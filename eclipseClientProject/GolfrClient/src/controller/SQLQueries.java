@@ -861,7 +861,7 @@ public abstract class SQLQueries
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://192.168.1.12:3306/golfr";
+		String url = "jdbc:mysql://192.168.1.6:3306/golfr";
 		String userName = "client";
 		String password = "12345";
 

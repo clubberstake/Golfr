@@ -1,5 +1,6 @@
 package com.golfrclient;
 
+import golfCourseObjects.GolfCourse;
 import golfCourseObjects.Hole;
 
 import java.sql.SQLException;
@@ -17,25 +18,39 @@ import android.widget.ListView;
 public class HoleSelectionScreen extends Activity {
 
 	private ListView holeListView;
-	private ArrayList<String> holeNameList;
+	private ArrayList<String> holeNameList = new ArrayList<String>();
 	private ArrayList<Hole> holeList;
+	//private GolfCourse testCourse = new GolfCourse();
+	
 	
 	/*
 	 * gets the hole list from an Async Thread.
 	 * Needs a golfcourse object passed in
 	 */
-	private class FetchHolesTask extends AsyncTask<Void, Void, Void>
+	private class FetchHolesTask extends AsyncTask<Void, Void, ArrayList<Hole>>
 	{
+	
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected ArrayList<Hole> doInBackground(Void... params) {
 			try{
-				holeList = new HoleFetcher().getHoleList();
+				
+				
+				//HoleFetcher fetcher = new HoleFetcher(testCourse);
+				return new HoleFetcher().getHoleList(new GolfCourse(null, null, null, null, null, null, null, 1));
 			}
-			catch (SQLException e){
+			catch (Exception e){
 				e.printStackTrace();
 			}
 			return null;
+		}
+		
+	
+		@Override
+		protected void onPostExecute(ArrayList<Hole> holes) {
+			holeList = holes;
+			establishArrayAdapter();
+			
 		}
 		
 	}
@@ -43,17 +58,13 @@ public class HoleSelectionScreen extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hole_selection_screen);
-		
+		//testCourse.setGolfCourseID(1);
 		holeListView = (ListView) findViewById(R.id.HoleListView);
 		
-		/*
-		 * Populate list of holes
-		 * <<THIS IS JUST DUMMY DATA NOW, WIRE UP WHEN DB IS AVAILABLE>>>
-		 */
-		holeNameList = new ArrayList<String>();
-		populateHoleList();
-		ArrayAdapter<String> holeListArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,holeNameList);
-		holeListView.setAdapter(holeListArrayAdapter);
+		new FetchHolesTask().execute();
+		
+		//populateHoleList();
+		
 	}
 
 	@Override
@@ -87,6 +98,12 @@ public class HoleSelectionScreen extends Activity {
 		{
 			holeNameList.add("Hole "+x);
 		}
+	}
+	
+	private void establishArrayAdapter(){
+		holeListToHoleNameList();
+		ArrayAdapter<String> holeListArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,holeNameList);
+		holeListView.setAdapter(holeListArrayAdapter);
 	}
 	
 	

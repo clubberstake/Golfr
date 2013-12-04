@@ -18,10 +18,10 @@ public class HoleFetcher  extends SQLQueries{
 		this.course = course;
 	}
 	
-	private void getHoleListFromDB(){
+	private void getHoleListFromDB(GolfCourse courseIn){
 		super.connect();
 		try{
-			this.holeList = super.getHoleMetadata(course);
+			this.holeList = super.getHoleMetadata(courseIn);
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -31,9 +31,9 @@ public class HoleFetcher  extends SQLQueries{
 		}
 	}
 	
-	public ArrayList<Hole> getHoleList() throws SQLException
+	public ArrayList<Hole> getHoleList(GolfCourse courseIn) throws SQLException
 	{
-		getCourseListFromDB();
+		getHoleListFromDB(courseIn);
 		return holeList;
 	}
 
