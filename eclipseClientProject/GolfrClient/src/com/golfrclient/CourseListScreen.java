@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import arrayAdapters.CourseListAdapter;
 
 public class CourseListScreen extends Activity {
 
@@ -96,9 +97,11 @@ public class CourseListScreen extends Activity {
 	}
 
 	private void establishArrayAdapter() {
-		ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(
-				this, android.R.layout.simple_list_item_1, golfCourseList);
+		ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(this, android.R.layout.simple_list_item_1, golfCourseList);
 		courseListView.setAdapter(courseNamesArrayAdapter);
+		
+		//CourseListAdapter adapter = new CourseListAdapter(this, R.layout.activity_course_list_screen, golfCourseList);
+		//courseListView.setAdapter(adapter);
 	}
 
 }
