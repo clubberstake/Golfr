@@ -101,8 +101,10 @@ public class HoleSelectionScreen extends Activity {
 	}
 	
 	private void establishArrayAdapter(){
-		holeListToHoleNameList();
-		ArrayAdapter<String> holeListArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,holeNameList);
+		//holeListToHoleNameList();
+		//ArrayAdapter<String> holeListArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,holeNameList);
+		//holeListView.setAdapter(holeListArrayAdapter);
+		ArrayAdapter<Hole> holeListArrayAdapter = new ArrayAdapter<Hole>(this,android.R.layout.simple_list_item_1,holeList);
 		holeListView.setAdapter(holeListArrayAdapter);
 	}
 	
