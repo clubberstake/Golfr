@@ -187,4 +187,13 @@ public class GolfCourse
 		}
 		return result;
 	}
+	
+	/**
+	 * Overrides the toString method to return the GolfCourse name
+	 * @return the name of the GolfCourse
+	 */
+	@Override
+	public String toString(){
+		return this.courseName;
+	}
 }
