@@ -36,7 +36,7 @@ public class HoleSelectionScreen extends Activity {
 			try{
 				
 				
-				//HoleFetcher fetcher = new HoleFetcher(testCourse);
+				
 				return new HoleFetcher().getHoleList(new GolfCourse(null, null, null, null, null, null, null, 1));
 			}
 			catch (Exception e){

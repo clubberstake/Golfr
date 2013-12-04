@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-			Intent i = new Intent(MainActivity.this, HoleSelectionScreen.class);
+			Intent i = new Intent(MainActivity.this, ScoreEntryScreen.class);
 			startActivity(i);
 				
 			}
