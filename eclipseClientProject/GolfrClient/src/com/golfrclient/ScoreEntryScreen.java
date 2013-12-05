@@ -155,5 +155,6 @@ public class ScoreEntryScreen extends Activity {
 				+ holeList.get(MasterController.currentHoleNum).getHandicap()
 						.toString());
 	}
+	//JUST CODE TO TEST COMMIT
 
 }
