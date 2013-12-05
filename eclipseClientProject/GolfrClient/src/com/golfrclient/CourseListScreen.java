@@ -22,7 +22,6 @@ import arrayAdapters.CourseListAdapter;
 
 public class CourseListScreen extends Activity {
 
-	private CourseList courseList;
 	private ListView courseListView;
 	private Button addCourseButton;
 	private ArrayList<GolfCourse> golfCourseList;
@@ -59,19 +58,6 @@ public class CourseListScreen extends Activity {
 		new FetchCourseTask().execute();
 
 		/*
-		 * ArrayList<String> courseNameList = new ArrayList<String>();
-		 * 
-		 * if (courseList.getCourseList() == null) throw new
-		 * IllegalStateException("Course list is null in UI class"); else { for
-		 * (GolfCourse g : courseList.getCourseList()) {
-		 * courseNameList.add(g.getCourseName()); } }
-		 * 
-		 * ArrayAdapter<String> courseNamesArrayAdapter = new
-		 * ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-		 * courseNameList); courseListView.setAdapter(courseNamesArrayAdapter);
-		 */
-
-		/*
 		 * Button to navigate to course creation screen
 		 */
 		addCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -97,18 +83,10 @@ public class CourseListScreen extends Activity {
 	}
 
 	private void establishArrayAdapter() {
-		ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(this, android.R.layout.simple_list_item_1, golfCourseList);
+		ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(
+				this, android.R.layout.simple_list_item_1, golfCourseList);
 		courseListView.setAdapter(courseNamesArrayAdapter);
-		
-		/*
-		//use CourseListAdapter and new layout list in row
-		int itemid = R.layout.activity_course_list_item_row_screen;
-		CourseListAdapter adapter = new CourseListAdapter(this, itemid, golfCourseList);
-		courseListView.setAdapter(adapter);
-		*/
-		
-		//CourseListAdapter adapter = new CourseListAdapter(this, R.layout.activity_course_list_screen, golfCourseList);
-		//courseListView.setAdapter(adapter);
+
 	}
 
 }

@@ -69,17 +69,14 @@ public class ScoreEntryScreen extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				if(MasterController.currentHoleNum == 17)
-				{
-					Intent i = new Intent(ScoreEntryScreen.this, ScoreCardScreen.class);
+				if (MasterController.currentHoleNum == 17) {
+					Intent i = new Intent(ScoreEntryScreen.this,
+							ScoreCardScreen.class);
 					startActivity(i);
-				}
-				else
-				{
+				} else {
 					new SendScoreTask().execute();
-					MasterController.currentHoleNum ++;
-					//Intent i = new Intent(ScoreEntryScreen.this, ScoreEntryScreen.class);
-					//startActivity(i);
+					MasterController.currentHoleNum++;
+
 					populateHoleDataToScreen();
 					scoreEntry.setText(null);
 				}
@@ -94,11 +91,12 @@ public class ScoreEntryScreen extends Activity {
 		getMenuInflater().inflate(R.menu.score_entry_screen, menu);
 		return true;
 	}
-	
+
 	/**
 	 * Gets an array list of holes from the DB on a background task
+	 * 
 	 * @author Andrew
-	 *
+	 * 
 	 */
 	private class FetchHolesTask extends AsyncTask<Void, Void, ArrayList<Hole>> {
 
@@ -120,16 +118,15 @@ public class ScoreEntryScreen extends Activity {
 		}
 
 	}
-	
-	private class SendScoreTask extends AsyncTask<Void, Void, Void>
-	{
+
+	private class SendScoreTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			//new AddScoreForHole().sendScoreToDB(gameIn, holeIn, scoreIn)
+			// new AddScoreForHole().sendScoreToDB(gameIn, holeIn, scoreIn)
 			return null;
 		}
-		
+
 	}
 
 	/**
@@ -155,6 +152,6 @@ public class ScoreEntryScreen extends Activity {
 				+ holeList.get(MasterController.currentHoleNum).getHandicap()
 						.toString());
 	}
-	//JUST CODE TO TEST COMMIT
+	// JUST CODE TO TEST COMMIT
 
 }
