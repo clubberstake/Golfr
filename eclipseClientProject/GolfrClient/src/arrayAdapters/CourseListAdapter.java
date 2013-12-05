@@ -17,7 +17,7 @@ public class CourseListAdapter extends ArrayAdapter<GolfCourse> {
 	private Context context;
 	private ArrayList<GolfCourse> courses;
 
-	public CourseListAdapter(Context context, int resourceId,
+	public CourseListAdapter(Context context, int layoutResourceId, //Bolong:here is an error "resourceID should be layoutResouseID" I changed.
 			ArrayList<GolfCourse> courses) {
 		super(context, resourceId, courses);
 
@@ -38,4 +38,10 @@ public class CourseListAdapter extends ArrayAdapter<GolfCourse> {
 		return row;
 	}
 
+	static class CoursesHolder //this temporarily stores the item content of the list
+    {
+        TextView txtCourseName;
+        TextView txtStreetName;
+        TextView txtStreetNumber;        
+    }
 }
