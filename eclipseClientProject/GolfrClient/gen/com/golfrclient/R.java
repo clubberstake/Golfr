@@ -71,8 +71,9 @@ public final class R {
         public static final int activity_main=0x7f030004;
         public static final int activity_main_menu_screen=0x7f030005;
         public static final int activity_now_playing_course_screen=0x7f030006;
-        public static final int activity_score_entry_screen=0x7f030007;
-        public static final int activity_user_history_screen=0x7f030008;
+        public static final int activity_score_card_screen=0x7f030007;
+        public static final int activity_score_entry_screen=0x7f030008;
+        public static final int activity_user_history_screen=0x7f030009;
     }
     public static final class menu {
         public static final int course_list_screen=0x7f070000;
@@ -82,8 +83,9 @@ public final class R {
         public static final int main=0x7f070004;
         public static final int main_menu_screen=0x7f070005;
         public static final int now_playing_course_screen=0x7f070006;
-        public static final int score_entry_screen=0x7f070007;
-        public static final int user_history_screen=0x7f070008;
+        public static final int score_card_screen=0x7f070007;
+        public static final int score_entry_screen=0x7f070008;
+        public static final int user_history_screen=0x7f070009;
     }
     public static final class string {
         public static final int ScoreEntryScreen_BlueYardString=0x7f05000f;
@@ -102,6 +104,7 @@ public final class R {
         public static final int title_activity_hole_selection_screen=0x7f050006;
         public static final int title_activity_main_menu_screen=0x7f050009;
         public static final int title_activity_now_playing_course_screen=0x7f050005;
+        public static final int title_activity_score_card_screen=0x7f050012;
         public static final int title_activity_score_entry_screen=0x7f05000a;
         public static final int title_activity_user_history_screen=0x7f050007;
     }

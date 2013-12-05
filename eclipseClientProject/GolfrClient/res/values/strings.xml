@@ -19,5 +19,6 @@
     <string name="ScoreEntryScreen_BlueYardString">Blue Yardage</string>
     <string name="ScoreEntryScreen_MensHanicapString">Men\'s Handicap</string>
     <string name="ScoreEntryScreen_WomensHandicapString">Women\'s Handicap</string>
+    <string name="title_activity_score_card_screen">ScoreCardScreen</string>
 
 </resources>

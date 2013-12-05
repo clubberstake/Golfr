@@ -56,6 +56,10 @@
             android:name="com.golfrclient.ScoreEntryScreen"
             android:label="@string/title_activity_score_entry_screen" >
         </activity>
+        <activity
+            android:name="com.golfrclient.ScoreCardScreen"
+            android:label="@string/title_activity_score_card_screen" >
+        </activity>
     </application>
 
 </manifest>
