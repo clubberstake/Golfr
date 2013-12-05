@@ -26,18 +26,48 @@ public class CourseListAdapter extends ArrayAdapter<GolfCourse> {
 		this.courses = courses;
 	}
 
+	//@Override
+	//public View getView(int position, View convertView, ViewGroup parent) {
+	//	View row = convertView;
+
+	//	LayoutInflater inflator = ((Activity) context).getLayoutInflater();
+	//	row = inflator.inflate(layoutResouseId, parent, false);
+
+	//	row.setTag(courses.get(position).getCourseName());
+
+	//	return row;
+	//}
+
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
-
-		LayoutInflater inflator = ((Activity) context).getLayoutInflater();
-		row = inflator.inflate(layoutResouseId, parent, false);
-
-		row.setTag(courses.get(position).getCourseName());
-
-		return row;
+		CoursesHolder holder = null;
+		if(row == null)
+        {
+			LayoutInflater inflator = ((Activity) context).getLayoutInflater();
+			row = inflator.inflate(layoutResouseId, parent, false);
+            
+            holder = new CoursesHolder();
+            holder.txtCourseName = (TextView)row.findViewById(R.id.txtCourseName);
+	//holder.txtStreetName = (TextView)row.findViewById(R.id.txtStreetName);
+	//holder.txtStreetNumber = (TextView)row.findViewById(R.id.txtStreetNumber);            
+            
+            row.setTag(holder);
+        }
+        else
+        {
+            holder = (CoursesHolder)row.getTag();
+        }
+		
+        holder.txtCourseName.setText(courses.get(position).getCourseName()+"  "+courses.get(position).getStreetName());
+	//holder.txtStreetName.setText(courses.get(position).getStreetName());
+	//holder.txtStreetNumber.setText(courses.get(position).getStreetNumber());        
+ 
+        return row;		
 	}
-
+	
+	
 	static class CoursesHolder //this temporarily stores the item content of the list
     {
         TextView txtCourseName;
