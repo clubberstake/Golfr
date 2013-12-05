@@ -97,8 +97,13 @@ public class CourseListScreen extends Activity {
 	}
 
 	private void establishArrayAdapter() {
-		ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(this, android.R.layout.simple_list_item_1, golfCourseList);
-		courseListView.setAdapter(courseNamesArrayAdapter);
+		//ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(this, android.R.layout.simple_list_item_1, golfCourseList);
+		//courseListView.setAdapter(courseNamesArrayAdapter);
+		
+		//use CourseListAdapter and new layout list in row
+		int itemid = R.layout.activity_course_list_item_row_screen;
+		CourseListAdapter adapter = new CourseListAdapter(this, itemid, golfCourseList);
+		courseListView.setAdapter(adapter);
 		
 		//CourseListAdapter adapter = new CourseListAdapter(this, R.layout.activity_course_list_screen, golfCourseList);
 		//courseListView.setAdapter(adapter);
