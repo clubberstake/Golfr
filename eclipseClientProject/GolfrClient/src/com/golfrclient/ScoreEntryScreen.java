@@ -78,8 +78,10 @@ public class ScoreEntryScreen extends Activity {
 				{
 					new SendScoreTask().execute();
 					MasterController.currentHoleNum ++;
-					Intent i = new Intent(ScoreEntryScreen.this, ScoreEntryScreen.class);
-					startActivity(i);
+					//Intent i = new Intent(ScoreEntryScreen.this, ScoreEntryScreen.class);
+					//startActivity(i);
+					populateHoleDataToScreen();
+					scoreEntry.setText(null);
 				}
 
 			}
