@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import controller.CourseList;
 import controller.CourseListFetcher;
+import controller.MasterController;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -26,6 +29,10 @@ public class CourseListScreen extends Activity {
 	private Button addCourseButton;
 	private ArrayList<GolfCourse> golfCourseList;
 
+	/*
+	 * Inner class that does DB queries to populate the course list on a
+	 * background thread
+	 */
 	private class FetchCourseTask extends
 			AsyncTask<Void, Void, ArrayList<GolfCourse>> {
 
@@ -56,6 +63,18 @@ public class CourseListScreen extends Activity {
 		addCourseButton = (Button) findViewById(R.id.CourseListScreen_AddCourseButton);
 
 		new FetchCourseTask().execute();
+		
+		/*
+		 * get the selected golfcourse from courselistview
+		 */
+		courseListView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?>arg0, View v, int position, long id)
+			{
+				MasterController.currentCourse = (GolfCourse) courseListView.getItemAtPosition(position);
+				Intent i = new Intent(CourseListScreen.this, NowPlayingCourseScreen.class);
+				startActivity(i);
+			}
+		});
 
 		/*
 		 * Button to navigate to course creation screen

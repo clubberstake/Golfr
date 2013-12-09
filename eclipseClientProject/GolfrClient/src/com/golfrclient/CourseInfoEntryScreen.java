@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controller.AddCourse;
 import controller.CourseList;
+import controller.MasterController;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -60,8 +61,8 @@ public class CourseInfoEntryScreen extends Activity {
 				String coursePhoneNumber = coursePhoneNumberEntry.getText().toString();
 				String courseWebsite = courseWebsiteEntry.getText().toString();
 				
-				
-				
+				MasterController.currentHoleNum = 1;
+				//set mastercontroller to newly created course
 				
 				Intent i = new Intent(CourseInfoEntryScreen.this, HoleInfoEntryScreen.class);
 				startActivity(i);

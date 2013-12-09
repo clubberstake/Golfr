@@ -2,6 +2,7 @@ package com.golfrclient;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -18,16 +19,35 @@ public class MainMenuScreen extends Activity {
 		
 		courseListButton = (Button) findViewById(R.id.CourseListButton);
 		historyButton = (Button) findViewById(R.id.HistoryButton);
+		
+		
 		/*
+		 * on click listener to navigate to course list screen
+		 */
 		courseListButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				Intent i = new Intent(MainMenuScreen.this, CourseListScreen.class);
+				startActivity(i);
 				
 			}
-		}}
-	*/
+		});
+		
+		
+		/*
+		 * on click listener to navigate to history screen
+		 */
+		historyButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainMenuScreen.this, UserHistoryScreen.class);
+				startActivity(i);
+				
+			}
+		});
+	
 	}
 
 	@Override

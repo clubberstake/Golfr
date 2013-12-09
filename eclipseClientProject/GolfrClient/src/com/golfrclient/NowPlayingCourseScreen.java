@@ -5,6 +5,7 @@ import golfCourseObjects.GolfCourse;
 import controller.MasterController;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,9 @@ public class NowPlayingCourseScreen extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				MasterController.game = new Game(null, MasterController.currentCourse, null, null);
+				MasterController.game = new Game(MasterController.user, MasterController.currentCourse, null, null);
+				Intent i = new Intent(NowPlayingCourseScreen.this, HoleSelectionScreen.class);
+				startActivity(i);
 				
 				
 			}

@@ -7,13 +7,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controller.HoleFetcher;
+import controller.MasterController;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class HoleSelectionScreen extends Activity {
 
@@ -64,6 +69,21 @@ public class HoleSelectionScreen extends Activity {
 		new FetchHolesTask().execute();
 		
 		//populateHoleList();
+		
+		/*
+		 * Listener for selecting a hole from list
+		 */
+		
+		holeListView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?>arg0, View v, int position, long id)
+			{
+				
+				MasterController.currentHole = (Hole) holeListView.getItemAtPosition(position);
+				MasterController.currentHoleNum = MasterController.currentHole.getHoleNumber() -1;
+				Intent i = new Intent(HoleSelectionScreen.this, ScoreEntryScreen.class);
+				startActivity(i);
+			}
+		});
 		
 	}
 
