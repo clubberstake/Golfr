@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controller.GetHoleMetadata;
-import controller.HoleFetcher;
 import controller.MasterController;
 
 import android.os.AsyncTask;
