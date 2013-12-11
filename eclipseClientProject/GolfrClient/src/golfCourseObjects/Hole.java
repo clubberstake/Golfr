@@ -8,7 +8,7 @@ package golfCourseObjects;
 public class Hole
 {
 
-	
+
 	private Integer holeID;
 	private Integer courseID;
 	private Integer holeNumber;
@@ -21,7 +21,7 @@ public class Hole
 	 * The player's score for the hole, if played.
 	 */
 	private Integer score;
-	
+
 
 	/**
 	 * Default Constructor.
@@ -199,7 +199,25 @@ public class Hole
 		else
 			return false;
 	}
-	
+
+	/**
+	 * @return the courseID
+	 */
+	public Integer getCourseID() {
+		return courseID;
+	}
+
+
+
+	/**
+	 * @param courseID the courseID to set
+	 */
+	public void setCourseID(Integer courseID) {
+		this.courseID = courseID;
+	}
+
+
+
 	/**
 	 * Override of Object.toString() to provided formatted string representation of a Hole.
 	 */
@@ -209,4 +227,34 @@ public class Hole
 		return ("Hole "+ this.holeNumber + ", Par " + this.par + ", White Tee " + this.whiteTeeYargage + " yds.");
 	}
 
+	/**
+	 * Override of Object.equals() to compare hole objects
+	 */
+	@Override
+	public boolean equals(Object toCompare)
+	{
+		boolean result = false;
+		if (toCompare == null)
+			return false;
+		if (toCompare == this)
+			return true;
+		if (toCompare instanceof Hole)
+		{
+			Hole h = (Hole) toCompare;
+
+			if 
+			(
+					this.blueTeeYardage.equals(h.getBlueTeeYardage()) &&					
+					this.handicap.equals(h.getHandicap()) &&
+					this.holeNumber.equals(h.getHoleNumber()) &&
+					this.par.equals(h.getPar()) &&
+					this.redTeeYardage.equals(h.getRedTeeYardage()) &&
+					this.whiteTeeYargage.equals(h.getWhiteTeeYargage())
+					)
+				result = true;
+		}
+
+
+		return result;
+	}
 }

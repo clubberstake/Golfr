@@ -18,7 +18,7 @@ import golfCourseObjects.Hole;
 import golfCourseObjects.Score;
 import golfCourseObjects.User;
 
-public abstract class SQLQueries 
+public abstract class SQLQueries extends Thread
 {
 
 	private Connection connection;
@@ -36,6 +36,7 @@ public abstract class SQLQueries
 	 * @return Game object representing the new game
 	 * @throws SQLException 
 	 */
+	//TODO: create junit test
 	public Game newGame(User user, GolfCourse course) throws SQLException
 	{
 		Integer scoreHistoryPK = null;
@@ -190,80 +191,86 @@ public abstract class SQLQueries
 
 	/**
 	 * Deletes all of the records in the DB created by the newGame() method.  Meant for testing purposes.
-	 * @param scorecardID - the t_scorecard.scorecardID primary key of the game to be deleted
+	 * @param scorecardID - the t_scorehistory.scoreHistory_pk primary key of the game to be deleted
+	 * @throws SQLException 
 	 */
-	public void deleteGameFromDB(Integer scorecardID)
+	//TODO create junit test
+	public void deleteGameFromDB(Integer scoreHistory_pk) throws SQLException
 	{
 		Statement statement1 = null;
 		Statement statement2 = null;
-		Statement statement3 = null;
-		Integer courseID = null;
-		String deleteScorecardQuery = "DELETE FROM t_scorecard WHERE scorecardID = " + scorecardID;		
-		String selectHolesQuery = "SELECT * " +
-				"FROM t_holes " +
-				"WHERE golfCourseID = '" + courseID +
-				"' AND holeNumber IS NOT NULL";		
-		String deleteHoleQuery;
-
-		try
+		Statement statement2point5 = null;
+		Statement statement3 = null;		
+		String query = "DELETE FROM t_scorecard WHERE scoreHistory_fk = '" + scoreHistory_pk + "'";
+		
+		try 
 		{
+			/*first delete the 18 t_scorecard records*/
 			if (connection == null || connection.isClosed())
 				this.connect();
-			//first, find all the holes for the course, and delete them one by one
 			statement1 = connection.createStatement();
-			ResultSet rs = statement1.executeQuery(selectHolesQuery);
-
-			while (rs.next()) 
-			{
-
-				Integer holeID = rs.getInt("holeID");
-
-
-				//delete the holes
-				deleteHoleQuery = "DELETE FROM t_holes WHERE holeID = " + holeID.toString();
-				statement3 = connection.createStatement();
-				statement3.executeUpdate(deleteHoleQuery);
-				if (statement3 != null)
-					statement3.close();
-
-			}	
-
-			//then delete the coursedetails
+			if (statement1.executeUpdate(query) != 18)
+				throw new IllegalStateException("deleteGameFromDB() failed to delete all 18 t_scorecard records");
+			statement1.close();
+			connection.close();
+			
+			/*then delete the t_scorehistory record*/
+			if (connection == null || connection.isClosed())
+				this.connect();
 			statement2 = connection.createStatement();
-			Integer success = statement2.executeUpdate(deleteCourseQuery);
-			System.out.println(deleteCourseQuery);
-			if (success != 1)
-				throw new IllegalStateException("Failed to delete the course to be deleted!");
-			rs.close();
-		}
-		catch (SQLException e)
+			query = "DELETE FROM t_scoreHistory WHERE scoreHistory_pk = '" + scoreHistory_pk +"'";
+			if(statement2.executeUpdate(query)!=1)
+				throw new IllegalStateException("deleteGameFromDB() failed to delete the t_scoreHistory record");
+			statement2.close();
+			connection.close();
+			
+			/*then get t_golfcoursehistory primary key*/
+			if (connection == null || connection.isClosed())
+				this.connect();
+			statement2point5 = connection.createStatement();
+			query = "SELECT golfCourseHistory_pk FROM t_golfcoursehistory WHERE scoreHistory = '" + scoreHistory_pk + "'";
+			ResultSet r2point5 = statement2point5.executeQuery(query);
+			Integer golfCourseHistory_pk = null;
+			while (r2point5.next())
+			{
+				golfCourseHistory_pk = r2point5.getInt("golfCourseHistory_pk");
+			}
+			r2point5.close();
+			statement2point5.close();
+			connection.close();
+			
+			if (golfCourseHistory_pk == null)
+				throw new IllegalStateException("deleteGameFromDB could not find the primary key for t_golfcoursehistory, and therefore could not delete the corresponding record");
+			
+			/*then delete t_golfcoursehistory record*/
+			if (connection == null || connection.isClosed())
+				this.connect();
+			statement3 = connection.createStatement();
+			query = "DELETE FROM t_golfcoursehistory WHERE golfCourseHistory_pk = '" + golfCourseHistory_pk + "'";
+			if (statement3.executeUpdate(query) != 1)
+				throw new IllegalStateException("deleteGameFromDB() failed to delete the t_golfcoursehistory record");
+			statement3.close();
+			connection.close();
+		} 
+		catch (SQLException e) 
 		{
-			e.printStackTrace();
-			throw new IllegalStateException("Could not get holes for the provided course.");
-
-		}		
+			throw new IllegalStateException("deleteGameFromDB() threw an SQLException while trying to delete a game");			
+		}
 		finally
 		{
-
-			if (statement1 != null || statement2 != null)
-			{ 
-				try {
-					statement1.close();
-					statement2.close();					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-			}
-
+			if (connection!=null)
+				connection.close();
 		}
-	}
+		
+		
+		}
 
 /**
  * This method returns an array list of Games which the user has played.
  * @param user
  * @return
  */
+	//TODO create junit test
 	public ArrayList<Game> getUserHistory(User user)
 	{
 		if (user == null)
@@ -343,58 +350,14 @@ public abstract class SQLQueries
 		return toReturn;
 	}
 
-	private GolfCourse getCourse(Integer courseID)
-	{
-		Statement statement1 = null;
-		Statement statement2 = null;
-		String query = "SELECT * from t_coursedetails WHERE courseID_pk = '" + courseID + "'";
-		ArrayList<Hole> holes = null;
-		GolfCourse course = null;
-
-		try
-		{
-			if (connection == null || connection.isClosed())
-				this.connect();
-
-			statement1 = connection.createStatement();
-			ResultSet rs1 = statement1.executeQuery(query);
-
-			/*
-			 * First, get the course object from t_coursedetails
-			 */
-			while(rs1.next())
-			{
-				String courseName = rs1.getString("courseName");
-				String streetName = rs1.getString("streetName");
-				String streetNumber = rs1.getString("streetNumber");
-				String postalCode = rs1.getString("postalCode");
-				String phone = rs1.getString("phone");
-				String webAddress = rs1.getString("webAddress");
-				holes = new ArrayList<Hole>();
-				course = new GolfCourse(courseName,streetName,streetNumber,postalCode,phone,webAddress,holes,courseID);
-			}
-			rs1.close();
-			statement1.close();
-			connection.close();
-
-			/*
-			 *Second, get the holes associated with the course 
-			 */
-			holes = this.getHoleMetadata(course);
-			course.setHoles(holes);
-		}
-		catch (SQLException e)
-		{
-			throw new IllegalStateException("Unable to get the golfCourse object from the DB for SQLQueries.getCourse()");
-		}
-		return course;
-
-	}
+	
+	
 	/**
 	 * Computes the total score for a game, and updates the total score in the t_scorehistory table in the DB.
 	 * @param game - the game with the total score to be updated--must have correct game.getScoreHistoryPK() value.
 	 * @return - the total score for the game
 	 */
+	//TODO create junit test
 	public Integer computeTotalScore(Game game)
 	{
 
@@ -446,6 +409,7 @@ public abstract class SQLQueries
 	 * @param score
 	 * @throws SQLException
 	 */
+	//TODO create junit test
 	public void addScoreForHole(Game game, Hole hole, Integer score) throws SQLException
 	{
 		Statement statement1 = null;
@@ -513,6 +477,7 @@ public abstract class SQLQueries
 	 * @param game - the game to retrieve the scorecard for.  Game.user and Game.course must be valid and complete (i.e. their key/ID fields must not be null)
 	 * @return
 	 */	
+	//TODO create junit test
 	public ArrayList<Hole> getScorecard(Game game)  throws SQLException
 	{
 		ArrayList<Hole> toReturn = new ArrayList<Hole>(18);
@@ -571,6 +536,7 @@ public abstract class SQLQueries
 	 * @param course
 	 * @return - array list of Holes for the provided course
 	 */
+	//MAG: tested in TestDBOperations.java
 	public ArrayList<Hole> getHoleMetadata(GolfCourse course)  throws SQLException
 	{
 		ArrayList<Hole> toReturn = new ArrayList<Hole>(18);
@@ -622,6 +588,7 @@ public abstract class SQLQueries
 
 	}
 
+	//TODO determine if this is still needed
 	public ArrayList<Score> getTenMostRecentScores(GolfCourse course)  throws SQLException
 	{
 		ArrayList<Score> toReturn = new ArrayList<Score>(10);
@@ -686,6 +653,7 @@ public abstract class SQLQueries
 	 * @return if found, the primary key.  Null otherwise.
 	 * @throws SQLException 
 	 */
+	//MAG: tested in TestDBOperations.java
 	public Integer getCoursePrimaryKey(GolfCourse course) throws SQLException
 	{
 		Integer key = null;
@@ -731,6 +699,7 @@ public abstract class SQLQueries
 	 * @param primaryKey - the t_golfcoursedetails.courseID_PK of the course to be removed
 	 * @throws SQLException
 	 */
+	//MAG: tested in TestDBOperations.java
 	public void deleteCourseFromDB(Integer primaryKey) throws SQLException
 	{
 
@@ -1012,11 +981,63 @@ public abstract class SQLQueries
 
 	}
 
-
 	/**
-	 * Private helper method to establish or re-establish a connection to the DB.
+	 * Gets the GolfCourse object from the DB for the given courseID primary key of t_golfcoursedetails
+	 * @param courseID - the primary key of t_golfcoursedetails
+	 * @return - a fully populated GolfCourse object
 	 */
-	protected void connect()
+	//TODO create junit test
+	public GolfCourse getCourse(Integer courseID)
+	{
+		Statement statement1 = null;
+		String query = "SELECT * from t_coursedetails WHERE courseID_pk = '" + courseID + "'";
+		ArrayList<Hole> holes = null;
+		GolfCourse course = null;
+
+		try
+		{
+			if (connection == null || connection.isClosed())
+				this.connect();
+
+			statement1 = connection.createStatement();
+			ResultSet rs1 = statement1.executeQuery(query);
+
+			/*
+			 * First, get the course object from t_coursedetails
+			 */
+			while(rs1.next())
+			{
+				String courseName = rs1.getString("courseName");
+				String streetName = rs1.getString("streetName");
+				String streetNumber = rs1.getString("streetNumber");
+				String postalCode = rs1.getString("postalCode");
+				String phone = rs1.getString("phone");
+				String webAddress = rs1.getString("webAddress");
+				holes = new ArrayList<Hole>();
+				course = new GolfCourse(courseName,streetName,streetNumber,postalCode,phone,webAddress,holes,courseID);
+			}
+			rs1.close();
+			statement1.close();
+			connection.close();
+
+			/*
+			 *Second, get the holes associated with the course 
+			 */
+			holes = this.getHoleMetadata(course);
+			course.setHoles(holes);
+		}
+		catch (SQLException e)
+		{
+			throw new IllegalStateException("Unable to get the golfCourse object from the DB for SQLQueries.getCourse()");
+		}
+		return course;
+
+	}
+	
+	/**
+	 * Helper method to establish or re-establish a connection to the DB.
+	 */
+	public void connect()
 	{
 		try 
 		{
@@ -1037,7 +1058,7 @@ public abstract class SQLQueries
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://192.168.1.6:3306/golfr";
+		String url = "jdbc:mysql://192.168.1.12:3306/golfr";
 		String userName = "client";
 		String password = "12345";
 
