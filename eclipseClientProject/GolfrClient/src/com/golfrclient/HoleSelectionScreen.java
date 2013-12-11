@@ -6,6 +6,7 @@ import golfCourseObjects.Hole;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import controller.GetHoleMetadata;
 import controller.HoleFetcher;
 import controller.MasterController;
 
@@ -39,10 +40,13 @@ public class HoleSelectionScreen extends Activity {
 		@Override
 		protected ArrayList<Hole> doInBackground(Void... params) {
 			try{
+				//return new HoleFetcher().getHoleList(new GolfCourse(null, null, null, null, null, null, null, 1));
 				
+				GetHoleMetadata holeFetcher = new GetHoleMetadata();
+				holeFetcher.setCourse(MasterController.currentCourse);
+				holeFetcher.run();
 				
-				
-				return new HoleFetcher().getHoleList(new GolfCourse(null, null, null, null, null, null, null, 1));
+				return holeFetcher.getHoleMetadataList();
 			}
 			catch (Exception e){
 				e.printStackTrace();

@@ -43,6 +43,8 @@ public class GetHoleMetadata extends SQLQueries implements Runnable {
 	public ArrayList<Hole> getHoleMetadataList() {
 		return holeMetadataList;
 	}
+	
+	
 	/**
 	 * @param holeMetadataList the holeMetadataList to set
 	 */
