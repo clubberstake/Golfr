@@ -1012,7 +1012,7 @@ public abstract class SQLQueries extends Thread
 	/**
 	 * Helper method to establish or re-establish a connection to the DB.
 	 */
-	public void connect()
+	public void connect() throws IllegalStateException
 	{
 		try 
 		{
