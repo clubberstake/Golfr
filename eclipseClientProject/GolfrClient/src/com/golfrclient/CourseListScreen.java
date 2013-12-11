@@ -39,7 +39,11 @@ public class CourseListScreen extends Activity {
 		@Override
 		protected ArrayList<GolfCourse> doInBackground(Void... params) {
 			try {
-				return new CourseListFetcher().getCourseList();
+				//return new CourseListFetcher().getCourseList();
+				CourseList courseFetecher = new CourseList();
+				//courseFetecher.start();
+				courseFetecher.run();
+				return courseFetecher.getCourseList();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
