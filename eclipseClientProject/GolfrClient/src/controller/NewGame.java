@@ -16,28 +16,32 @@ public class NewGame extends SQLQueries implements Runnable
 	{
 		super();
 	}
-	
+
 	public NewGame(User user, GolfCourse course) 
 	{
 		super();
 		this.user = user;
 		this.course = course;
 	}
-	
+
 	@Override
 	public void run()
 	{
-		super.connect();
-		try {
-			this.game = super.newGame(user, course);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally
+		synchronized(this)
 		{
-			super.close();
+			super.connect();
+			try {
+				this.game = super.newGame(user, course);
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally
+			{
+				this.close();
+				notifyAll();
+			}
 		}
 	}
 

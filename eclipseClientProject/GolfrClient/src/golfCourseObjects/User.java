@@ -12,8 +12,7 @@ public class User
 	private String username;
 	private Integer userID;
 	private Game currentGame;
-	private Connection connection;
-	private String dbName;
+
 
 	/**
 	 * Default constructor
@@ -21,20 +20,28 @@ public class User
 	public User() 
 	{
 		super();
-		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * Creates a new User with the given name, and a null userID
+	 * @param userName
+	 */
+	public User(String userName)
+	{
+		super();
+		this.username = userName;
+		this.userID = null;
 	}
 
 	/**
 	 * @param username
 	 * @param userID
-	 * @param currentGame
 	 */
-	public User(String username, Integer userID, Game currentGame) 
+	public User(String username, Integer userID) 
 	{
 		super();
 		this.username = username;
-		this.userID = userID;
-		this.currentGame = currentGame;
+		this.userID = userID;		
 	}
 
 	/**
@@ -74,34 +81,6 @@ public class User
 	 */
 	public void setCurrentGame(Game currentGame) {
 		this.currentGame = currentGame;
-	}
-
-	/**
-	 * @return the connection
-	 */
-	public Connection getConnection() {
-		return connection;
-	}
-
-	/**
-	 * @param connection the connection to set
-	 */
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-
-	/**
-	 * @return the dbName
-	 */
-	public String getDbName() {
-		return dbName;
-	}
-
-	/**
-	 * @param dbName the dbName to set
-	 */
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
 	}
 
 	/**

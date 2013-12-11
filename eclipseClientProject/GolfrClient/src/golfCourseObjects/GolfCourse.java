@@ -51,11 +51,20 @@ public class GolfCourse
 		this.phoneNumber = phoneNumberIn;
 		this.webAddress = emailIn;
 		this.golfCourseID = golfCourseID;
-
+		this.totalPar = 0;
 		if (holesIn != null && holesIn.size() == 18)
-			this.holes = holesIn;
+			{
+				this.holes = holesIn;
+				for (Hole h : this.holes)
+				{
+					this.totalPar += h.getPar();
+				}
+			}
 		else
-			this.holes = new ArrayList<Hole>(18);
+			{
+				this.holes = new ArrayList<Hole>(18);
+				this.totalPar = 72;
+			}
 	}
 	/**
 	 * @return the courseName
@@ -63,7 +72,7 @@ public class GolfCourse
 	public String getCourseName(){
 		return this.courseName;
 	}
-	
+
 	public void setCourseName(String courseName){
 		this.courseName = courseName;
 	}
@@ -167,13 +176,41 @@ public class GolfCourse
 	}
 
 	/**
+	 * @return the webAddress
+	 */
+	public String getWebAddress() {
+		return webAddress;
+	}
+
+	/**
+	 * @param webAddress the webAddress to set
+	 */
+	public void setWebAddress(String webAddress) {
+		this.webAddress = webAddress;
+	}
+
+	/**
+	 * @return the totalPar
+	 */
+	public Integer getTotalPar() {
+		return totalPar;
+	}
+
+	/**
+	 * @param totalPar the totalPar to set
+	 */
+	public void setTotalPar(Integer totalPar) {
+		this.totalPar = totalPar;
+	}
+
+	/**
 	 * Checks the validity of GolfCourse variables.
 	 * @return true if data is valid, false otherwise.
 	 */
 	public boolean validityCheck() 
 	{
 		boolean result = false;
-		
+
 		//ID check and holes array length check
 		if (this.golfCourseID > 0 && this.holes != null && 
 				this.holes.size() == 18)
@@ -187,7 +224,7 @@ public class GolfCourse
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Overrides the toString method to return the GolfCourse name
 	 * @return the name of the GolfCourse
@@ -195,5 +232,38 @@ public class GolfCourse
 	@Override
 	public String toString(){
 		return this.courseName;
+	}
+
+	@Override
+	public boolean equals(Object toCompare)
+	{
+		boolean toReturn = false;
+		if (toCompare == null)
+			return false;
+		if (this == toCompare)
+			return true;
+		if (toCompare instanceof GolfCourse)
+		{
+			GolfCourse g = (GolfCourse) toCompare;
+			if (
+					this.courseName.equals(g.getCourseName()) &&
+					this.streetName.equals(g.getStreetName()) &&
+					this.streetNumber.equals(g.getStreetNumber()) &&
+					this.postalCode.equals(g.getPostalCode()) &&				
+					this.phoneNumber.equals(g.getPhoneNumber()) &&
+					this.webAddress.equals(g.getWebaddress()) &&
+					this.golfCourseID.equals(g.getGolfCourseID()) &&
+					this.totalPar.equals(g.getTotalPar())
+					)
+			{
+				for (int i = 0; i<18; i++)
+				{
+					if(!this.holes.get(i).equals(g.getHoles().get(i)))
+						return false;
+				}
+				toReturn = true;
+			}
+		}
+		return toReturn;
 	}
 }

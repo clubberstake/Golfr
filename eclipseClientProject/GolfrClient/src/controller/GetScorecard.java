@@ -18,6 +18,7 @@ public class GetScorecard extends SQLQueries implements Runnable {
 	public GetScorecard(Game game) {
 		super();
 		this.game = game;
+		this.scorecardList = new ArrayList<Hole>();
 	}
 	
 	@Override

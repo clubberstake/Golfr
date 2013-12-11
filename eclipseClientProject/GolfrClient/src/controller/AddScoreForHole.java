@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import golfCourseObjects.Game;
 import golfCourseObjects.Hole;
 
-public class AddScoreForHole extends SQLQueries {
+public class AddScoreForHole extends SQLQueries implements Runnable {
 
 	private Game game;
 	private Hole hole;
@@ -35,14 +35,36 @@ public class AddScoreForHole extends SQLQueries {
 		}
 
 	}
-	
+
 	public void sendScoreToDB(Game gameIn, Hole holeIn, Integer scoreIn)
 	{
 		this.game = gameIn;
 		this.hole = holeIn;
 		this.score = scoreIn;
-		
+
 		connectAndSendScoreToDB();
+	}
+
+	@Override
+	public void run()
+	{
+		synchronized (this)
+		{
+			super.connect();
+			try 
+			{
+				super.addScoreForHole(game, hole, score);
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			} 
+			finally 
+			{
+				this.close();
+				this.notifyAll();
+			}
+		}
 	}
 
 }

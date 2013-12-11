@@ -34,7 +34,7 @@ public class TestGolfCourseObjects extends ActivityInstrumentationTestCase2<Main
     @Before
     public void setUp() 
     {
-    	this.user1 = new User("user1", 1,null);
+    	this.user1 = new User("user1", 1);
     	this.holes = new ArrayList<Hole>(18);
     	
     	//from DB INSERT INTO `t_holes` VALUES

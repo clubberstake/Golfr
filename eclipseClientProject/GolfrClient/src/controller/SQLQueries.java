@@ -36,7 +36,7 @@ public abstract class SQLQueries extends Thread
 	 * @return Game object representing the new game
 	 * @throws SQLException 
 	 */
-	//TODO: create junit test
+	//MAG: tested in TestDBOperations
 	public Game newGame(User user, GolfCourse course) throws SQLException
 	{
 		Integer scoreHistoryPK = null;
@@ -122,7 +122,7 @@ public abstract class SQLQueries extends Thread
 			//reconnect
 			this.connect();
 			query = "SELECT scoreHistory_pk FROM t_scorehistory WHERE userID = '" + userID_pk + "' AND totalScore = '0' AND courseID = '" + course.getGolfCourseID() + "' ORDER BY `timestamp`;";
-			System.out.println(query);
+			
 			Statement statement4 = connection.createStatement();
 			ResultSet rs4 = statement4.executeQuery(query);
 
@@ -194,7 +194,7 @@ public abstract class SQLQueries extends Thread
 	 * @param scorecardID - the t_scorehistory.scoreHistory_pk primary key of the game to be deleted
 	 * @throws SQLException 
 	 */
-	//TODO create junit test
+	//MAG: tested in TestDBOperations
 	public void deleteGameFromDB(Integer scoreHistory_pk) throws SQLException
 	{
 		Statement statement1 = null;
@@ -202,7 +202,7 @@ public abstract class SQLQueries extends Thread
 		Statement statement2point5 = null;
 		Statement statement3 = null;		
 		String query = "DELETE FROM t_scorecard WHERE scoreHistory_fk = '" + scoreHistory_pk + "'";
-		
+
 		try 
 		{
 			/*first delete the 18 t_scorecard records*/
@@ -213,7 +213,7 @@ public abstract class SQLQueries extends Thread
 				throw new IllegalStateException("deleteGameFromDB() failed to delete all 18 t_scorecard records");
 			statement1.close();
 			connection.close();
-			
+
 			/*then delete the t_scorehistory record*/
 			if (connection == null || connection.isClosed())
 				this.connect();
@@ -223,7 +223,7 @@ public abstract class SQLQueries extends Thread
 				throw new IllegalStateException("deleteGameFromDB() failed to delete the t_scoreHistory record");
 			statement2.close();
 			connection.close();
-			
+
 			/*then get t_golfcoursehistory primary key*/
 			if (connection == null || connection.isClosed())
 				this.connect();
@@ -238,10 +238,10 @@ public abstract class SQLQueries extends Thread
 			r2point5.close();
 			statement2point5.close();
 			connection.close();
-			
+
 			if (golfCourseHistory_pk == null)
 				throw new IllegalStateException("deleteGameFromDB could not find the primary key for t_golfcoursehistory, and therefore could not delete the corresponding record");
-			
+
 			/*then delete t_golfcoursehistory record*/
 			if (connection == null || connection.isClosed())
 				this.connect();
@@ -261,15 +261,15 @@ public abstract class SQLQueries extends Thread
 			if (connection!=null)
 				connection.close();
 		}
-		
-		
-		}
 
-/**
- * This method returns an array list of Games which the user has played.
- * @param user
- * @return
- */
+
+	}
+
+	/**
+	 * This method returns an array list of Games which the user has played.
+	 * @param user
+	 * @return
+	 */
 	//TODO create junit test
 	public ArrayList<Game> getUserHistory(User user)
 	{
@@ -350,15 +350,15 @@ public abstract class SQLQueries extends Thread
 		return toReturn;
 	}
 
-	
-	
+
+
 	/**
 	 * Computes the total score for a game, and updates the total score in the t_scorehistory table in the DB.
 	 * @param game - the game with the total score to be updated--must have correct game.getScoreHistoryPK() value.
 	 * @return - the total score for the game
 	 */
-	//TODO create junit test
-	public Integer computeTotalScore(Game game)
+	//MAG: tested in TestDBOperations
+	public Integer computeTotalScore(Game game) throws SQLException
 	{
 
 		ArrayList<Hole> scorecard = null;
@@ -398,6 +398,11 @@ public abstract class SQLQueries extends Thread
 		{
 			throw new IllegalStateException("Unable to update totalScore in t_scorehistory in the DB.");
 		}
+		finally
+		{
+			if (connection != null)
+				connection.close();
+		}
 
 		return totalScore;		
 	}
@@ -409,17 +414,15 @@ public abstract class SQLQueries extends Thread
 	 * @param score
 	 * @throws SQLException
 	 */
-	//TODO create junit test
+	//MAG: tested in TestDBOperations.java
 	public void addScoreForHole(Game game, Hole hole, Integer score) throws SQLException
 	{
 		Statement statement1 = null;
 		Statement statement2 = null;
-		String query = "SELECT DISTINCT t_scorecard.scorecardID FROM t_holes, t_scorecard, t_scorehistory " +
-				"WHERE t_scorehistory.scoreHistory_pk = '" + game.getScoreHistoryPK() + "' AND " +
-				"t_scorecard.scoreHistory_fk = '" + game.getScoreHistoryPK() + "' AND " +
-				"t_holes.golfCourseID = '" + game.getCourse().getGolfCourseID() + "' AND " +
-				"t_holes.holeNumber = '" + hole.getHoleNumber() + "' AND " +
-				"t_scorecard.holeID = '" + hole.getHoleID()	+ "';";
+		String query = "SELECT DISTINCT t_scorecard.scorecardID " + 
+				"FROM t_scorecard INNER JOIN (t_holes, t_scorehistory, t_golfcoursehistory) " +
+		"ON (t_holes.holeID = t_scorecard.holeID AND t_scorehistory.scoreHistory_pk = t_scorecard.scoreHistory_fk) " +
+		"WHERE t_scorecard.holeID = '" + hole.getHoleID() + "' AND t_scorecard.scoreHistory_fk = '" + game.getScoreHistoryPK() + "';";
 		Integer scorecardID = null;
 
 		try
@@ -434,7 +437,7 @@ public abstract class SQLQueries extends Thread
 
 			while (rs.next()) 
 			{
-				scorecardID = rs.getInt("strokes");				
+				scorecardID = rs.getInt("scorecardID");				
 			}	
 
 			if (scorecardID == null)
@@ -477,16 +480,16 @@ public abstract class SQLQueries extends Thread
 	 * @param game - the game to retrieve the scorecard for.  Game.user and Game.course must be valid and complete (i.e. their key/ID fields must not be null)
 	 * @return
 	 */	
-	//TODO create junit test
+	//MAG: tested by TestDBOperations.java
 	public ArrayList<Hole> getScorecard(Game game)  throws SQLException
 	{
 		ArrayList<Hole> toReturn = new ArrayList<Hole>(18);
 		Statement statement = null;
-		String query = "SELECT DISTINCT t_holes.holeID, t_holes.golfCourseID, t_holes.holeNumber, t_holes.whiteTee, t_holes.redTee, t_holes.blueTee, t_holes.handicap," +
-				"t_holes.par, t_scoreHistory.scoreHistory_pk, t_scorecard.strokes FROM t_holes, t_scorecard, t_scorehistory " +
-				"WHERE t_scorehistory.scoreHistory_pk = '" + game.getScoreHistoryPK() + "' AND " +
-				"t_scorecard.scoreHistory_fk = '" + game.getScoreHistoryPK() + "' AND " +
-				"t_holes.golfCourseID = '" + game.getCourse().getGolfCourseID() + "';";
+		String query = "SELECT t_holes.holeID, t_holes.golfCourseID, t_holes.holeNumber, t_holes.whiteTee, t_holes.redTee, t_holes.blueTee, t_holes.handicap, " +
+				"t_holes.par, t_scoreHistory.scoreHistory_pk, t_scorecard.strokes " + 
+				"FROM t_scorecard INNER JOIN (t_scorehistory, t_holes) " +
+				"ON (t_scorehistory.scoreHistory_pk = t_scorecard.scoreHistory_fk AND t_holes.holeID = t_scorecard.holeID) " +
+				"WHERE scoreHistory_pk = '" + game.getScoreHistoryPK() + "';";
 		try
 		{
 			if (connection == null || connection.isClosed())
@@ -770,6 +773,7 @@ public abstract class SQLQueries extends Thread
 	 * @param newCourse
 	 * @throws SQLException 
 	 */
+	//MAG: tested in TestDBOperations.java
 	public void sendCourseDetailsToDB(GolfCourse newCourse) throws SQLException
 	{
 		String query = "INSERT INTO t_golfcoursedetails (courseName, streetName, streetNumber, postalCode, phone, webAddress) VALUES ('" + 
@@ -812,6 +816,7 @@ public abstract class SQLQueries extends Thread
 	 * @param courseKey - the primary key of the course which is to have a hole added to it.  Use SQLQueries.getCoursePrimaryKey() to get the correct key if not known.
 	 * @param toAdd - the hole to add to the DB
 	 */
+	//MAG: tested in TestDBOperations.java
 	public void addHoleToCourseInDB(Integer courseKey, Hole toAdd) throws SQLException
 	{
 		String query = "INSERT INTO t_holes (golfCourseID, holeNumber, whiteTee, redTee, blueTee, handicap, par) VALUES ('" + 
@@ -855,6 +860,7 @@ public abstract class SQLQueries extends Thread
 	 * Gets the list of courses from the MySQL DB via JDBC SELECT query
 	 * @return - the list of courses in the DB, ordered alphabetically, note: the list of courses has null for ArrayList<Hole> in each course 
 	 */
+	//MAG: tested in TestDBOperations.java
 	public ArrayList<GolfCourse> getCourseListFromDB() throws SQLException
 	{
 
@@ -919,50 +925,7 @@ public abstract class SQLQueries extends Thread
 		this.connection = connection;
 	}
 
-	/*
-	/**
-	 * Runs the SQLQueries.Thread.  Establishes a connection to the Golfr DB and waits
-	 *
-	@Override
-	public synchronized void run()
-	{
 
-		try 
-		{
-			this.connect();
-			this.wait();
-		} 
-		catch (InterruptedException e) 
-		{		
-			if (this.connection != null)
-			{
-				try
-				{
-					this.connection.close();
-				} 
-				catch (SQLException e1) 
-				{				
-					e1.printStackTrace();
-				}
-
-			}
-
-			this.interrupt();
-		} 
-
-		//if This.notify() is called
-		if (this.connection != null)
-		{
-			try {
-				this.connection.close();
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}	
-
-		}
-	}
-	 */
 	/**
 	 * Closes the DB connection and the this.Thread
 	 */
@@ -985,12 +948,13 @@ public abstract class SQLQueries extends Thread
 	 * Gets the GolfCourse object from the DB for the given courseID primary key of t_golfcoursedetails
 	 * @param courseID - the primary key of t_golfcoursedetails
 	 * @return - a fully populated GolfCourse object
+	 * @throws SQLException 
 	 */
-	//TODO create junit test
-	public GolfCourse getCourse(Integer courseID)
+	//MAG tested in TestDBOperaions.java
+	public GolfCourse getCourse(Integer courseID) throws SQLException
 	{
 		Statement statement1 = null;
-		String query = "SELECT * from t_coursedetails WHERE courseID_pk = '" + courseID + "'";
+		String query = "SELECT * FROM t_golfcoursedetails WHERE courseID_pk = '" + courseID + "'";
 		ArrayList<Hole> holes = null;
 		GolfCourse course = null;
 
@@ -1025,15 +989,26 @@ public abstract class SQLQueries extends Thread
 			 */
 			holes = this.getHoleMetadata(course);
 			course.setHoles(holes);
+			//set totalPar for the course
+			Integer totalPar = 0;
+			for (Hole h: holes)
+			{
+				totalPar += h.getPar();
+			}
+			course.setTotalPar(totalPar);
 		}
 		catch (SQLException e)
 		{
 			throw new IllegalStateException("Unable to get the golfCourse object from the DB for SQLQueries.getCourse()");
 		}
+		finally
+		{
+			if (connection != null)
+				connection.close();			
+		}
 		return course;
-
 	}
-	
+
 	/**
 	 * Helper method to establish or re-establish a connection to the DB.
 	 */
@@ -1045,17 +1020,14 @@ public abstract class SQLQueries extends Thread
 		} 
 		catch (InstantiationException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		catch (IllegalAccessException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		catch (ClassNotFoundException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String url = "jdbc:mysql://192.168.1.12:3306/golfr";
