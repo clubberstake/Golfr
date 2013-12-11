@@ -3,7 +3,8 @@ package com.golfrclient;
 import java.util.ArrayList;
 
 import controller.AddScoreForHole;
-import controller.HoleFetcher;
+import controller.GetHoleMetadata;
+import controller.GetScorecard;
 import controller.MasterController;
 import golfCourseObjects.GolfCourse;
 import golfCourseObjects.Hole;
@@ -103,8 +104,11 @@ public class ScoreEntryScreen extends Activity {
 		@Override
 		protected ArrayList<Hole> doInBackground(Void... params) {
 			try {
-				return new HoleFetcher()
-						.getHoleList(MasterController.currentCourse);
+				//return new HoleFetcher().getHoleList(MasterController.currentCourse);
+				GetScorecard scorecard = new GetScorecard(MasterController.game);
+				scorecard.run();
+				return scorecard.getScorecardList();
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
