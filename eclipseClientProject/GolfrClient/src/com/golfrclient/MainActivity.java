@@ -1,5 +1,7 @@
 package com.golfrclient;
 
+import golfCourseObjects.User;
+import controller.MasterController;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -31,6 +33,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				
 				//Navigate to the Main menu screen
+				MasterController.user = new User(usernameEntry.getText().toString());
 				Intent i = new Intent(MainActivity.this, MainMenuScreen.class);
 				startActivity(i);
 			}
