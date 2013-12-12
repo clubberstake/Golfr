@@ -226,6 +226,10 @@ public class GolfCourse
 		return result;
 	}
 	
+	/**
+	 * Checks to see if the Course Name is valid (not null or empty)
+	 * @return true if the course name is valid, false otherwise
+	 */
 	public boolean courseNameValidityCheck()
 	{
 		boolean result = true;
@@ -237,6 +241,10 @@ public class GolfCourse
 		return result;
 	}
 	
+	/**
+	 * Checks to see if the street name is valid (not null or empty)
+	 * @return true if the street name is valid, false otherwise
+	 */
 	public boolean courseStreetNameValidityCheck()
 	{
 		boolean result = true;
@@ -248,6 +256,10 @@ public class GolfCourse
 		return result;
 	}
 	
+	/**
+	 * Checks to see if the street number is valid
+	 * @return true if the street number is valid, false otherwise
+	 */
 	public boolean courseStreetNumberValidityCheck()
 	{
 		if ((Pattern.matches("[a-zA-Z]+", this.streetNumber) == true && (Pattern.matches("[a-zA-Z0-9]+", this.streetNumber) == true)))
@@ -259,6 +271,10 @@ public class GolfCourse
 		return true;
 	}
 	
+	/**
+	 * Checks to see if the postal code is valid
+	 * @return true if the postal code is valid, false otherwise
+	 */
 	public boolean coursePostalCodeValidityCheck()
 	{
 		if ((this.postalCode.length() !=5) || (Pattern.matches("[a-zA-Z]+", this.postalCode) == true && (Pattern.matches("[a-zA-Z0-9]+", this.postalCode) == true)))
@@ -268,6 +284,35 @@ public class GolfCourse
 		
 		
 		return true;
+	}
+	
+	/**
+	 * Checks to see if the phone number is valid
+	 * @return true if valid, false otherwise
+	 */
+	public boolean coursePhoneNumberValidtyCheck()
+	{
+		if ((this.phoneNumber.length() !=10) || (Pattern.matches("[a-zA-Z]+", this.phoneNumber) == true && (Pattern.matches("[a-zA-Z0-9]+", this.phoneNumber) == true)))
+		{
+			return false;
+		}
+		
+		
+		return true;
+	}
+	
+	/**
+	 * checks to see if par is positive and not null
+	 * @return true if valid, false otherwise
+	 */
+	public boolean courseParValidityCheck()
+	{
+		boolean result = true;
+		if((this.totalPar < 1) || this.totalPar == null);
+		{
+			result = false;
+		}
+		return result;
 	}
 	
 	/**
