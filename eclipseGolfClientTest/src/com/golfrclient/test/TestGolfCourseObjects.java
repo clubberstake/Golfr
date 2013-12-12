@@ -90,6 +90,7 @@ public class TestGolfCourseObjects extends ActivityInstrumentationTestCase2<Main
     	this.holes.clear();
     	this.holes = null;
         course1 = null;
+      ///CLOVER:FLUSH
     }
     
     @Test

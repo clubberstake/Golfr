@@ -4,16 +4,10 @@ import golfCourseObjects.GolfCourse;
 
 import java.util.ArrayList;
 
-import controller.CourseList;
-import controller.CourseListFetcher;
-import controller.MasterController;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +15,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import arrayAdapters.CourseListAdapter;
+import controller.CourseList;
+import controller.MasterController;
 
 public class CourseListScreen extends Activity {
 

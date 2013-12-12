@@ -1,6 +1,5 @@
 package controller;
 
-import golfCourseObjects.GolfCourse;
 import golfCourseObjects.Hole;
 
 import java.sql.SQLException;

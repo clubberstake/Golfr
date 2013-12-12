@@ -1,14 +1,14 @@
 package com.golfrclient;
 
 import golfCourseObjects.User;
-import controller.MasterController;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import controller.MasterController;
 
 public class MainActivity extends Activity {
 

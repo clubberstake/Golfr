@@ -1,17 +1,16 @@
 package com.golfrclient;
 
 import golfCourseObjects.Game;
-import golfCourseObjects.GolfCourse;
-import controller.MasterController;
-import controller.NewGame;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import controller.MasterController;
+import controller.NewGame;
 
 public class NowPlayingCourseScreen extends Activity {
 	

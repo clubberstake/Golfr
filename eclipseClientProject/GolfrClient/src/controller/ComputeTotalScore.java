@@ -1,8 +1,8 @@
 package controller;
 
-import java.sql.SQLException;
-
 import golfCourseObjects.Game;
+
+import java.sql.SQLException;
 
 public class ComputeTotalScore extends SQLQueries implements Runnable 
 {

@@ -1,6 +1,5 @@
 package golfCourseObjects;
 
-import java.sql.Connection;
 
 /**
  * The User class represents a user who plays a game of golf.

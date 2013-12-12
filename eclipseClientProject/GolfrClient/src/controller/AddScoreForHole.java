@@ -1,9 +1,9 @@
 package controller;
 
-import java.sql.SQLException;
-
 import golfCourseObjects.Game;
 import golfCourseObjects.Hole;
+
+import java.sql.SQLException;
 
 public class AddScoreForHole extends SQLQueries implements Runnable {
 

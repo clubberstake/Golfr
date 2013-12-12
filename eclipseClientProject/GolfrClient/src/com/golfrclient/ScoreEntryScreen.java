@@ -1,22 +1,21 @@
 package com.golfrclient;
 
+import golfCourseObjects.Hole;
+
 import java.util.ArrayList;
 
-import controller.AddScoreForHole;
-import controller.GetHoleMetadata;
-import controller.GetScorecard;
-import controller.MasterController;
-import golfCourseObjects.GolfCourse;
-import golfCourseObjects.Hole;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import controller.AddScoreForHole;
+import controller.GetScorecard;
+import controller.MasterController;
 
 public class ScoreEntryScreen extends Activity {
 	private TextView holeNumView;

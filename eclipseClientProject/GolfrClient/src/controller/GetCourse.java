@@ -1,8 +1,8 @@
 package controller;
 
-import java.sql.SQLException;
-
 import golfCourseObjects.GolfCourse;
+
+import java.sql.SQLException;
 
 public class GetCourse extends SQLQueries implements Runnable {
 

@@ -1,11 +1,10 @@
 package golfCourseObjects;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 
 /**
- * This class represents a score for a particurlar user on a particurlar course.  It is used in use case 4 to populate the list of most recent scores.
+ * This class represents a score for a particular user on a particular course.  It is used in use case 4 to populate the list of most recent scores.
  * @author Matt Gisoni
  *
  */
@@ -21,7 +20,6 @@ public class Score
 	 */
 	public Score() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * @param date

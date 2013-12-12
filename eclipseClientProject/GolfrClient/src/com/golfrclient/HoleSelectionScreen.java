@@ -1,24 +1,21 @@
 package com.golfrclient;
 
-import golfCourseObjects.GolfCourse;
 import golfCourseObjects.Hole;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import controller.GetHoleMetadata;
-import controller.MasterController;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+import controller.GetHoleMetadata;
+import controller.MasterController;
 
 public class HoleSelectionScreen extends Activity {
 

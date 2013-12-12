@@ -1,9 +1,9 @@
 package controller;
 
-import java.util.ArrayList;
-
 import golfCourseObjects.GolfCourse;
 import golfCourseObjects.Hole;
+
+import java.util.ArrayList;
 
 /**
  * This class acts as the controller for use case 3 "Adding a course"

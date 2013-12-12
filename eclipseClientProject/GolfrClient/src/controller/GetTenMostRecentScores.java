@@ -5,7 +5,6 @@ import golfCourseObjects.Score;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class GetTenMostRecentScores extends SQLQueries implements Runnable {
 
