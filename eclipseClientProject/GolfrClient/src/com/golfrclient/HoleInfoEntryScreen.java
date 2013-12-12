@@ -1,13 +1,12 @@
 package com.golfrclient;
 
-<<<<<<< HEAD
-=======
+
 import golfCourseObjects.Hole;
 import controller.AddHoleToCourse;
 import controller.MasterController;
 import android.os.AsyncTask;
 import android.os.Bundle;
->>>>>>> 76a332d863afa5d66973130804ba457088f4e54f
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
