@@ -79,7 +79,7 @@ public class HoleSelectionScreen extends Activity {
 			{
 				
 				MasterController.currentHole = (Hole) holeListView.getItemAtPosition(position);
-				MasterController.currentHoleNum = MasterController.currentHole.getHoleNumber() -1;
+				MasterController.currentHoleNum = MasterController.currentHole.getHoleNumber();
 				Intent i = new Intent(HoleSelectionScreen.this, ScoreEntryScreen.class);
 				startActivity(i);
 			}
