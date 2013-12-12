@@ -87,6 +87,12 @@
             android:layout_height="wrap_content"
             android:text="Next" />
 
+        <Button
+            android:id="@+id/HoleInfoScreen_testButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EnterTestData" />
+
     </LinearLayout>
 
 </ScrollView>

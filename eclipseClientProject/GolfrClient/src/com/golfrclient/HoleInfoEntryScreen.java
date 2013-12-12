@@ -23,6 +23,7 @@ public class HoleInfoEntryScreen extends Activity {
 	private Button nextButton;
 	private TextView holeCounterView;
 	private Hole newHole;
+	private Button testButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,87 +34,118 @@ public class HoleInfoEntryScreen extends Activity {
 		redTeeYardEntry = (EditText) findViewById(R.id.HoleInfoScreen_RedTeeEntry);
 		blueTeeYardEntry = (EditText) findViewById(R.id.HoleInfoScreen_BlueTeeEntry);
 		parEntry = (EditText) findViewById(R.id.HoleInfoScreen_ParEntry);
-		handicapEntry = (EditText)findViewById(R.id.HoleInfoScreen_HandicapEntry); 
+		handicapEntry = (EditText) findViewById(R.id.HoleInfoScreen_HandicapEntry);
 		nextButton = (Button) findViewById(R.id.HoleInfoScreen_NextButton);
 		holeCounterView = (TextView) findViewById(R.id.HoleInfoScreen_HoleCounterView);
-		
+		testButton = (Button) findViewById(R.id.HoleInfoScreen_testButton);
 		holeCounterView.setText("Hole: " + MasterController.currentHoleNum);
 		
 		
-		nextButton.setOnClickListener(new View.OnClickListener() {
-			
+		testButton.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				
-				createHoleFromParams();
+
+				createTestHole();
 				new SendHoleInfoToDBTask().execute();
-				MasterController.currentHoleNum ++;
-				if(MasterController.currentHoleNum > 18)
-				{
+				MasterController.currentHoleNum++;
+				if (MasterController.currentHoleNum > 18) {
 					MasterController.currentHoleNum = 1;
-					Intent i = new Intent(HoleInfoEntryScreen.this, ScoreEntryScreen.class);
+					Intent i = new Intent(HoleInfoEntryScreen.this,
+							CourseListScreen.class);
 					startActivity(i);
-				}
-				else{
+				} else {
 					// clear all entry fields
 					whiteTeeYardEntry.setText(null);
 					redTeeYardEntry.setText(null);
 					blueTeeYardEntry.setText(null);
 					parEntry.setText(null);
 					handicapEntry.setText(null);
-					holeCounterView.setText("Hole: " + MasterController.currentHoleNum);
+					holeCounterView.setText("Hole: "
+							+ MasterController.currentHoleNum);
 				}
-				
+
 			}
 		});
 		
 		
-		
-		
-		/*
-		 * MAG: once you get all of the paramaters from the user, you need to run the following code to add the hole to the DB
-		 * 
-		 * 
-		 Hole toAdd = new Hole(paramaters from the user);
-		 AddHoleToCourse holeAdder = new AddHoleToCourse(coursePrimaryKeyThatYouSavedInTheCourseInfoEntryScreen, toAdd);
-		 Thread t = new Thread(holeAdder);
-		t.start();
-				
-		synchronized(t)
-		{
-			
-			try {
-				t.wait(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		nextButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				createHoleFromParams();
+				new SendHoleInfoToDBTask().execute();
+				MasterController.currentHoleNum++;
+				if (MasterController.currentHoleNum > 18) {
+					MasterController.currentHoleNum = 1;
+					Intent i = new Intent(HoleInfoEntryScreen.this,
+							CourseListScreen.class);
+					startActivity(i);
+				} else {
+					// clear all entry fields
+					whiteTeeYardEntry.setText(null);
+					redTeeYardEntry.setText(null);
+					blueTeeYardEntry.setText(null);
+					parEntry.setText(null);
+					handicapEntry.setText(null);
+					holeCounterView.setText("Hole: "
+							+ MasterController.currentHoleNum);
+				}
+
 			}
-		}
+		});
+
+		/*
+		 * MAG: once you get all of the paramaters from the user, you need to
+		 * run the following code to add the hole to the DB
+		 * 
+		 * 
+		 * Hole toAdd = new Hole(paramaters from the user); AddHoleToCourse
+		 * holeAdder = new
+		 * AddHoleToCourse(coursePrimaryKeyThatYouSavedInTheCourseInfoEntryScreen
+		 * , toAdd); Thread t = new Thread(holeAdder); t.start();
+		 * 
+		 * synchronized(t) {
+		 * 
+		 * try { t.wait(500); } catch (InterruptedException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } }
 		 */
-		
+
 	}
-	
-	private class SendHoleInfoToDBTask extends AsyncTask<Void, Void, Void>
-	{
+
+	private class SendHoleInfoToDBTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			AddHoleToCourse controller = new AddHoleToCourse(MasterController.currentCourse.getGolfCourseID(), newHole);
+			AddHoleToCourse controller = new AddHoleToCourse(
+					MasterController.currentCourse.getGolfCourseID(), newHole);
 			controller.run();
 			return null;
 		}
-		
+
 	}
-	
-	private void createHoleFromParams()
-	{
-		Integer whiteTee = Integer.parseInt(whiteTeeYardEntry.getText().toString());
+
+	private void createHoleFromParams() {
+		Integer whiteTee = Integer.parseInt(whiteTeeYardEntry.getText()
+				.toString());
 		Integer redTee = Integer.parseInt(redTeeYardEntry.getText().toString());
-		Integer blueTee = Integer.parseInt(blueTeeYardEntry.getText().toString());
+		Integer blueTee = Integer.parseInt(blueTeeYardEntry.getText()
+				.toString());
 		Integer par = Integer.parseInt(parEntry.getText().toString());
 		Integer handicap = Integer.parseInt(handicapEntry.getText().toString());
-		
-		newHole = new Hole(null, MasterController.currentCourse.getGolfCourseID(), MasterController.currentHoleNum, whiteTee, redTee, blueTee, handicap, par, null);
+
+		newHole = new Hole(null,
+				MasterController.currentCourse.getGolfCourseID(),
+				MasterController.currentHoleNum, whiteTee, redTee, blueTee,
+				handicap, par, null);
+	}
+	
+	private void createTestHole(){
+		newHole = new Hole(null,
+				MasterController.currentCourse.getGolfCourseID(),
+				MasterController.currentHoleNum, 255, 123, 365,
+				1, 2, null);
 	}
 
 	@Override
