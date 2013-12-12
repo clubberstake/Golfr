@@ -34,7 +34,7 @@ CREATE TABLE `t_golfcoursedetails` (
   `webAddress` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`courseID_pk`),
   UNIQUE KEY `courseID_pk` (`courseID_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `t_golfcoursehistory` (
   PRIMARY KEY (`golfCourseHistory_pk`),
   UNIQUE KEY `golfCourseHistory_pk` (`golfCourseHistory_pk`),
   UNIQUE KEY `golfCourseHistory_pk_UNIQUE` (`golfCourseHistory_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ CREATE TABLE `t_holes` (
   UNIQUE KEY `holeID_UNIQUE` (`holeID`),
   KEY `golfCourseID_fk_idx` (`golfCourseID`),
   CONSTRAINT `golfCourseID_fk` FOREIGN KEY (`golfCourseID`) REFERENCES `t_golfcoursedetails` (`courseID_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1406 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1803 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +127,7 @@ CREATE TABLE `t_scorecard` (
   KEY `scoreHistory_fk_idx` (`scoreHistory_fk`),
   CONSTRAINT `hole_fk` FOREIGN KEY (`holeID`) REFERENCES `t_holes` (`holeID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `scoreHistory_fk` FOREIGN KEY (`scoreHistory_fk`) REFERENCES `t_scorehistory` (`scoreHistory_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=395 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +156,7 @@ CREATE TABLE `t_scorehistory` (
   UNIQUE KEY `scoreHistory_pk` (`scoreHistory_pk`),
   KEY `courseID_fk_idx` (`courseID`),
   CONSTRAINT `courseID_fk` FOREIGN KEY (`courseID`) REFERENCES `t_golfcoursedetails` (`courseID_pk`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,4 +266,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-12-11  0:00:24
+-- Dump completed on 2013-12-12 11:10:20
