@@ -1,6 +1,9 @@
 package com.golfrclient;
 
+import golfCourseObjects.Hole;
+import controller.AddHoleToCourse;
 import controller.MasterController;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,8 +19,10 @@ public class HoleInfoEntryScreen extends Activity {
 	private EditText redTeeYardEntry;
 	private EditText blueTeeYardEntry;
 	private EditText parEntry;
+	private EditText handicapEntry;
 	private Button nextButton;
 	private TextView holeCounterView;
+	private Hole newHole;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class HoleInfoEntryScreen extends Activity {
 		redTeeYardEntry = (EditText) findViewById(R.id.HoleInfoScreen_RedTeeEntry);
 		blueTeeYardEntry = (EditText) findViewById(R.id.HoleInfoScreen_BlueTeeEntry);
 		parEntry = (EditText) findViewById(R.id.HoleInfoScreen_ParEntry);
+		handicapEntry = (EditText)findViewById(R.id.HoleInfoScreen_HandicapEntry); 
 		nextButton = (Button) findViewById(R.id.HoleInfoScreen_NextButton);
 		holeCounterView = (TextView) findViewById(R.id.HoleInfoScreen_HoleCounterView);
 		
@@ -38,6 +44,9 @@ public class HoleInfoEntryScreen extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				
+				createHoleFromParams();
+				new SendHoleInfoToDBTask().execute();
 				MasterController.currentHoleNum ++;
 				if(MasterController.currentHoleNum > 18)
 				{
@@ -51,10 +60,13 @@ public class HoleInfoEntryScreen extends Activity {
 					redTeeYardEntry.setText(null);
 					blueTeeYardEntry.setText(null);
 					parEntry.setText(null);
+					handicapEntry.setText(null);
 					holeCounterView.setText("Hole: " + MasterController.currentHoleNum);
 				}
+				
 			}
 		});
+		
 		
 		
 		
@@ -79,6 +91,29 @@ public class HoleInfoEntryScreen extends Activity {
 		}
 		 */
 		
+	}
+	
+	private class SendHoleInfoToDBTask extends AsyncTask<Void, Void, Void>
+	{
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			AddHoleToCourse controller = new AddHoleToCourse(MasterController.currentCourse.getGolfCourseID(), newHole);
+			controller.run();
+			return null;
+		}
+		
+	}
+	
+	private void createHoleFromParams()
+	{
+		Integer whiteTee = Integer.parseInt(whiteTeeYardEntry.getText().toString());
+		Integer redTee = Integer.parseInt(redTeeYardEntry.getText().toString());
+		Integer blueTee = Integer.parseInt(blueTeeYardEntry.getText().toString());
+		Integer par = Integer.parseInt(parEntry.getText().toString());
+		Integer handicap = Integer.parseInt(handicapEntry.getText().toString());
+		
+		newHole = new Hole(null, MasterController.currentCourse.getGolfCourseID(), MasterController.currentHoleNum, whiteTee, redTee, blueTee, handicap, par, null);
 	}
 
 	@Override

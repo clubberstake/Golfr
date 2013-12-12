@@ -154,16 +154,18 @@ public class CourseInfoEntryScreen extends Activity {
 			GetCoursePrimaryKey courseGetter = new GetCoursePrimaryKey(createdCourse);
 			courseGetter.run();
 			createdCourse.setGolfCourseID(courseGetter.getCourseKey());
+			MasterController.currentHoleNum = 1;
+			MasterController.currentCourse = createdCourse;
 			return null;
 		}
 		
 		@Override
 		protected void onPostExecute(GolfCourse courseIn)
 		{
-			MasterController.currentHoleNum = 1;
+			
 			//set mastercontroller to newly created course
 			
-			MasterController.currentCourse = courseIn;
+			
 			Intent i = new Intent(CourseInfoEntryScreen.this, HoleInfoEntryScreen.class);
 			startActivity(i);
 		}
