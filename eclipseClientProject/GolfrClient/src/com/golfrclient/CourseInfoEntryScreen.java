@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import controller.AddCourse;
 import controller.CourseList;
+import controller.CourseListFetcher;
+import controller.GetCoursePrimaryKey;
 import controller.MasterController;
 import controller.SendCourseDetailsToDB;
 import android.os.AsyncTask;
@@ -149,7 +151,9 @@ public class CourseInfoEntryScreen extends Activity {
 		protected GolfCourse doInBackground(Void... params) {
 			SendCourseDetailsToDB controller = new SendCourseDetailsToDB(createdCourse);
 			controller.run();
-			controller.getNewCourse();
+			GetCoursePrimaryKey courseGetter = new GetCoursePrimaryKey(createdCourse);
+			courseGetter.run();
+			createdCourse.setGolfCourseID(courseGetter.getCourseKey());
 			return null;
 		}
 		
