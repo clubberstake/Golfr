@@ -632,7 +632,7 @@ public abstract class SQLQueries extends Thread
 				Integer handicap = rs.getInt("handicap");
 				Integer par = rs.getInt("par");
 				Integer holeNumber = rs.getInt("holeNumber");							
-				Hole toAdd = new Hole(holeID, courseID,holeNumber,whiteTee,redTee,blueTee,handicap,par,0);				
+				Hole toAdd = new Hole(holeID, courseID,holeNumber,whiteTee,redTee,blueTee,handicap,par,null);				
 				toReturn.add(toAdd);
 
 			}	

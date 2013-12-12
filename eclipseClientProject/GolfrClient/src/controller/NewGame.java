@@ -6,6 +6,11 @@ import golfCourseObjects.User;
 
 import java.sql.SQLException;
 
+/**
+ * This Thread creates all of the records needed to store a "new" Game in the DB.
+ * @author MAG
+ *
+ */
 public class NewGame extends SQLQueries implements Runnable
 {
 	private User user;
@@ -33,8 +38,7 @@ public class NewGame extends SQLQueries implements Runnable
 			try {
 				this.game = super.newGame(user, course);
 
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+			} catch (SQLException e) {			
 				e.printStackTrace();
 			}
 			finally

@@ -6,6 +6,13 @@ import golfCourseObjects.Score;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * This Thread gets the 10 most recent Scores for a given GolfCourse.  It is meant for the "now playing" screen.
+ * 
+ * Note: the ArrayList<Score> can only be retrieved after a this.run() or this.start() call, by using the this.getScoreList() method.
+ * @author matt
+ *
+ */
 public class GetTenMostRecentScores extends SQLQueries implements Runnable {
 
 	private GolfCourse course;

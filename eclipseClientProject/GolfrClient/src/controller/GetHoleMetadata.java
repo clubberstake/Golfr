@@ -6,6 +6,16 @@ import golfCourseObjects.Hole;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * This Thread retrieves an ArrayList<Hole> from the DB which represents the 18 holes of a GolfCourse.  The Hole 
+ * objects have Hole.score == null.  
+ * 
+ * To get an ArrayList<Hole> which includes scores for a particular game, use the GetScorecard class.
+ * 
+ * Note:  the ArrayList<Hole> can only be retrieved after a call to this.run() or this.start(), by using this.getHoleMetadataList()
+ * @author MAG
+ *
+ */
 public class GetHoleMetadata extends SQLQueries implements Runnable {
 
 	private ArrayList<Hole> holeMetadataList;

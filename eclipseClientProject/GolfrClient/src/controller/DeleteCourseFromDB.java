@@ -2,6 +2,12 @@ package controller;
 
 import java.sql.SQLException;
 
+/**
+ * This Thread deletes an existing GolfCourse from the DB.  It is meant for testing purposes so that the DB
+ * can be kept free of "junk" test records.
+ * @author MAG
+ *
+ */
 public class DeleteCourseFromDB extends SQLQueries implements Runnable {
 
 	Integer courseKey;

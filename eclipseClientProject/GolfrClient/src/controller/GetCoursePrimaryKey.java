@@ -4,6 +4,15 @@ import golfCourseObjects.GolfCourse;
 
 import java.sql.SQLException;
 
+
+/**
+ * This Thread gets the primary key of the t_golfcoursedetails table for the golf course which is provided.  This
+ * thread is needed to GolfCourse.courseID variable when a course is created for the first time.
+ * 
+ * Note: the key can only be retrieved after a this.run or a this.start() call by using this.getCourseKey()
+ * @author MAG
+ *
+ */
 public class GetCoursePrimaryKey extends SQLQueries implements Runnable {
 
 	private GolfCourse course;
@@ -26,6 +35,7 @@ public class GetCoursePrimaryKey extends SQLQueries implements Runnable {
 			super.connect();
 			try {
 				this.courseKey = super.getCoursePrimaryKey(course);
+				course.setGolfCourseID(this.courseKey);
 			} catch (SQLException e) {
 				e.printStackTrace();			
 			}

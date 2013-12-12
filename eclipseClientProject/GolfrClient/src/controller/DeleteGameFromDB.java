@@ -2,6 +2,12 @@ package controller;
 
 import java.sql.SQLException;
 
+/**
+ * This Thread deletes a current or prior Game from the DB.  It is meant for testing purposes so that the DB
+ * can be kept "clean" of junk test records.
+ * @author MAG
+ *
+ */
 public class DeleteGameFromDB extends SQLQueries implements Runnable {
 
 	private Integer scoreHistory_pk = null;
