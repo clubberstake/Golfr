@@ -1,6 +1,7 @@
 package golfCourseObjects;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -11,8 +12,8 @@ import java.sql.Date;
 public class Score 
 {
 
-	private Date date;
-	private String userName;
+	private Timestamp timestamp;
+	private User user;
 	private Integer currentHole;
 	private Integer totalScore;
 	/**
@@ -28,37 +29,37 @@ public class Score
 	 * @param currentHole
 	 * @param totalScore
 	 */
-	public Score(Date date, String userName, Integer currentHole, Integer totalScore) 
+	public Score(Timestamp timestamp, User user, Integer currentHole, Integer totalScore) 
 	{
 		super();
-		this.date = date;
-		this.userName = userName;
+		this.timestamp = timestamp;
+		this.user = user;
 		this.currentHole = currentHole;
 		this.totalScore = totalScore;
 	}
 	/**
 	 * @return the date
 	 */
-	public Date getDate() {
-		return date;
+	public Timestamp getTimestamp() {
+		return timestamp;
 	}
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Date date) {
-		this.date = date;
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 	/**
 	 * @return the user
 	 */
-	public String getUserName() {
-		return userName;
+	public User getUser() {
+		return user;
 	}
 	/**
 	 * @param user the user to set
 	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(User user) {
+		this.user = user;
 	}
 	/**
 	 * @return the currentHole

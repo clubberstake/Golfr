@@ -4,6 +4,7 @@ import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;
 import golfCourseObjects.HistoryObject;
 import golfCourseObjects.Hole;
+import golfCourseObjects.Score;
 import golfCourseObjects.User;
 import controller.*;
 
@@ -988,5 +989,43 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 				courseGetter.close();
 		}
 
+	}
+	
+	@Test
+	public void testGetTenMostRecentScores()
+	{
+		ArrayList<Score> scoreList = null;
+		GetTenMostRecentScores scoreGetter = null;
+		GolfCourse course = new GolfCourse();
+		course.setGolfCourseID(1);		
+		
+		/*try to get 10 most recent scores*/
+		try
+		{
+		scoreGetter = new GetTenMostRecentScores(course);
+		scoreGetter.start();
+		synchronized(scoreGetter)
+		{
+			scoreGetter.wait();
+		}
+		scoreList = scoreGetter.getScoreList();
+		assertNotNull(scoreList);
+		assertEquals(2,scoreList.size());			
+		assertEquals(Integer.valueOf(89),scoreList.get(0).getTotalScore());
+		assertEquals(Integer.valueOf(72),scoreList.get(1).getTotalScore());
+		assertTrue(scoreList.get(0).getTimestamp().compareTo(scoreList.get(1).getTimestamp()) > 0);
+		
+		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if (scoreGetter != null)
+				scoreGetter.close();
+		}
+			
 	}
 }
