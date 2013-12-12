@@ -804,6 +804,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 		NewGame newGameMaker = null;
 		GetCourse courseGetter = null;
 		Integer primaryKey = null;
+		Game newGame = null;
 
 
 		ArrayList<Hole> holes = new ArrayList<Hole>(18);		
@@ -923,7 +924,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 				newGameMaker.wait();
 			}
 			
-			Game newGame = newGameMaker.getGame();
+			newGame = newGameMaker.getGame();
 			
 			/*add scores for each hole in the new game*/
 			for (int i = 0;i<18;i++)
@@ -950,14 +951,34 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 			{
 				userHistoryGetter.wait();
 			}
-			ArrayList<HistoryObject> historyList = userHistoryGetter.getHistoryList();			
+			ArrayList<HistoryObject> historyList = userHistoryGetter.getHistoryList();
+			
+			//verify ordering of items in the historyList
 			assertNotNull(historyList);
-			assertEquals(2,historyList.size());			
-			assertEquals(Integer.valueOf(89),historyList.get(0).getTotalScore());
-			assertEquals(Integer.valueOf(90),historyList.get(1).getTotalScore());
-			assertTrue(historyList.get(0).getTimestamp().compareTo(historyList.get(1).getTimestamp()) < 0);
+			//list is bigger than 1
+			assertTrue(historyList.size() >= 2);		
+			//ordered by timestamp
+			assertTrue(historyList.get(0).getTimestamp().compareTo(historyList.get(1).getTimestamp()) > 0);
+			//verify that the history primary keys are in decending order (also a way to temporally verify ordering)
+			int historyPKcounter = historyList.get(0).getGame().getScoreHistoryPK();
+			for (int i=1;i<historyList.size();i++)
+			{
+				assertTrue(historyPKcounter > historyList.get(i).getGame().getScoreHistoryPK());
+			}
 
 			
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}		
+		finally
+		{
+			try
+			{
+				
+				
 			/*Delete the new game from the DB*/
 			gameDeletor = new DeleteGameFromDB(newGame.getScoreHistoryPK());
 			gameDeletor.start();
@@ -976,14 +997,11 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 					courseDeleter.wait();					
 				}
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			
-		}		
-		finally
-		{
-
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 			if (courseSender != null)
 				courseSender.close();
 			if(courseDeleter != null)

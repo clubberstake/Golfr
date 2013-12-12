@@ -60,7 +60,7 @@ public class GetUserHistory extends SQLQueries implements Runnable
 			super.connect();
 			try {
 				this.historyList = super.getUserHistory(this.user);
-				Collections.sort(historyList);
+				
 			} catch (SQLException e) {
 				e.printStackTrace();			
 			}

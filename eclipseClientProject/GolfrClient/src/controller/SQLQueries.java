@@ -337,7 +337,7 @@ public abstract class SQLQueries extends Thread
 			 * Get all games associated with user
 			 */
 			Statement statement2 = null;
-			query = "SELECT * from t_scorehistory WHERE userID = '" + user.getUserID() + "'";
+			query = "SELECT * from t_scorehistory WHERE userID = '" + user.getUserID() + "' ORDER BY timestamp DESC";
 
 			if (connection == null || connection.isClosed())
 				this.connect();
