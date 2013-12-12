@@ -1,17 +1,5 @@
 package controller;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Properties;
-
-import android.os.AsyncTask;
-
 import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;
 import golfCourseObjects.HistoryObject;
@@ -19,11 +7,39 @@ import golfCourseObjects.Hole;
 import golfCourseObjects.Score;
 import golfCourseObjects.User;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+
+/**
+ * This abstract class contains the code needed to execute all MySQL queries for the client application.  It was decided to implement it this way so that all of the SQL could be in
+ * one central location, instead of many distributed classes.
+ * 
+ *  The child classes implement the Runnable interface so that their run() method invokes the corresponding method in this superclass.
+ *  
+ *  The class extends Thread so that the SQL queries can be run on a separate thread for both Android jUnit tests and the client application.
+ *  
+ *  This class executes rather slowly due to the need to repeatedly open and close the java.SQL connection to the DB.  This implementation was chosen for safety, because reusing an active
+ *  connection for multiple queries is not recommended.  A "query pool" would be needed on the server side in order to allow for connection reuse. 
+ * @author MAG
+ *
+ */
 public abstract class SQLQueries extends Thread
 {
 
+	/**
+	 * The java.sql connection to the database
+	 */
 	private Connection connection;
 
+	/**
+	 * Default constructor.  To be called in child classes.
+	 */
 	public SQLQueries()
 	{
 		super();		
@@ -32,10 +48,13 @@ public abstract class SQLQueries extends Thread
 
 	/**
 	 * Creates the records required for a new game in the database.
+	 * 
+	 * Also creates new users in t_user if needed.
+	 * 
 	 * @param user - the user who is playing the game
 	 * @param course - the course to be played--must have a valid course.getGolfCourseID()
 	 * @return Game object representing the new game
-	 * @throws SQLException 
+	 * @throws SQLException - if DB operations fail, an SQLException is thrown
 	 */
 	//MAG: tested in TestDBOperations
 	public Game newGame(User user, GolfCourse course) throws SQLException
@@ -152,7 +171,7 @@ public abstract class SQLQueries extends Thread
 
 			/*create 18 new t_scorecard records to store the game's scorecard*/
 
-			//first get the 18 holes of the course to duplicate
+			//first get the 18 holes of the course to duplicate in the t_scorecard table
 			ArrayList<Hole> holeList = this.getHoleMetadata(course);
 			if (holeList == null)
 				throw new IllegalStateException("Could not get the course's hole list, and therefore could not create scorecard for the new game!");
@@ -183,7 +202,9 @@ public abstract class SQLQueries extends Thread
 			if (connection != null)
 				connection.close();
 		}
+		//instantiate a new Game object
 		Game toReturn = new Game(user,course,0,0);
+		//important: set the scoreHistory_pk for the new Game object
 		toReturn.setScoreHistoryPK(scoreHistoryPK);
 		return toReturn;
 
@@ -267,14 +288,14 @@ public abstract class SQLQueries extends Thread
 	}
 
 	/**
-	 * This method returns an array list of Games which the user has played.
-	 * @param user
-	 * @return
+	 * This method returns an array list of Games which the user has played.  It is meant to be used for use case 7
+	 * @param user - the user whose history is to be retrieved.  The user.getUsername() must not be null
+	 * @return an ArrayList<HistoryObject> whose size() is <= 10
 	 */
 	//MAG: tested by TestDBOperations.java
 	public ArrayList<HistoryObject> getUserHistory(User user) throws SQLException
 	{
-		if (user == null)
+		if (user == null || user.getUsername() == null)
 			throw new IllegalArgumentException("In getUserHistory(user), the user cannot be null.");
 
 		
@@ -330,8 +351,8 @@ public abstract class SQLQueries extends Thread
 
 			
 			/*get the list of games with their ancillary information.  
-			 * Seperate arrayLists are needed here because of the way the this.connect() works--if you call other methods of this class inside the while loop, the connection
-			 * would be reset and the loop would not work anymore.
+			 * Seperate arrayLists are needed here to store data temporarily because of the way the this.connect() works--if you call other methods of this class inside the while loop, the connection
+			 * would be reset and the rs2 loop would not work anymore.
 			 * */
 			while (rs2.next())
 			{
@@ -393,6 +414,8 @@ public abstract class SQLQueries extends Thread
 		ArrayList<Hole> scorecard = null;
 		Integer totalScore = 0;
 
+		
+		/*first get the scorecard for the given game*/
 		try 
 		{
 			scorecard = this.getScorecard(game);
@@ -404,11 +427,13 @@ public abstract class SQLQueries extends Thread
 			throw new IllegalStateException("Unable to compute total score, because the game scorecard could not be retrieved.");
 		}		
 
+		/*compute the total score*/
 		for (Hole h : scorecard)
 		{
 			totalScore += h.getScore();
 		}
 
+		/*the update the t_scorehistory table with the new score*/
 		Statement statement1 = null;
 		String query = "UPDATE t_scorehistory SET totalScore = '" + totalScore + "' WHERE scoreHistory_PK = '" + game.getScoreHistoryPK() + "'";
 
@@ -437,10 +462,10 @@ public abstract class SQLQueries extends Thread
 	}
 
 	/**
-	 * Scores a hole for the given game.  Note that the game and hole paramaters must be correctly configured for their corresponding primary keys in the DB.
-	 * @param game
-	 * @param hole
-	 * @param score
+	 * Scores a hole for the given game, and updates the DB accordingly.  Note that the game and hole parameters must be correctly configured for their corresponding primary keys in the DB.
+	 * @param game - the Game being played
+	 * @param hole - the Hole to score
+	 * @param score - the score value to update in the DB
 	 * @throws SQLException
 	 */
 	//MAG: tested in TestDBOperations.java
@@ -504,10 +529,11 @@ public abstract class SQLQueries extends Thread
 
 
 	/**
-	 * Returns an ArrayList<Hole> which represents the scorecard for a game.  The scores are included in the Hole objects.
+	 * Returns an ArrayList<Hole> which represents the scorecard for a game.  The scores are included in the Hole objects.  This query has similar RESULTS to SQLQueries.getHoleMetadata(),
+	 * but is a much more complicated query due to the normalized DB design.  This method is to be used when the actual scores for the Holes are needed.
 	 * 
 	 * @param game - the game to retrieve the scorecard for.  Game.user and Game.course must be valid and complete (i.e. their key/ID fields must not be null)
-	 * @return
+	 * @return - an ArrayList<Hole> which contains the 18 holes of the course and the score for each hole (as it exists in the DB)
 	 */	
 	//MAG: tested by TestDBOperations.java
 	public ArrayList<Hole> getScorecard(Game game)  throws SQLException
@@ -521,6 +547,7 @@ public abstract class SQLQueries extends Thread
 				"WHERE scoreHistory_pk = '" + game.getScoreHistoryPK() + "';";
 		try
 		{
+			/*first, run the complicated query which relates t_scorecard, t_scorehistory, and t_holes.  This will return all of the information for a Hole object, including the score*/
 			if (connection == null || connection.isClosed())
 				this.connect();
 
@@ -529,7 +556,7 @@ public abstract class SQLQueries extends Thread
 
 			while (rs.next()) 
 			{
-
+				/*get all of the paramaters for new Hole(...)*/
 				Integer holeID = rs.getInt("holeID");
 				Integer courseID = rs.getInt("golfCourseID");
 				Integer whiteTee = rs.getInt("whiteTee");
@@ -539,6 +566,8 @@ public abstract class SQLQueries extends Thread
 				Integer par = rs.getInt("par");
 				Integer holeNumber = rs.getInt("holeNumber");
 				Integer strokes = rs.getInt("strokes");
+				
+				/*instantiate a new Hole(...) and add to the return list*/
 				Hole toAdd = new Hole(holeID, courseID,holeNumber,whiteTee,redTee,blueTee,handicap,par,strokes);				
 				toReturn.add(toAdd);
 
@@ -565,8 +594,13 @@ public abstract class SQLQueries extends Thread
 
 	/**
 	 * Returns an ArrayList of Holes which contains the 18 holes of the provided GolfCourse.  This list contains the "metadata" for each hole (number, par, yardage, etc.).
-	 * @param course
-	 * @return - array list of Holes for the provided course
+	 * 
+	 * Note: the score for each hole is null.  It is meant to produce a generic list of the 18 holes which are associated with the given course.  It does not provide any information
+	 * on the scores of a Game.
+	 * 
+	 * 
+	 * @param course - the course to get the hole list from
+	 * @return - array list of Holes for the provided course (without the score)
 	 */
 	//MAG: tested in TestDBOperations.java
 	public ArrayList<Hole> getHoleMetadata(GolfCourse course)  throws SQLException
@@ -580,6 +614,7 @@ public abstract class SQLQueries extends Thread
 
 		try
 		{
+			/*run the query to get the 18 hole records associated with the course from t_holes*/
 			if (connection == null || connection.isClosed())
 				this.connect();
 
@@ -620,46 +655,61 @@ public abstract class SQLQueries extends Thread
 
 	}
 	
+	/**
+	 * Gets the 10 most recent scores for a given course.  To be used on the "now playing" screen.
+	 * @param course - the course for which the most recent scores are desired
+	 * @return - an ArrayList of Score objects, which represent the "scores" of a user's game(s).  The list is sorted with the most recent score at position 0.
+	 * @throws SQLException
+	 */
+	//MAG: tested by TestDBOperaions	
 	public ArrayList<Score> getTenMostRecentScores(GolfCourse course)  throws SQLException
 	{
 		ArrayList<Score> toReturn = new ArrayList<Score>(10);
 
 		Statement statement = null;
-
-		//this query is known to be incomplete
-		//TODO: figure out how to select "current hole" for each user playing the course
-		String query = "SELECT DISTINCT t_golfcoursehistory.`date` AS `date`, " +
-				"t_user.facebookID AS `facebookID`, " +
-				"t_holes.holeNumber AS `holeNumber`," +
-				"t_scorehistory.totalScore AS `totalScore` " +
-				"FROM t_golfcoursehistory,t_user,t_holes,t_scorehistory,t_scorecard " +
-				"WHERE " +
-				"t_user.userID_pk = t_golfcoursehistory.userID AND " +
-				"t_golfcoursehistory.scoreHistory = t_scorehistory.scoreHistory_pk AND " +
-				"t_scorecard.holeID = t_holes.holeID AND " +
-				"t_golfcoursehistory.courseID = "+ course.getGolfCourseID() +" AND " +
-				"(t_scorecard.strokes = 0 OR holeNumber = 18) " +
-				"ORDER BY t_golfcoursehistory.`date` DESC";		
+		String query = "SELECT t_user.faceBookID, t_user.userID_pk, t_golfcoursehistory.golfCourseHistory_pk, t_golfcoursehistory.courseID, t_golfcoursehistory.scoreHistory, t_scorehistory.userID, t_scorehistory.totalScore, t_scorehistory.`timestamp` AS `time` "+ 
+"FROM golfr.t_golfcoursehistory INNER JOIN (t_scorehistory, t_user) " + 
+"ON (t_scorehistory.scoreHistory_pk = t_golfcoursehistory.scoreHistory AND " + 
+"t_user.userID_pk = t_scorehistory.userID) " + 
+"WHERE t_golfcoursehistory.courseID = '" + course.getGolfCourseID() + "' ORDER BY t_scorehistory.timestamp DESC LIMIT 0, 10;";		
 
 		try
 		{
+			/*Run the complicated query to get the 10 most recent entries in the t_golfcoursehistory table*/
 			if (connection == null || connection.isClosed())
 				this.connect();
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(query);
-			int count = 0;
-
-			while (rs.next() && count < 10) 
+			
+			while (rs.next()) 
 			{
-				Date date = rs.getDate("date");
-				String userName = rs.getString("facebookID");
-				Integer holeNumber = rs.getInt("holeNumber");
+				Timestamp timestamp = rs.getTimestamp("time");
+				String userName = rs.getString("facebookID");				
 				Integer totalScore = rs.getInt("totalScore");
-				Score toAdd = new Score(date, userName, holeNumber, totalScore);				
+				Integer userID = rs.getInt("userID_pk");
+				User u = new User(userName,userID);
+				
+				//create a new Score object and add to the return list
+				Score toAdd = new Score(timestamp, u, null, totalScore);				
 				toReturn.add(toAdd);
-				count++;
 			}	
 			rs.close();
+			
+			/*for each Score, get the corresponding Game, and determine current hole*/
+			for (int i=0; i<toReturn.size();i++)
+			{				
+				Game game = new Game(toReturn.get(i).getUser(), course,toReturn.get(i).getTotalScore(),0);
+				ArrayList<Hole> scorecard = this.getScorecard(game);
+				int currentHole = 0;
+				for (Hole h : scorecard)
+				{
+					if (h.getScore() == null || h.getScore() == 0)
+						break;
+					currentHole++;
+				}
+				//set the current hole for the Score object
+				toReturn.get(i).setCurrentHole(currentHole);
+			}
 		}
 		catch (SQLException e)
 		{
@@ -680,7 +730,7 @@ public abstract class SQLQueries extends Thread
 
 	/**
 	 * Returns the primary key from the t_golfcoursedetails table if the provided course parameters are an exact match.
-	 * @param course
+	 * @param course - a GolfCourse with a null cousreID_pk
 	 * @return if found, the primary key.  Null otherwise.
 	 * @throws SQLException 
 	 */
@@ -689,6 +739,9 @@ public abstract class SQLQueries extends Thread
 	{
 		Integer key = null;
 		Statement statement = null;
+		/*
+		 * The query works on course name, phone, and webAddress.  If all 3 are an exact match, then set the key to return
+		 */
 		String query = "SELECT courseID_PK FROM t_golfcoursedetails WHERE courseName = '" + course.getCourseName() + "' AND " +
 				"phone = '" + course.getPhoneNumber() + "' AND " +
 				"webAddress = '" + course.getWebaddress() + "'";
@@ -797,8 +850,9 @@ public abstract class SQLQueries extends Thread
 	}
 
 	/**
-	 * Adds a course to the DB table t_golfcoursedetails.  It is meant for use case 3.  Note, it does not add the 18 holes of the new course to the DB, that is done by another method. 
-	 * @param newCourse
+	 * Adds a course to the DB table t_golfcoursedetails.  It is meant for use case 3.  Note, it does not add the 18 holes of the new course to the DB, 
+	 * that is done by SQLQueries.addHoleToCourseInDB(). 
+	 * @param newCourse - the GolfCourse to be created.  Should have a null courseID
 	 * @throws SQLException 
 	 */
 	//MAG: tested in TestDBOperations.java
@@ -842,7 +896,7 @@ public abstract class SQLQueries extends Thread
 	/**
 	 * Adds a Hole object to the associated course in the DB.
 	 * @param courseKey - the primary key of the course which is to have a hole added to it.  Use SQLQueries.getCoursePrimaryKey() to get the correct key if not known.
-	 * @param toAdd - the hole to add to the DB
+	 * @param toAdd - the hole to add to the DB.  HoleID should be null
 	 */
 	//MAG: tested in TestDBOperations.java
 	public void addHoleToCourseInDB(Integer courseKey, Hole toAdd) throws SQLException
@@ -865,7 +919,7 @@ public abstract class SQLQueries extends Thread
 			statement = this.connection.createStatement();
 			int success = statement.executeUpdate(query);
 			if (success != 1)
-				throw new IllegalStateException();
+				throw new IllegalStateException("Could not add Hole to course in DB");
 		}
 		catch (SQLException e)
 		{
@@ -1058,7 +1112,7 @@ public abstract class SQLQueries extends Thread
 		{
 			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://192.168.1.12:3306/golfr";
+		String url = "jdbc:mysql://192.168.1.12:3306/golfr";//this IP address needs to be set to the machine which is hosting the MySQL DB.
 		String userName = "client";
 		String password = "12345";
 
