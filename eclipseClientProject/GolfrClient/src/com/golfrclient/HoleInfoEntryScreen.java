@@ -7,18 +7,15 @@ import controller.AddHoleToCourse;
 import controller.MasterController;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.view.MenuItem;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import controller.MasterController;
 
 public class HoleInfoEntryScreen extends Activity {
 
@@ -31,12 +28,14 @@ public class HoleInfoEntryScreen extends Activity {
 	private TextView holeCounterView;
 	private Hole newHole;
 	private Button testButton;
-
+	private ArrayList<Hole> holeList;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hole_info_entry_screen);
-
+		holeList = new ArrayList<Hole>(18);
+		initHoleList();
 		whiteTeeYardEntry = (EditText) findViewById(R.id.HoleInfoScreen_WhiteTeeEntry);
 		redTeeYardEntry = (EditText) findViewById(R.id.HoleInfoScreen_RedTeeEntry);
 		blueTeeYardEntry = (EditText) findViewById(R.id.HoleInfoScreen_BlueTeeEntry);
@@ -54,6 +53,7 @@ public class HoleInfoEntryScreen extends Activity {
 			public void onClick(View v) {
 
 				createTestHole();
+				holeList.set(MasterController.currentHoleNum-1, newHole);
 				new SendHoleInfoToDBTask().execute();
 				MasterController.currentHoleNum++;
 				if (MasterController.currentHoleNum > 18) {
@@ -82,6 +82,7 @@ public class HoleInfoEntryScreen extends Activity {
 			public void onClick(View v) {
 
 				createHoleFromParams();
+				holeList.set(MasterController.currentHoleNum-1, newHole);
 				new SendHoleInfoToDBTask().execute();
 				MasterController.currentHoleNum++;
 				if (MasterController.currentHoleNum > 18) {
