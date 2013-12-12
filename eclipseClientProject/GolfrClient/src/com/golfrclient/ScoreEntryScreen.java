@@ -41,8 +41,7 @@ public class ScoreEntryScreen extends Activity {
 		/*
 		 * Force dummy data into master controller for test
 		 */
-		MasterController.currentCourse = new GolfCourse(null, null, null, null,
-				null, null, null, 1);
+		
 
 		if (MasterController.currentHoleNum == null) {
 			MasterController.currentHoleNum = 0;
@@ -70,7 +69,10 @@ public class ScoreEntryScreen extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				if(scoreEntry.getText()!=null)
+				{
 				if (MasterController.currentHoleNum == 17) {
+					new SendScoreTask().execute();
 					Intent i = new Intent(ScoreEntryScreen.this,
 							ScoreCardScreen.class);
 					startActivity(i);
@@ -80,6 +82,7 @@ public class ScoreEntryScreen extends Activity {
 
 					populateHoleDataToScreen();
 					scoreEntry.setText(null);
+				}
 				}
 
 			}
@@ -128,8 +131,16 @@ public class ScoreEntryScreen extends Activity {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// new AddScoreForHole().sendScoreToDB(gameIn, holeIn, scoreIn)
+			Integer score = Integer.parseInt(scoreEntry.getText().toString());
+			//return new AddScoreForHole().sendScoreToDB(MasterController.game, holeList.get(MasterController.currentHoleNum), score);
+			AddScoreForHole controller = new AddScoreForHole(MasterController.game, holeList.get(MasterController.currentHoleNum), score);
+			controller.run();
+			
 			return null;
+			
 		}
+		
+		
 
 	}
 
