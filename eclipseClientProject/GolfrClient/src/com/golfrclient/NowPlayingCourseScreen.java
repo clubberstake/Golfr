@@ -2,6 +2,7 @@ package com.golfrclient;
 
 import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;
+import golfCourseObjects.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,6 +24,10 @@ public class NowPlayingCourseScreen extends Activity {
 
 		@Override
 		protected Game doInBackground(Void... params) {
+			if (MasterController.user == null)
+			{
+				MasterController.user = new User("nullUser");
+			}
 			NewGame controller = new NewGame(MasterController.user, MasterController.currentCourse);
 			controller.run();
 			

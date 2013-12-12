@@ -85,8 +85,7 @@ public abstract class SQLQueries extends Thread
 			//if user does not exist in t_user table, add him to the table and get the user's primary key
 			if (userID_pk == null)
 			{
-				//close 1st statement and connection
-				statement.close();
+				
 				connection.close();
 				//reconnect
 				this.connect();
@@ -110,7 +109,7 @@ public abstract class SQLQueries extends Thread
 				ResultSet rs2point5 = statement2point5.executeQuery(query);
 				while (rs2point5.next()) 
 				{
-					userID_pk = rs.getInt("userID_pk");
+					userID_pk = rs2point5.getInt("userID_pk");
 				}
 				rs2point5.close();
 				statement2point5.close();
