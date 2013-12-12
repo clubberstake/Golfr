@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
- * The GolfCourse class represnts a golf course.  It contains the necessairy
+ * The GolfCourse class represents a golf course.  It contains the necessary
  * golf course parameters and an ArrayList<Holes> size() == 18.
- * @author matt
+ * @author MAG
  *
  */
 public class GolfCourse 

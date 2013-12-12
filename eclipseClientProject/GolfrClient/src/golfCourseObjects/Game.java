@@ -1,7 +1,15 @@
 package golfCourseObjects;
 
-import java.sql.Timestamp;
 
+
+/**
+ * The Game class represents a game that the user is playing on a GolfCourse.
+ * 
+ * Most importantly, it holds the scoreHistoryPK, which is the primary key in the database which links the t_scorecard
+ * records to the t_scorehistory and t_golfcoursehistory.  This key value is the "linchpin" of the database.
+ * @author MAG
+ *
+ */
 public class Game 
 {
 	private User user;
@@ -9,7 +17,7 @@ public class Game
 	private Integer totalScore;
 	private Integer currentOverUnder;
 	private Integer scoreHistoryPK;
-	private Timestamp timestamp;
+	
 
 	/**
 	 *Default constructor. 
@@ -21,7 +29,7 @@ public class Game
 		this.course = new GolfCourse();
 		this.totalScore = 0;
 		this.currentOverUnder = 0;	
-		this.timestamp = null;
+		
 	}
 
 	/**

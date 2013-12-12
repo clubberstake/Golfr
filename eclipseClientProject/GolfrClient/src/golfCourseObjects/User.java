@@ -3,7 +3,7 @@ package golfCourseObjects;
 
 /**
  * The User class represents a user who plays a game of golf.
- * @author Matt Gisoni
+ * @author MAG
  *
  */
 public class User 

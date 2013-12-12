@@ -15,13 +15,16 @@ public class Score
 	private User user;
 	private Integer currentHole;
 	private Integer totalScore;
+	
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public Score() {
 		super();
 	}
+	
 	/**
+	 * Typical constructor
 	 * @param date
 	 * @param user
 	 * @param currentHole

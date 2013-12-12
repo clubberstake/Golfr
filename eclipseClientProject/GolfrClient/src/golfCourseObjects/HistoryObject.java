@@ -9,15 +9,21 @@ import java.sql.Timestamp;
  */
 public class HistoryObject implements Comparable<HistoryObject>
 {
-private Game game;
-private Integer totalScore;
-private Timestamp timestamp;
+	private Game game;
+	private Integer totalScore;
+	private Timestamp timestamp;
 
+	/**
+	 * Default constructor
+	 */
 	public HistoryObject() 
 	{
 		super();
 	}
-	
+
+	/**
+	 * Typical constructor
+	 */
 	public HistoryObject(Game game, Integer totalScore, Timestamp timestamp)
 	{
 		this.game = game;
