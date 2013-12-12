@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 
 import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;
+import golfCourseObjects.HistoryObject;
 import golfCourseObjects.Hole;
 import golfCourseObjects.Score;
 import golfCourseObjects.User;
@@ -270,17 +271,22 @@ public abstract class SQLQueries extends Thread
 	 * @param user
 	 * @return
 	 */
-	//TODO create junit test
-	public ArrayList<Game> getUserHistory(User user)
+	//MAG: tested by TestDBOperations.java
+	public ArrayList<HistoryObject> getUserHistory(User user) throws SQLException
 	{
 		if (user == null)
 			throw new IllegalArgumentException("In getUserHistory(user), the user cannot be null.");
 
-		ArrayList<Game> toReturn = new ArrayList<Game>();
+		
 		Statement statement1 = null;
 		String query = "SELECT * " +
 				"FROM t_user " +
 				"WHERE faceBookID = '" + user.getUsername()+ "'";
+		ArrayList<Game> gameList = new ArrayList<Game>();
+		ArrayList<Integer> courseIDList = new ArrayList<Integer>();
+		ArrayList<Integer> totalScoreList = new ArrayList<Integer>();
+		ArrayList<Timestamp> timestampList = new ArrayList<Timestamp>();
+		ArrayList<HistoryObject> toReturn = new ArrayList<HistoryObject>();
 
 		try
 		{
@@ -322,6 +328,11 @@ public abstract class SQLQueries extends Thread
 			Integer courseID = null;
 			Timestamp timestamp = null;
 
+			
+			/*get the list of games with their ancillary information.  
+			 * Seperate arrayLists are needed here because of the way the this.connect() works--if you call other methods of this class inside the while loop, the connection
+			 * would be reset and the loop would not work anymore.
+			 * */
 			while (rs2.next())
 			{
 				scoreHistory_pk = rs2.getInt("scoreHistory_pk");
@@ -330,14 +341,27 @@ public abstract class SQLQueries extends Thread
 				timestamp = rs2.getTimestamp("timestamp");
 				Game g = new Game(user,null,0,0);
 				g.setScoreHistoryPK(scoreHistory_pk);
-				GolfCourse course = this.getCourse(courseID);
-				ArrayList<Hole> scorecard = this.getScorecard(g);
-				course.setHoles(scorecard);
-				g.setCourse(course);
-				toReturn.add(g);				
+				gameList.add(g);
+				courseIDList.add(courseID);
+				totalScoreList.add(totalScore);
+				timestampList.add(timestamp);
 			}
 			rs2.close();
 			statement2.close();
+			connection.close();
+			
+			
+			/*Create and populate the HistoryObjects based on the arrayLists*/ 
+			for(int i=0;i<courseIDList.size();i++)
+			{
+				GolfCourse course = this.getCourse(courseIDList.get(i));
+				ArrayList<Hole> scorecard = this.getScorecard(gameList.get(i));
+				course.setHoles(scorecard);
+				gameList.get(i).setCourse(course);
+				HistoryObject o = new HistoryObject(gameList.get(i),totalScoreList.get(i),timestampList.get(i));
+				toReturn.add(o);				
+			}
+			
 			if (connection != null)
 				connection.close();
 
@@ -345,6 +369,11 @@ public abstract class SQLQueries extends Thread
 		catch (SQLException e)
 		{
 			throw new IllegalStateException("Cannot find user's primary key in SQLQueries.getUserHistory()");
+		}
+		finally
+		{
+			if (connection!=null)
+				connection.close();
 		}
 
 		return toReturn;
@@ -590,8 +619,7 @@ public abstract class SQLQueries extends Thread
 		return toReturn;
 
 	}
-
-	//TODO determine if this is still needed
+	
 	public ArrayList<Score> getTenMostRecentScores(GolfCourse course)  throws SQLException
 	{
 		ArrayList<Score> toReturn = new ArrayList<Score>(10);
@@ -1030,7 +1058,7 @@ public abstract class SQLQueries extends Thread
 		{
 			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://192.168.1.6:3306/golfr";
+		String url = "jdbc:mysql://192.168.1.12:3306/golfr";
 		String userName = "client";
 		String password = "12345";
 
