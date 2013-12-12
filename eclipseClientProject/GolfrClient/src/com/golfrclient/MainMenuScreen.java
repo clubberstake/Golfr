@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -57,4 +58,19 @@ public class MainMenuScreen extends Activity {
 		return true;
 	}
 
+	/**
+	 * when press logout,return to the login menu
+	 * @author Bolong
+	 */
+	 @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {
+	            case R.id.action_settings:
+	    			Intent i = new Intent(this,MainActivity.class);
+	    			startActivity(i);
+	                break; 
+	        }
+	        // TODO Auto-generated method stub
+	        return super.onOptionsItemSelected(item);
+	    }	
 }

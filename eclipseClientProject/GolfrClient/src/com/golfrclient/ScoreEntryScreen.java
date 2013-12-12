@@ -1,7 +1,7 @@
 package com.golfrclient;
 
 import golfCourseObjects.Hole;
-
+import golfCourseObjects.GolfCourse;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -10,12 +10,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import controller.AddScoreForHole;
 import controller.GetScorecard;
 import controller.MasterController;
+import controller.GetHoleMetadata;
 
 public class ScoreEntryScreen extends Activity {
 	private TextView holeNumView;
@@ -139,8 +141,6 @@ public class ScoreEntryScreen extends Activity {
 			
 		}
 		
-		
-
 	}
 
 	/**
@@ -167,5 +167,38 @@ public class ScoreEntryScreen extends Activity {
 						.toString());
 	}
 	// JUST CODE TO TEST COMMIT
-
+	/**
+	 * When in LANDSCAPE ORIENTATION ,back button jump to ScoreCardScreen
+	 * When not in LANDSCAPE ORIENTATION ,back button work as usual
+	 * 	 * @author Bolong
+	 * 
+	 */
+	@Override  
+    public void onBackPressed()  
+    {  
+		int orientation = this.getResources().getConfiguration().orientation;
+		if (orientation== 2)        // 1 for Configuration.ORIENTATION_PORTRAIT
+		{                           // 2 for Configuration.ORIENTATION_LANDSCAPE
+		                            // 0 for Configuration.ORIENTATION_SQUARE
+			Intent i = new Intent(this,ScoreCardScreen.class);			
+			startActivity(i);			
+		}
+		super.onBackPressed();
+    }
+	
+	/**
+	 * when press logout,return to the login menu
+	 * @author Bolong
+	 */	
+	 @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {
+	            case R.id.action_settings:
+	    			Intent i = new Intent(this,MainActivity.class);
+	    			startActivity(i);
+	                break; 
+	        }
+	        // TODO Auto-generated method stub
+	        return super.onOptionsItemSelected(item);
+	    }	
 }

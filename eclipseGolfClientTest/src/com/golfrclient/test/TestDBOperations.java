@@ -6,31 +6,22 @@ import golfCourseObjects.HistoryObject;
 import golfCourseObjects.Hole;
 import golfCourseObjects.Score;
 import golfCourseObjects.User;
+import controller.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import android.os.AsyncTask;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.golfrclient.MainActivity;
-
-import controller.AddHoleToCourse;
-import controller.AddScoreForHole;
-import controller.ComputeTotalScore;
-import controller.CourseList;
-import controller.DeleteCourseFromDB;
-import controller.DeleteGameFromDB;
-import controller.GetCourse;
-import controller.GetCoursePrimaryKey;
-import controller.GetHoleMetadata;
-import controller.GetScorecard;
-import controller.GetTenMostRecentScores;
-import controller.GetUserHistory;
-import controller.NewGame;
-import controller.SendCourseDetailsToDB;
 
 public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActivity>
 {
@@ -60,7 +51,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 	@After
 	public void tearDown()
 	{
-		///CLOVER:FLUSH
+
 	}
 
 	@Test
