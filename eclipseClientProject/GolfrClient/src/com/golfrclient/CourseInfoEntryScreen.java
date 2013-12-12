@@ -4,18 +4,9 @@ import golfCourseObjects.GolfCourse;
 
 import java.util.ArrayList;
 
-
-import controller.AddCourse;
-import controller.CourseList;
-import controller.CourseListFetcher;
-import controller.GetCoursePrimaryKey;
-import controller.MasterController;
-import controller.SendCourseDetailsToDB;
-import android.os.AsyncTask;
-import android.os.Bundle;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,13 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import controller.AddCourse;
+import controller.GetCoursePrimaryKey;
 import controller.MasterController;
-import android.widget.ArrayAdapter;
+import controller.SendCourseDetailsToDB;
 
 public class CourseInfoEntryScreen extends Activity {
 
-	private AddCourse controller;
+	
 	private EditText courseNameEntry;
 	private EditText courseStreetNum;
 	private EditText courseStreetName;

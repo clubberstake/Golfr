@@ -1,7 +1,7 @@
 package com.golfrclient;
 
 import golfCourseObjects.Hole;
-import golfCourseObjects.GolfCourse;
+
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -9,15 +9,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import controller.AddScoreForHole;
 import controller.GetScorecard;
 import controller.MasterController;
-import controller.GetHoleMetadata;
 
 public class ScoreEntryScreen extends Activity {
 	private TextView holeNumView;
@@ -130,8 +129,7 @@ public class ScoreEntryScreen extends Activity {
 			
 		}
 		
-<<<<<<< HEAD
-=======
+
 		@Override
 		protected void onPostExecute(Void result){
 			if (MasterController.currentHoleNum == 17) {
@@ -149,7 +147,7 @@ public class ScoreEntryScreen extends Activity {
 		
 		
 
->>>>>>> 8c5f95c0c874021cbf208ef5bf72273edbabdce9
+
 	}
 
 	/**

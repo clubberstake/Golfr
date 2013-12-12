@@ -5,7 +5,6 @@ import golfCourseObjects.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class GetUserHistory extends SQLQueries implements Runnable 
 {
