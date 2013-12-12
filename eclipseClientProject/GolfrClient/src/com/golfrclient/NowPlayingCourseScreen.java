@@ -21,10 +21,16 @@ public class NowPlayingCourseScreen extends Activity {
 
 		@Override
 		protected Game doInBackground(Void... params) {
+			try{
 			NewGame controller = new NewGame(MasterController.user, MasterController.currentCourse);
 			controller.run();
-			
 			return controller.getGame();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return null;
 		}
 		
 		@Override
@@ -35,6 +41,7 @@ public class NowPlayingCourseScreen extends Activity {
 			Intent i = new Intent(NowPlayingCourseScreen.this, HoleSelectionScreen.class);
 			startActivity(i);
 		}
+		
 		
 	}
 	
