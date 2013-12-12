@@ -72,18 +72,7 @@ public class ScoreEntryScreen extends Activity {
 			public void onClick(View arg0) {
 				if(scoreEntry.getText()!=null)
 				{
-				if (MasterController.currentHoleNum == 17) {
 					new SendScoreTask().execute();
-					Intent i = new Intent(ScoreEntryScreen.this,
-							ScoreCardScreen.class);
-					startActivity(i);
-				} else {
-					new SendScoreTask().execute();
-					MasterController.currentHoleNum++;
-
-					populateHoleDataToScreen();
-					scoreEntry.setText(null);
-				}
 				}
 
 			}
@@ -141,6 +130,26 @@ public class ScoreEntryScreen extends Activity {
 			
 		}
 		
+<<<<<<< HEAD
+=======
+		@Override
+		protected void onPostExecute(Void result){
+			if (MasterController.currentHoleNum == 17) {
+				Intent i = new Intent(ScoreEntryScreen.this,
+						ScoreCardScreen.class);
+				startActivity(i);
+			} else {
+				
+				MasterController.currentHoleNum++;
+
+				populateHoleDataToScreen();
+				scoreEntry.setText(null);
+			}
+		}
+		
+		
+
+>>>>>>> 8c5f95c0c874021cbf208ef5bf72273edbabdce9
 	}
 
 	/**

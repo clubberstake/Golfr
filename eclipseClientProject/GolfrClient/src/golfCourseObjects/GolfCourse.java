@@ -1,6 +1,7 @@
 package golfCourseObjects;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * The GolfCourse class represnts a golf course.  It contains the necessairy
@@ -224,7 +225,51 @@ public class GolfCourse
 		}
 		return result;
 	}
-
+	
+	public boolean courseNameValidityCheck()
+	{
+		boolean result = true;
+		if(this.courseName == null || this.courseName == "" || this.courseName == " ")
+		{
+			result = false;
+		}
+		
+		return result;
+	}
+	
+	public boolean courseStreetNameValidityCheck()
+	{
+		boolean result = true;
+		if(this.streetName == null || this.streetName == "" || this.streetName == " ")
+		{
+			result = false;
+		}
+		
+		return result;
+	}
+	
+	public boolean courseStreetNumberValidityCheck()
+	{
+		if ((Pattern.matches("[a-zA-Z]+", this.streetNumber) == true && (Pattern.matches("[a-zA-Z0-9]+", this.streetNumber) == true)))
+		{
+			return false;
+		}
+		
+		
+		return true;
+	}
+	
+	public boolean coursePostalCodeValidityCheck()
+	{
+		if ((this.postalCode.length() !=5) || (Pattern.matches("[a-zA-Z]+", this.postalCode) == true && (Pattern.matches("[a-zA-Z0-9]+", this.postalCode) == true)))
+		{
+			return false;
+		}
+		
+		
+		return true;
+	}
+	
 	/**
 	 * Overrides the toString method to return the GolfCourse name
 	 * @return the name of the GolfCourse
