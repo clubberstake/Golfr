@@ -3,6 +3,8 @@ package com.golfrclient;
 import golfCourseObjects.Game;
 import golfCourseObjects.GolfCourse;
 import controller.MasterController;
+import controller.NewGame;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +18,26 @@ public class NowPlayingCourseScreen extends Activity {
 	private ListView currentlyPlayingListView;
 	private Button newGameButton;
 	
+	private class SendNewGameTask extends AsyncTask<Void, Void, Game>{
+
+		@Override
+		protected Game doInBackground(Void... params) {
+			NewGame controller = new NewGame(MasterController.user, MasterController.currentCourse);
+			controller.run();
+			
+			return controller.getGame();
+		}
+		
+		@Override
+		protected void onPostExecute(Game gameIn)
+		{
+			MasterController.game = gameIn;
+			Intent i = new Intent(NowPlayingCourseScreen.this, HoleSelectionScreen.class);
+			startActivity(i);
+		}
+		
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,9 +50,10 @@ public class NowPlayingCourseScreen extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				MasterController.game = new Game(MasterController.user, MasterController.currentCourse, null, null);
-				Intent i = new Intent(NowPlayingCourseScreen.this, HoleSelectionScreen.class);
-				startActivity(i);
+				//MasterController.game = new Game(MasterController.user, MasterController.currentCourse, null, null);
+				//Intent i = new Intent(NowPlayingCourseScreen.this, HoleSelectionScreen.class);
+				//startActivity(i);
+				new SendNewGameTask().execute();
 				
 				
 			}
