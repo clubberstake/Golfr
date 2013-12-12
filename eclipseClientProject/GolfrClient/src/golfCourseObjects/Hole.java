@@ -182,7 +182,7 @@ public class Hole
 	}
 
 	/**
-	 * Checks the validity of Hole variable data.
+	 * Checks the validity of all Hole variable data.
 	 * @return true if data is valid, false otherwise.
 	 */
 	public boolean validityCheck() 
@@ -200,6 +200,42 @@ public class Hole
 			return false;
 	}
 
+	/**
+	 *Checks the validity of Hole number only
+	 *@return - true if valid hole number, false otherwise 
+	 */
+	public boolean holeNumberValidtyCheck()
+	{
+		if (this.holeNumber >=1 && this.holeNumber<=18)
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * Checks the validity of Hole par data only
+	 * @return - true if the par value is valid, false otherwise
+	 */
+	public boolean parValidtyCheck()
+	{
+		if (this.par >=3 && this.par <=5)
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * Checks the validity of the values for red tee, white tee, and blue tee yardages.
+	 * @return - true if the range of values is valid, false otherwise
+	 */
+	public boolean yardageValidityCheck()
+	{
+		if (this.redTeeYardage <= this.whiteTeeYargage &&
+				this.whiteTeeYargage <= this.blueTeeYardage)
+			return true;
+		else
+			return false;
+	}
 	/**
 	 * @return the courseID
 	 */
