@@ -67,11 +67,31 @@
             android:hint="Par"
             android:inputType="numberSigned" />
 
+        <TextView
+            android:id="@+id/HoleInfoScreen_HandicapView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Handicap" />
+
+        <EditText
+            android:id="@+id/HoleInfoScreen_HandicapEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Handicap"
+            android:inputType="number" />
+
         <Button
             android:id="@+id/HoleInfoScreen_NextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Next" />
+
+        <Button
+            android:id="@+id/HoleInfoScreen_testButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EnterTestData" />
 
     </LinearLayout>
 

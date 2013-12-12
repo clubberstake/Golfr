@@ -31,6 +31,7 @@ public class NowPlayingCourseScreen extends Activity {
 		protected void onPostExecute(Game gameIn)
 		{
 			MasterController.game = gameIn;
+			MasterController.currentHoleNum =null;
 			Intent i = new Intent(NowPlayingCourseScreen.this, HoleSelectionScreen.class);
 			startActivity(i);
 		}

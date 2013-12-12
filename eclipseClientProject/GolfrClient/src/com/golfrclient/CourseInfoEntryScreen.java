@@ -1,6 +1,18 @@
 package com.golfrclient;
 
+import golfCourseObjects.GolfCourse;
+
 import java.util.ArrayList;
+
+
+import controller.AddCourse;
+import controller.CourseList;
+import controller.CourseListFetcher;
+import controller.GetCoursePrimaryKey;
+import controller.MasterController;
+import controller.SendCourseDetailsToDB;
+import android.os.AsyncTask;
+import android.os.Bundle;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +38,7 @@ public class CourseInfoEntryScreen extends Activity {
 	private EditText courseWebsiteEntry;
 	private Button nextButton;
 	private ArrayList<String> stateList;
+	private GolfCourse createdCourse;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +64,7 @@ public class CourseInfoEntryScreen extends Activity {
 			public void onClick(View v) {
 				
 				String courseName = courseNameEntry.getText().toString();
-				String courseAddress = courseStreetNum.getText().toString();
+				String courseStreetNumber = courseStreetNum.getText().toString();
 				String courseAddress2 = courseStreetName.getText().toString();
 				String courseCity = courseCityEntry.getText().toString();
 				String courseState = "PA"; // <-- FINISH THIS IMPLEMENTATION!!
@@ -59,11 +72,16 @@ public class CourseInfoEntryScreen extends Activity {
 				String coursePhoneNumber = coursePhoneNumberEntry.getText().toString();
 				String courseWebsite = courseWebsiteEntry.getText().toString();
 				
+				createdCourse = new GolfCourse(courseName, courseAddress2, courseStreetNumber, coursePostalCode, coursePhoneNumber, courseWebsite, null, null);
+				new SendCourseInfoTask().execute();
+				/*
+				 * Moved to AsyncTask
 				MasterController.currentHoleNum = 1;
 				//set mastercontroller to newly created course
 				
 				Intent i = new Intent(CourseInfoEntryScreen.this, HoleInfoEntryScreen.class);
 				startActivity(i);
+				*/
 			}
 		});
 		
@@ -127,6 +145,34 @@ public class CourseInfoEntryScreen extends Activity {
 		 
 		 */
 		
+		
+	}
+	
+	private class SendCourseInfoTask extends AsyncTask<Void, Void, GolfCourse>
+	{
+
+		@Override
+		protected GolfCourse doInBackground(Void... params) {
+			SendCourseDetailsToDB controller = new SendCourseDetailsToDB(createdCourse);
+			controller.run();
+			GetCoursePrimaryKey courseGetter = new GetCoursePrimaryKey(createdCourse);
+			courseGetter.run();
+			createdCourse.setGolfCourseID(courseGetter.getCourseKey());
+			MasterController.currentHoleNum = 1;
+			MasterController.currentCourse = createdCourse;
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(GolfCourse courseIn)
+		{
+			
+			//set mastercontroller to newly created course
+			
+			
+			Intent i = new Intent(CourseInfoEntryScreen.this, HoleInfoEntryScreen.class);
+			startActivity(i);
+		}
 		
 	}
 
