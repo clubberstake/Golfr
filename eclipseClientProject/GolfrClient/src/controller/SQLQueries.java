@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 
 /**
+ * 
  * This abstract class contains the code needed to execute all MySQL queries for the client application.  It was decided to implement it this way so that all of the SQL could be in
  * one central location, instead of many distributed classes.
  * 
