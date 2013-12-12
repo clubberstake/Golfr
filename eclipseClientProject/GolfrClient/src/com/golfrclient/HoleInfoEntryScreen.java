@@ -1,5 +1,6 @@
 package com.golfrclient;
 
+import java.util.ArrayList;
 
 import golfCourseObjects.Hole;
 import controller.AddHoleToCourse;
@@ -12,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -159,4 +162,52 @@ public class HoleInfoEntryScreen extends Activity {
 		return true;
 	}
 
+	/**
+	 * if hole number >1 return to previous hole
+	 * if hole number =1 return to Course Info Screen
+	 * @author Bolong
+	 * 
+	 */
+	@Override  
+    public void onBackPressed()  
+    {  
+			MasterController.currentHoleNum--;
+			if (MasterController.currentHoleNum < 1) {
+				MasterController.currentHoleNum = null;
+				super.onBackPressed();
+			} else {
+				newHole = holeList.get(MasterController.currentHoleNum-1);
+				// clear all entry fields
+				whiteTeeYardEntry.setText(newHole.getWhiteTeeYargage().toString());
+				redTeeYardEntry.setText(newHole.getRedTeeYardage().toString());
+				blueTeeYardEntry.setText(newHole.getBlueTeeYardage().toString());
+				parEntry.setText(newHole.getPar().toString());
+				handicapEntry.setText(newHole.getHandicap().toString());
+				holeCounterView.setText("Hole: "
+						+ MasterController.currentHoleNum);
+			}
+    }
+	
+	private void initHoleList()
+	{
+		for(int j=0;j<18;j++){
+			holeList.add(null);			
+		}
+	}
+
+	/**
+	 * when press logout,return to the login menu
+	 * @author Bolong
+	 */
+	 @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {
+	            case R.id.action_settings:
+	    			Intent i = new Intent(this,MainActivity.class);
+	    			startActivity(i);
+	                break; 
+	        }
+	        // TODO Auto-generated method stub
+	        return super.onOptionsItemSelected(item);
+	    }	
 }
