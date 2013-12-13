@@ -8,15 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/Main_GoToCourseList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="17dp"
-        android:text="TestButton" />
-
     <EditText
         android:id="@+id/Main_UsernameEntry"
         android:layout_width="wrap_content"

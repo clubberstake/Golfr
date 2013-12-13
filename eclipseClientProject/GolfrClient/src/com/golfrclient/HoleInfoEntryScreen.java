@@ -27,9 +27,9 @@ public class HoleInfoEntryScreen extends Activity {
 	private Button nextButton;
 	private TextView holeCounterView;
 	private Hole newHole;
-	private Button testButton;
+
 	private ArrayList<Hole> holeList;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,46 +43,16 @@ public class HoleInfoEntryScreen extends Activity {
 		handicapEntry = (EditText) findViewById(R.id.HoleInfoScreen_HandicapEntry);
 		nextButton = (Button) findViewById(R.id.HoleInfoScreen_NextButton);
 		holeCounterView = (TextView) findViewById(R.id.HoleInfoScreen_HoleCounterView);
-		testButton = (Button) findViewById(R.id.HoleInfoScreen_testButton);
+
 		holeCounterView.setText("Hole: " + MasterController.currentHoleNum);
-		
-		
-		testButton.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-
-				createTestHole();
-				holeList.set(MasterController.currentHoleNum-1, newHole);
-				new SendHoleInfoToDBTask().execute();
-				MasterController.currentHoleNum++;
-				if (MasterController.currentHoleNum > 18) {
-					MasterController.currentHoleNum = 1;
-					Intent i = new Intent(HoleInfoEntryScreen.this,
-							CourseListScreen.class);
-					startActivity(i);
-				} else {
-					// clear all entry fields
-					whiteTeeYardEntry.setText(null);
-					redTeeYardEntry.setText(null);
-					blueTeeYardEntry.setText(null);
-					parEntry.setText(null);
-					handicapEntry.setText(null);
-					holeCounterView.setText("Hole: "
-							+ MasterController.currentHoleNum);
-				}
-
-			}
-		});
-		
-		
 		nextButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
 				createHoleFromParams();
-				holeList.set(MasterController.currentHoleNum-1, newHole);
+				holeList.set(MasterController.currentHoleNum - 1, newHole);
 				new SendHoleInfoToDBTask().execute();
 				MasterController.currentHoleNum++;
 				if (MasterController.currentHoleNum > 18) {
@@ -148,12 +118,11 @@ public class HoleInfoEntryScreen extends Activity {
 				MasterController.currentHoleNum, whiteTee, redTee, blueTee,
 				handicap, par, null);
 	}
-	
-	private void createTestHole(){
+
+	private void createTestHole() {
 		newHole = new Hole(null,
 				MasterController.currentCourse.getGolfCourseID(),
-				MasterController.currentHoleNum, 255, 123, 365,
-				1, 2, null);
+				MasterController.currentHoleNum, 255, 123, 365, 1, 2, null);
 	}
 
 	@Override
@@ -164,51 +133,50 @@ public class HoleInfoEntryScreen extends Activity {
 	}
 
 	/**
-	 * if hole number >1 return to previous hole
-	 * if hole number =1 return to Course Info Screen
+	 * if hole number >1 return to previous hole if hole number =1 return to
+	 * Course Info Screen
+	 * 
 	 * @author Bolong
 	 * 
 	 */
-	@Override  
-    public void onBackPressed()  
-    {  
-			MasterController.currentHoleNum--;
-			if (MasterController.currentHoleNum < 1) {
-				MasterController.currentHoleNum = null;
-				super.onBackPressed();
-			} else {
-				newHole = holeList.get(MasterController.currentHoleNum-1);
-				// clear all entry fields
-				whiteTeeYardEntry.setText(newHole.getWhiteTeeYargage().toString());
-				redTeeYardEntry.setText(newHole.getRedTeeYardage().toString());
-				blueTeeYardEntry.setText(newHole.getBlueTeeYardage().toString());
-				parEntry.setText(newHole.getPar().toString());
-				handicapEntry.setText(newHole.getHandicap().toString());
-				holeCounterView.setText("Hole: "
-						+ MasterController.currentHoleNum);
-			}
-    }
-	
-	private void initHoleList()
-	{
-		for(int j=0;j<18;j++){
-			holeList.add(null);			
+	@Override
+	public void onBackPressed() {
+		MasterController.currentHoleNum--;
+		if (MasterController.currentHoleNum < 1) {
+			MasterController.currentHoleNum = null;
+			super.onBackPressed();
+		} else {
+			newHole = holeList.get(MasterController.currentHoleNum - 1);
+			// clear all entry fields
+			whiteTeeYardEntry.setText(newHole.getWhiteTeeYargage().toString());
+			redTeeYardEntry.setText(newHole.getRedTeeYardage().toString());
+			blueTeeYardEntry.setText(newHole.getBlueTeeYardage().toString());
+			parEntry.setText(newHole.getPar().toString());
+			handicapEntry.setText(newHole.getHandicap().toString());
+			holeCounterView.setText("Hole: " + MasterController.currentHoleNum);
+		}
+	}
+
+	private void initHoleList() {
+		for (int j = 0; j < 18; j++) {
+			holeList.add(null);
 		}
 	}
 
 	/**
 	 * when press logout,return to the login menu
+	 * 
 	 * @author Bolong
 	 */
-	 @Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-	        switch (item.getItemId()) {
-	            case R.id.action_settings:
-	    			Intent i = new Intent(this,MainActivity.class);
-	    			startActivity(i);
-	                break; 
-	        }
-	        // TODO Auto-generated method stub
-	        return super.onOptionsItemSelected(item);
-	    }	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent i = new Intent(this, MainActivity.class);
+			startActivity(i);
+			break;
+		}
+		// TODO Auto-generated method stub
+		return super.onOptionsItemSelected(item);
+	}
 }
