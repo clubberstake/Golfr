@@ -2,12 +2,11 @@ package golfCourseObjects;
 
 /**
  * The Hole class represents a hole on a golf course.
+ * 
  * @author Matt Gisoni
- *
+ * 
  */
-public class Hole
-{
-
+public class Hole {
 
 	private Integer holeID;
 	private Integer courseID;
@@ -16,18 +15,16 @@ public class Hole
 	private Integer redTeeYardage;
 	private Integer blueTeeYardage;
 	private Integer handicap;
-	private Integer par;	
+	private Integer par;
 	/**
 	 * The player's score for the hole, if played.
 	 */
 	private Integer score;
 
-
 	/**
 	 * Default Constructor.
 	 */
-	public Hole()
-	{
+	public Hole() {
 		this.par = 0;
 		this.redTeeYardage = 0;
 		this.whiteTeeYargage = 0;
@@ -38,10 +35,9 @@ public class Hole
 		this.holeNumber = 0;
 	}
 
-
-
 	/**
 	 * Typical constructor for all fields.
+	 * 
 	 * @param holeID
 	 * @param courseID
 	 * @param holeNumber
@@ -67,8 +63,6 @@ public class Hole
 		this.score = score;
 	}
 
-
-
 	/**
 	 * @return the par
 	 */
@@ -77,7 +71,8 @@ public class Hole
 	}
 
 	/**
-	 * @param par the par to set
+	 * @param par
+	 *            the par to set
 	 */
 	public void setPar(Integer par) {
 		this.par = par;
@@ -91,7 +86,8 @@ public class Hole
 	}
 
 	/**
-	 * @param redTeeYardage the redTeeYardage to set
+	 * @param redTeeYardage
+	 *            the redTeeYardage to set
 	 */
 	public void setRedTeeYardage(Integer redTeeYardage) {
 		this.redTeeYardage = redTeeYardage;
@@ -105,7 +101,8 @@ public class Hole
 	}
 
 	/**
-	 * @param whiteTeeYargage the whiteTeeYargage to set
+	 * @param whiteTeeYargage
+	 *            the whiteTeeYargage to set
 	 */
 	public void setWhiteTeeYargage(Integer whiteTeeYargage) {
 		this.whiteTeeYargage = whiteTeeYargage;
@@ -119,7 +116,8 @@ public class Hole
 	}
 
 	/**
-	 * @param blueTeeYardage the blueTeeYardage to set
+	 * @param blueTeeYardage
+	 *            the blueTeeYardage to set
 	 */
 	public void setBlueTeeYardage(Integer blueTeeYardage) {
 		this.blueTeeYardage = blueTeeYardage;
@@ -133,7 +131,8 @@ public class Hole
 	}
 
 	/**
-	 * @param score the score to set
+	 * @param score
+	 *            the score to set
 	 */
 	public void setScore(Integer score) {
 		this.score = score;
@@ -147,7 +146,8 @@ public class Hole
 	}
 
 	/**
-	 * @param handicap the handicap to set
+	 * @param handicap
+	 *            the handicap to set
 	 */
 	public void setHandicap(Integer handicap) {
 		this.handicap = handicap;
@@ -161,7 +161,8 @@ public class Hole
 	}
 
 	/**
-	 * @param holeNumber the holeNumber to set
+	 * @param holeNumber
+	 *            the holeNumber to set
 	 */
 	public void setHoleNumber(Integer holeNumber) {
 		this.holeNumber = holeNumber;
@@ -175,7 +176,8 @@ public class Hole
 	}
 
 	/**
-	 * @param holeID the holeID to set
+	 * @param holeID
+	 *            the holeID to set
 	 */
 	public void setHoleID(Integer holeID) {
 		this.holeID = holeID;
@@ -183,59 +185,57 @@ public class Hole
 
 	/**
 	 * Checks the validity of all Hole variable data.
+	 * 
 	 * @return true if data is valid, false otherwise.
 	 */
-	public boolean validityCheck() 
-	{
-		if (this.holeID > 0 &&
-				this.courseID > 0 &&
-				this.holeNumber >= 1 &&
-				this.holeNumber <=18 &&
-				this.par >= 3 &&
-				this.par <= 5 &&
-				this.redTeeYardage <= this.whiteTeeYargage &&
-				this.whiteTeeYargage <= this.blueTeeYardage)
+	public boolean validityCheck() {
+		if (this.holeID > 0 && this.courseID > 0 && this.holeNumber >= 1
+				&& this.holeNumber <= 18 && this.par >= 3 && this.par <= 5
+				&& this.redTeeYardage <= this.whiteTeeYargage
+				&& this.whiteTeeYargage <= this.blueTeeYardage)
 			return true;
 		else
 			return false;
 	}
 
 	/**
-	 *Checks the validity of Hole number only
-	 *@return - true if valid hole number, false otherwise 
+	 * Checks the validity of Hole number only
+	 * 
+	 * @return - true if valid hole number, false otherwise
 	 */
-	public boolean holeNumberValidtyCheck()
-	{
-		if (this.holeNumber >=1 && this.holeNumber<=18)
+	public boolean holeNumberValidtyCheck() {
+		if (this.holeNumber >= 1 && this.holeNumber <= 18)
 			return true;
 		else
 			return false;
 	}
-	
+
 	/**
 	 * Checks the validity of Hole par data only
+	 * 
 	 * @return - true if the par value is valid, false otherwise
 	 */
-	public boolean parValidtyCheck()
-	{
-		if (this.par >=3 && this.par <=5)
+	public boolean parValidtyCheck() {
+		if (this.par >= 3 && this.par <= 5)
 			return true;
 		else
 			return false;
 	}
-	
+
 	/**
-	 * Checks the validity of the values for red tee, white tee, and blue tee yardages.
+	 * Checks the validity of the values for red tee, white tee, and blue tee
+	 * yardages.
+	 * 
 	 * @return - true if the range of values is valid, false otherwise
 	 */
-	public boolean yardageValidityCheck()
-	{
-		if (this.redTeeYardage <= this.whiteTeeYargage &&
-				this.whiteTeeYargage <= this.blueTeeYardage)
+	public boolean yardageValidityCheck() {
+		if (this.redTeeYardage <= this.whiteTeeYargage
+				&& this.whiteTeeYargage <= this.blueTeeYardage)
 			return true;
 		else
 			return false;
 	}
+
 	/**
 	 * @return the courseID
 	 */
@@ -243,54 +243,46 @@ public class Hole
 		return courseID;
 	}
 
-
-
 	/**
-	 * @param courseID the courseID to set
+	 * @param courseID
+	 *            the courseID to set
 	 */
 	public void setCourseID(Integer courseID) {
 		this.courseID = courseID;
-	}
-
-
-
-	/**
-	 * Override of Object.toString() to provided formatted string representation of a Hole.
-	 */
-	@Override
-	public String toString()
-	{
-		return ("Hole "+ this.holeNumber + ", Par " + this.par + ", White Tee " + this.whiteTeeYargage + " yds.");
 	}
 
 	/**
 	 * Override of Object.equals() to compare hole objects
 	 */
 	@Override
-	public boolean equals(Object toCompare)
-	{
+	public boolean equals(Object toCompare) {
 		boolean result = false;
 		if (toCompare == null)
 			return false;
 		if (toCompare == this)
 			return true;
-		if (toCompare instanceof Hole)
-		{
+		if (toCompare instanceof Hole) {
 			Hole h = (Hole) toCompare;
 
-			if 
-			(
-					this.blueTeeYardage.equals(h.getBlueTeeYardage()) &&					
-					this.handicap.equals(h.getHandicap()) &&
-					this.holeNumber.equals(h.getHoleNumber()) &&
-					this.par.equals(h.getPar()) &&
-					this.redTeeYardage.equals(h.getRedTeeYardage()) &&
-					this.whiteTeeYargage.equals(h.getWhiteTeeYargage())
-					)
+			if (this.blueTeeYardage.equals(h.getBlueTeeYardage())
+					&& this.handicap.equals(h.getHandicap())
+					&& this.holeNumber.equals(h.getHoleNumber())
+					&& this.par.equals(h.getPar())
+					&& this.redTeeYardage.equals(h.getRedTeeYardage())
+					&& this.whiteTeeYargage.equals(h.getWhiteTeeYargage()))
 				result = true;
 		}
 
-
 		return result;
+	}
+
+	/**
+	 * Override of Object.toString() to provided formatted string representation
+	 * of a Hole.
+	 */
+	@Override
+	public String toString() {
+		return "Hole: " + this.holeNumber + " Par: " + this.par + " Score: "
+				+ this.score;
 	}
 }
