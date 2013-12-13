@@ -1,1 +1,22 @@
 Bolong Yan
+
+/*
+
+We deleted:
+
+The whole server part
+
+and these classes in package
+
+Scorecard History View
+Final Scorecard View Screen
+Incremental Clicker View
+
+
+
+These are back button performed in:
+
+Test case  3.10 
+Test case  3.11
+Test case  5.5 --> scorecard screen
+Test case  4.11 
