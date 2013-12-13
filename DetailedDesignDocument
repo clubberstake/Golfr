@@ -1,0 +1,215 @@
+Detailed Design
+
+Database ERD
+
+This ERD represents the logical design of the MySQL database which stores the data for the Golfr application.
+
+[ERD Picture here]
+ 
+
+
+The client and database process the following basic transactions--more details are provided in the application package and class structure section:
+
+Client Side:
+1.	Setup program for enter, calculate and view data. (client only)
+2.	Establish and maintain connection to database(db) (client ↔ db)
+3.	Send SQL queries through JDBC to manipulate data (client ↔ db)
+4.	Pull score data from db(client → db)
+
+Database Side:
+
+There will be one database system, MySQL, provide the database service for transmit and store the data which create by users and offer users to view the data.
+1.	Listen for client connections (thread) (client → db)
+2.	Handle client connections (client ↔ db)
+3.	Serve JDBC service for client (db only)
+4.	Store the data (db only)
+
+
+
+Application Package and Class Structure
+
+There will be three packages in GolfrClient. Java classes will be organized into packages relevant to the respective application.
+
+Any source code or SQL statements contained in this document are intended to be pseudocode representative sketches of the source code needed.  No source code in this document is expected to compile.
+
+GolfrClient.jar
+
+   ●	golfCourseObjectsPackage -- this package contains the basic data structures of a golf course.
+      ○	GolfCourse.java
+      ○	Hole.java
+      ○	User.java
+      ○	Game.java
+      ○	Score.java
+   ●	UIPackage com-- this packge contains the UI classes, the “View” of MVC
+      ○	MainActivity.java
+         ■	Launches the application, and serves as the foundation of the Android UI
+      ○	MainMenuScreen.java (use case 2)
+         ■	This class will implement the UI for the Main Menu defined in Use Case 2
+      ○	CourseListScreen.java (use case 2)
+         ■	This class will implement the UI for the Course List Screen defined in Use Case 2
+         ■	This class will implement the SQLQueries.getCourseListFromDB() method
+      ○	CourseInfoEntryScreen.java (use case 3)
+         ■	This class will implement the UI for the Add Course Info Screen defined in Use Case 3
+      ○	HoleInfoEntryScreen.java(use case3)
+         ■	This class will implement the UI for the Hole Entry Screen defined in Use Case 3
+         ■	When the “Next” button is clicked for the Hole Entry screen for the 18th Hole, this class will invoke the SQLQueries.SendCourseDetailsToDB() method.
+      ○	HoleSelection.java(use case 4)
+         ■	This class will implement the UI for the Hole List  select defined in Use Case 4
+         ■	This class will invoke the getHoleListViewDetails() method on load
+      ○	NowPlayingScreen.java (use case 4)
+         ■	This class will implement the UI for the Course Playing screen defined in Use Case 4
+         ■	This class will have a listener, ConcurrentUserListener.java, for recently posted holes. When ‘pinged’, it will invoke the SQLQueries.getTenMostRecentScores() method
+         ■	When “New Game” is pressed, invoke the SQLQueries.newGame() method 
+      ○	ScoreEntryScreen.java(use case 5)
+         ■	This class will extend Abstract Score Entry and implement the UI for the Score Entry Clicker screen defined in Use Case 5
+      ○	ScoreCardScreen.java (use case 4, 5, 7)
+         ■	This class will generate the Scorecard that is used in Use Cases 4, 5, and 7
+         ■	On load, this class will invoke SQLQueries.getScoreCard() on load
+      ○	UserHistoryScreen.java (use case 7)
+         ■	This class will implement the UI for the history screen defined in Use Case 7
+         ■	On load, invoke the SQLQueries.getUserHistory() method.
+
+   ●Controller package
+
+      ○	SQLQueries.java
+         ■	static getCouseListFromDB() - Use Case 2
+            ●	send query: “SELECT name FROM t_golfCourseDetails ORDER BY name DESC” 
+            ●	receive result from DB
+            ●	format result into necessary data structures
+            ●	return necessary data structures
+         ■	static sendCourseDetailsToDB(GolfCourse) - Use Case 3
+                        ●	send UPDATE query to update t_golfCourseDetails table
+            ●	send SELECT query to get “courseID_pk” for the newly created course.
+            ●	while(hasNextHole==true)
+               ○	send UPDATE query to update t_holes table for each hole--note to include “courseID_pk” from the t_golfCourseDetails table
+         ■	static getTenMostRecentScores(GolfCourse) - Use Case 4
+            ●	SELECT 
+            t_golfCourseHistory.date,
+            t_user.facebookID, 
+            t_holes.holeNumber, 
+            t_score_History.totalScore 
+            FROM …
+            JOIN ... ON 
+            t_user.userID = t_golfCourseHistory.userID, t_golfCourseHistory.courseID = [current GolfCourse.courseID from t_golfCourseDetails], 
+            t_golfCourseHistory.scoreHistory = t_scoreHistory.scoreHistory_pk,
+            t_scorecard.holeID = t_holes.holeID,
+            ORDER BY t_golfCourseHistory.date DESC
+         ■	static getHoleListViewDetails(GolfCourse) - Use Case 4
+            ●	SELECT
+            t_holes.holeNumber,
+            t_holes.par
+            FROM t_holes
+            WHERE t_holes.golfCourseID = [current GolfCourse.courseID]
+         ■	static newGame(user, GolfCourse, Game) - Use Case 4
+            ●	create new records for t_user (if needed)
+            ●	create new records for , t_golfCourseHistory, t_scoreHistory, and t_scorecard to reflect the new game being played
+               ○	SELECT userID_pk FROM t_user WHERE facebookID = [current user ID]
+         ■	if response is null:  UPDATE t_user …[to add new user]
+         ■	if response is the pk, save it locally
+               ○	Create 1 new t_scoreHistory record
+         ■	set totalScore to 0
+               ○	Create 18 new t_scorecard records (link to t_scoreHistory on scoreHistory_pk)
+         ■	set strokes to 0
+               ○	Create 1 new t_golfCourseHistory record (JOIN ON t_scoreHistory.scoreHistory_pk =  t_golfCourseHistory.scoreHistory)
+
+         ■	static getScorecard(user, GolfCourse, Game) - Use Case 4, 6, 7
+            ●	SELECT t_holes.holeNumber, t_holes.whiteTee, t_holes.redTee, t_holes.blueTee, t_holes.handicap, t_holes.par, t_scorecard.strokes 
+            FROM t_holes, t_scorecard
+            JOIN … ON
+            t_holes.golfCourseID = t_scoreHistory.courseID,
+            t_scorecard.holeID = t_holes.holeID,
+            t_scoreHistory.scoreHistory_pk = t_scorecard.scoreHistory_fk
+         ■	static getHoleMetadata(GolfCourse, Hole) - Use Case 5
+            ●	SELECT par, whiteTee, redTee, blueTee, handicap, holeNumber
+            FROM t_holes
+            WHERE t_holes.holeID = [selected holeID]
+         ■	static addScoreForHole(user, GolfCourse, Hole, Game) - Use Case 5
+            ●	UPDATE t_scorecard 
+            SET strokes = [value needed based on user input]
+            WHERE t_scorecard.holeID = [current holeID]
+         ■	static addTotalScore(user, GolfCourse, Game) - Use Case 6
+            ●	UPDATE t_scoreHistory
+            SET totalScore = totalScore + [value needed based on user input]
+            WHERE scoreHistory_pk = [current scoreHistory_pk]
+            ●	static getScoreInfoForFacebook(user, Game, GolfCourse) - Use Case 6
+               ○	SELECT t_user.facebookID, t_golfCourseDetails.name, t_scoreHistory.totalScore
+               ○	FROM …
+               ○	JOIN...ON
+               ○	t_golfCourseDetails.courseID = t_scoreHistory.courseID,
+               ○	t_scoreHistory.scoreHistory_pk = t_golfCourseHistory.scoreHistory,
+               ○	t_user.userID_pk = t_scoreHistory.userID
+         ■	static getUserHistory(user) - Use Case 7
+            ●	SELECT t_golfCourseHistory.date, t_golfCourseDetails.name, t_scoreHisotry.totalScore
+            FROM …
+            JOIN ... ON
+            t_golfCourseDetails.courseID_pk = t_ScoreHistory.courseID,
+            t_golfCourseHistory.scoreHistory = t_scoreHistory.scoreHistory_pk,
+            t_golfCourseHistory.userID = [current userID]
+            ORDER BY t_goflCourseHistory.date DESC
+            
+      ○	AddCourse.java
+         ○	This class acts as the controller "Adding a course"  - Use Case 3
+         ○	Default Constructor creates an "empty" course
+      ○	AddHole.java
+         ○	This class acts as the controller "Adding a hole" - Use Case 3
+      ○	AddHoleToCourse.java
+         ○	This class acts as the controller "Adding a hole" - Use Case 3
+      ○	AddScoreForHole.java
+         ○	This class acts as the controller “Adding a hole” - Use Case 3
+      ○	CourseList.java
+         ○	This class lists all the course in the client and let user choose one -  Use Case 2
+      ○	CourseListFetcher.java
+         ○	This class gets the course list from DB
+      ○	DeleteCourseFromDB.java
+         ○	This class will delete course from DB
+      ○	DeleteGame.java
+         ○	This class will delete one game from DB
+      ○	GetCoursePrimaryKey.java
+         ○	This class will get the primary key from course table and return the 
+           value
+      ○	GetHoleMetadata.java
+         ○	This class will get the metadata for holes and  keep it to 
+           HolemetaList
+      ○	GetScorecard.java
+         ○	This class will get the score from DB and  keep it to ScoreList
+      ○	GetTenMostRecentScore.java
+         ○	This class will get the ten recent score from DB and  keep it to 
+           ScoreList
+      ○	GetUserHistory.java
+         ○	This class will sort the user history and  keep it to historyList
+      ○	MasterController.java
+         ○	This class public the User, Game, GolfCourse and Hole and given 
+         a null value to each variable
+      ○	NewGame.java
+         ○	This class starts recording a new game include User, Course and 
+           Hole value
+      ○	SendCourseDetailsToDB.java
+         ○	This class send course value to DB
+
+
+
+●	validationPackage
+○	GolfCourseValidation.java
+○	GolfCourseVailidationUnitTest
+○	ScoringValidation.java
+○	ScoringValidationUnitTest
+
+Server.jar
+
+●	servicesPackage
+○	ListenForConnections.java extends Thread
+■	Listens for new connections and establishes them on port TCP 65001
+○	ServeSQL.java
+■	Establishes and manages JDBC connections to MySQL on port 3306
+■	Processes JDBC calls from the client
+○	ServeConcurrentUserService.java
+■	Broadcasts the concurrent user data on UDP port 65002
+○	Main.java
+■	Launches the server application
+■	Maintains the list of concurrent users
+
+●	validationPackage
+○	ListenForConnectionsValidation.java
+○	ServeSQLValidation.java
+○	ServeConcurrentUserServiceValidation.java
+○	MainValidation.java

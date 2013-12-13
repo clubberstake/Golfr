@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Name"
-        android:inputType="text" >
+        android:inputType="text|textCapWords" >
 
         <requestFocus />
     </EditText>
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Street Number"
-        android:inputType="number|textPostalAddress" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/CourseInfo_StreetName"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Street Name"
-        android:inputType="textPostalAddress" />
+        android:inputType="textCapWords|textPostalAddress" />
 
     <EditText
         android:id="@+id/CourseInfo_CityEntry"

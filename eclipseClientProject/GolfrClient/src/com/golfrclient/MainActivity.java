@@ -12,50 +12,38 @@ import controller.MasterController;
 
 public class MainActivity extends Activity {
 
-	private Button goToCL;//Just testing navigation to course screen
 	private Button login;
 	private EditText usernameEntry;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		login = (Button) findViewById(R.id.Main_LoginButton);
 		usernameEntry = (EditText) findViewById(R.id.Main_UsernameEntry);
-		
+
 		/*
 		 * Action listener for login button
 		 */
 		login.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				
-				//Navigate to the Main menu screen
-				MasterController.user = new User(usernameEntry.getText().toString());
+
+				// Navigate to the Main menu screen
+				MasterController.user = new User(usernameEntry.getText()
+						.toString());
 				Intent i = new Intent(MainActivity.this, MainMenuScreen.class);
 				startActivity(i);
 			}
 		});
-		
-		
-		
-		goToCL = (Button) findViewById(R.id.Main_GoToCourseList);// This can be deleted later
-		
-		goToCL.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-			Intent i = new Intent(MainActivity.this, CourseListScreen.class);
-			startActivity(i);
-				
-			}
-		});
+
 	}
 
 	/**
 	 * create logout menu
+	 * 
 	 * @author Bolong
 	 * 
 	 */
@@ -65,6 +53,5 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 
 }
