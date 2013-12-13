@@ -1112,7 +1112,7 @@ public abstract class SQLQueries extends Thread
 			e.printStackTrace();
 		}
 
-		String url = "jdbc:mysql://192.168.1.12:3306/golfr";//this IP address needs to be set to the machine which is hosting the MySQL DB.
+		String url = "jdbc:mysql://192.168.1.6:3306/golfr";//this IP address needs to be set to the machine which is hosting the MySQL DB.
 
 		String userName = "client";
 		String password = "12345";
