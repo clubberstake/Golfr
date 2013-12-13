@@ -1028,7 +1028,7 @@ public class TestDBOperations extends ActivityInstrumentationTestCase2<MainActiv
 		}
 		scoreList = scoreGetter.getScoreList();
 		assertNotNull(scoreList);
-		assertEquals(2,scoreList.size());			
+		assertTrue(scoreList.size() <= 10);			
 		assertEquals(Integer.valueOf(89),scoreList.get(0).getTotalScore());
 		assertEquals(Integer.valueOf(72),scoreList.get(1).getTotalScore());
 		assertTrue(scoreList.get(0).getTimestamp().compareTo(scoreList.get(1).getTimestamp()) > 0);
