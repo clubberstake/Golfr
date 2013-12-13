@@ -101,6 +101,9 @@ public class CourseListScreen extends Activity {
 		return true;
 	}
 
+	/**
+	 * sets up the array adapter to display the course list in the vire
+	 */
 	private void establishArrayAdapter() {
 		ArrayAdapter<GolfCourse> courseNamesArrayAdapter = new ArrayAdapter<GolfCourse>(
 				this, android.R.layout.simple_list_item_1, golfCourseList);

@@ -16,7 +16,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"
         android:ems="10"
-        android:hint="Username" />
+        android:hint="Username"
+        android:inputType="textCapWords" >
+
+        <requestFocus />
+        <requestFocus />
+
+    </EditText>
 
     <Button
         android:id="@+id/Main_LoginButton"

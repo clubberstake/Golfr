@@ -50,6 +50,7 @@ public final class R {
         public static final int HoleInfoScreen_WhiteTeeEntry=0x7f080012;
         public static final int HoleListView=0x7f08001a;
         public static final int LinearLayout1=0x7f080001;
+        public static final int LinearLayout2=0x7f08002d;
         public static final int Main_LoginButton=0x7f08001c;
         public static final int Main_UsernameEntry=0x7f08001b;
         public static final int NowPlayingCourseScreen_CurrentlyPlayingListView=0x7f080020;
@@ -67,7 +68,8 @@ public final class R {
         public static final int ScoreEntryScreen_ScoreEntryField=0x7f08002c;
         public static final int ScoreEntryScreen_WhiteYardView=0x7f080028;
         public static final int ScrollView1=0x7f080010;
-        public static final int action_settings=0x7f08002d;
+        public static final int UserHistoryScreen_HistoryListView=0x7f08002e;
+        public static final int action_settings=0x7f08002f;
         public static final int textView2=0x7f08000c;
         public static final int txtCourseName=0x7f080000;
     }
